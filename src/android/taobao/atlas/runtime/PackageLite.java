@@ -59,9 +59,7 @@ public class PackageLite {
                     if (parse == null) {
                         parse = new PackageLite();
                     }
-                    if (openXmlResourceParser == null) {
-                        return parse;
-                    }
+       
                     openXmlResourceParser.close();
                     return parse;
                 } catch (Exception e2) {
@@ -82,17 +80,11 @@ public class PackageLite {
                     }
                 }
             }
-            if (openXmlResourceParser != null) {
-                openXmlResourceParser.close();
-            }
             return null;
         } catch (Exception e3) {
             e = e3;
             openXmlResourceParser = null;
             log.error("Exception while parse AndroidManifest.xml >>>", e);
-            if (openXmlResourceParser != null) {
-                openXmlResourceParser.close();
-            }
             return null;
         } catch (Throwable th2) {
             e = th2;
@@ -104,235 +96,150 @@ public class PackageLite {
 		return null;
     }
 
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    protected static android.taobao.atlas.runtime.PackageLite parse(android.content.res.XmlResourceParser r10) throws java.lang.Exception {
-        /*
-        r9 = 3;
-        r8 = 1;
-        r7 = 2;
-        r1 = 0;
-        r3 = 0;
-        r4 = new android.taobao.atlas.runtime.PackageLite;
-        r4.<init>();
-    L_0x000a:
-        r0 = r10.next();
-        if (r0 == r7) goto L_0x0012;
-    L_0x0010:
-        if (r0 != r8) goto L_0x000a;
-    L_0x0012:
-        if (r0 == r7) goto L_0x001e;
-    L_0x0014:
-        r0 = log;
-        r1 = "No start tag found";
-        r0.error(r1);
-        r0 = r3;
-    L_0x001d:
-        return r0;
-    L_0x001e:
-        r0 = r10.getName();
-        r2 = "manifest";
-        r0 = r0.equals(r2);
-        if (r0 != 0) goto L_0x0035;
-    L_0x002b:
-        r0 = log;
-        r1 = "No <manifest> tag";
-        r0.error(r1);
-        r0 = r3;
-        goto L_0x001d;
-    L_0x0035:
-        r0 = "package";
-        r0 = r10.getAttributeValue(r3, r0);
-        r4.packageName = r0;
-        r0 = r4.packageName;
-        if (r0 == 0) goto L_0x004a;
-    L_0x0042:
-        r0 = r4.packageName;
-        r0 = r0.length();
-        if (r0 != 0) goto L_0x0054;
-    L_0x004a:
-        r0 = log;
-        r1 = "<manifest> does not specify package";
-        r0.error(r1);
-        r0 = r3;
-        goto L_0x001d;
-    L_0x0054:
-        r0 = r1;
-        r2 = r1;
-    L_0x0056:
-        r5 = r10.getAttributeCount();
-        if (r0 >= r5) goto L_0x0073;
-    L_0x005c:
-        r5 = r10.getAttributeName(r0);
-        r6 = "versionCode";
-        r6 = r5.equals(r6);
-        if (r6 == 0) goto L_0x00a2;
-    L_0x0069:
-        r5 = r10.getAttributeIntValue(r0, r1);
-        r4.versionCode = r5;
-        r2 = r2 + 1;
-    L_0x0071:
-        if (r2 < r7) goto L_0x00b4;
-    L_0x0073:
-        r0 = r10.getDepth();
-        r0 = r0 + 1;
-    L_0x0079:
-        r1 = r10.next();
-        if (r1 == r8) goto L_0x00be;
-    L_0x007f:
-        if (r1 != r9) goto L_0x0087;
-    L_0x0081:
-        r2 = r10.getDepth();
-        if (r2 < r0) goto L_0x00be;
-    L_0x0087:
-        if (r1 == r9) goto L_0x0079;
-    L_0x0089:
-        r2 = 4;
-        if (r1 == r2) goto L_0x0079;
-    L_0x008c:
-        r1 = r10.getName();
-        r2 = "application";
-        r1 = r1.equals(r2);
-        if (r1 == 0) goto L_0x00ba;
-    L_0x0099:
-        r0 = parseApplication(r4, r10, r10);
-        if (r0 != 0) goto L_0x00b7;
-    L_0x009f:
-        r0 = r3;
-        goto L_0x001d;
-    L_0x00a2:
-        r6 = "versionName";
-        r5 = r5.equals(r6);
-        if (r5 == 0) goto L_0x0071;
-    L_0x00ab:
-        r5 = r10.getAttributeValue(r0);
-        r4.versionName = r5;
-        r2 = r2 + 1;
-        goto L_0x0071;
-    L_0x00b4:
-        r0 = r0 + 1;
-        goto L_0x0056;
-    L_0x00b7:
-        r0 = r4;
-        goto L_0x001d;
-    L_0x00ba:
-        skipCurrentTag(r10);
-        goto L_0x0079;
-    L_0x00be:
-        r0 = r4;
-        goto L_0x001d;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.runtime.PackageLite.parse(android.content.res.XmlResourceParser):android.taobao.atlas.runtime.PackageLite");
-    }
+    protected static android.taobao.atlas.runtime.PackageLite parse(android.content.res.XmlResourceParser arg10) throws java.lang.Exception {
 
+        
+        
+        int v2;
+        PackageLite v0_1;
+        int v0;
+        int v9 = 3;
+        int v7 = 2;
+        PackageLite v3 = null;
+        PackageLite v4 = new PackageLite();
+        do {
+            v0 = arg10.next();
+            if(v0 == v7) {
+                break;
+            }
+        }
+        while(v0 != 1);
+
+        if(v0 != v7) {
+            PackageLite.log.error("No start tag found");
+            v0_1 = v3;
+        }
+        else if(!arg10.getName().equals("manifest")) {
+            PackageLite.log.error("No <manifest> tag");
+            v0_1 = v3;
+        }
+        else {
+            v4.packageName = ((AttributeSet)arg10).getAttributeValue(null, "package");
+            if(v4.packageName != null && v4.packageName.length() != 0) {
+                v0 = 0;
+                v2 = 0;
+            }
+            else {
+                PackageLite.log.error("<manifest> does not specify package");
+                return v3;
+            }
+
+            while(v0 < ((AttributeSet)arg10).getAttributeCount()) {
+                String v5 = ((AttributeSet)arg10).getAttributeName(v0);
+                if(v5.equals("versionCode")) {
+                    v4.versionCode = ((AttributeSet)arg10).getAttributeIntValue(v0, 0);
+                    ++v2;
+                }
+                else if(v5.equals("versionName")) {
+                    v4.versionName = ((AttributeSet)arg10).getAttributeValue(v0);
+                    ++v2;
+                }
+
+                if(v2 >= v7) {
+                    break;
+                }
+
+                ++v0;
+            }
+
+            v0 = arg10.getDepth() + 1;
+            while(true) {
+                int v1 = arg10.next();
+                System.out.println(arg10.getName());
+                if(v1 != XmlPullParser.END_DOCUMENT) {
+                    if(arg10.getName().equals("application")) {
+                        if(!PackageLite.parseApplication(v4, ((XmlPullParser)arg10), ((AttributeSet)
+                                arg10))) {
+                            return v3;
+                        }
+
+                        return v4;
+                    }
+
+                    if(v1 == v9 && arg10.getDepth() < v0) {
+                        break;
+                    }
+
+                    if(v1 == v9) {
+                        continue;
+                    }
+
+                    if(v1 == 4) {
+                        continue;
+                    }
+
+            
+                    PackageLite.skipCurrentTag(((XmlPullParser)arg10));
+                    continue;
+                }
+
+                break;
+            }
+
+            v0_1 = v4;
+        }
+
+        return v0_1;
+    
+    
+    
+    
+    
+    }
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static boolean parseApplication(android.taobao.atlas.runtime.PackageLite r7, org.xmlpull.v1.XmlPullParser r8, android.util.AttributeSet r9) throws java.lang.Exception {
-        /*
-        r6 = 3;
-        r5 = 1;
-        r1 = 0;
-        r2 = r7.packageName;
-        r0 = r1;
-    L_0x0006:
-        r3 = r9.getAttributeCount();
-        if (r0 >= r3) goto L_0x0056;
-    L_0x000c:
-        r3 = r9.getAttributeName(r0);
-        r4 = "name";
-        r4 = r3.equals(r4);
-        if (r4 == 0) goto L_0x0026;
-    L_0x0019:
-        r3 = r9.getAttributeValue(r0);
-        r3 = buildClassName(r2, r3);
-        r7.applicationClassName = r3;
-    L_0x0023:
-        r0 = r0 + 1;
-        goto L_0x0006;
-    L_0x0026:
-        r4 = "icon";
-        r4 = r3.equals(r4);
-        if (r4 == 0) goto L_0x0036;
-    L_0x002f:
-        r3 = r9.getAttributeResourceValue(r0, r1);
-        r7.applicationIcon = r3;
-        goto L_0x0023;
-    L_0x0036:
-        r4 = "label";
-        r4 = r3.equals(r4);
-        if (r4 == 0) goto L_0x0046;
-    L_0x003f:
-        r3 = r9.getAttributeResourceValue(r0, r1);
-        r7.applicationLabel = r3;
-        goto L_0x0023;
-    L_0x0046:
-        r4 = "description";
-        r3 = r3.equals(r4);
-        if (r3 == 0) goto L_0x0023;
-    L_0x004f:
-        r3 = r9.getAttributeResourceValue(r0, r1);
-        r7.applicationDescription = r3;
-        goto L_0x0023;
-    L_0x0056:
-        r0 = r8.getDepth();
-    L_0x005a:
-        r2 = r8.next();
-        if (r2 == r5) goto L_0x00bb;
-    L_0x0060:
-        if (r2 != r6) goto L_0x0068;
-    L_0x0062:
-        r3 = r8.getDepth();
-        if (r3 <= r0) goto L_0x00bb;
-    L_0x0068:
-        if (r2 == r6) goto L_0x005a;
-    L_0x006a:
-        r3 = 4;
-        if (r2 == r3) goto L_0x005a;
-    L_0x006d:
-        r2 = r8.getName();
-        r3 = "meta-data";
-        r3 = r2.equals(r3);
-        if (r3 == 0) goto L_0x0083;
-    L_0x007a:
-        r2 = r7.metaData;
-        r2 = parseMetaData(r8, r9, r2);
-        r7.metaData = r2;
-        goto L_0x005a;
-    L_0x0083:
-        r3 = "activity";
-        r3 = r2.equals(r3);
-        if (r3 == 0) goto L_0x0090;
-    L_0x008c:
-        parseComponentData(r7, r8, r9, r1);
-        goto L_0x005a;
-    L_0x0090:
-        r3 = "receiver";
-        r3 = r2.equals(r3);
-        if (r3 == 0) goto L_0x009d;
-    L_0x0099:
-        parseComponentData(r7, r8, r9, r5);
-        goto L_0x005a;
-    L_0x009d:
-        r3 = "service";
-        r3 = r2.equals(r3);
-        if (r3 == 0) goto L_0x00aa;
-    L_0x00a6:
-        parseComponentData(r7, r8, r9, r5);
-        goto L_0x005a;
-    L_0x00aa:
-        r3 = "provider";
-        r2 = r2.equals(r3);
-        if (r2 == 0) goto L_0x00b7;
-    L_0x00b3:
-        parseComponentData(r7, r8, r9, r1);
-        goto L_0x005a;
-    L_0x00b7:
-        skipCurrentTag(r8);
-        goto L_0x005a;
-    L_0x00bb:
-        return r5;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.runtime.PackageLite.parseApplication(android.taobao.atlas.runtime.PackageLite, org.xmlpull.v1.XmlPullParser, android.util.AttributeSet):boolean");
+    private static boolean parseApplication(PackageLite packageLite, XmlPullParser xmlPullParser, AttributeSet attributeSet) throws Exception {
+        int i;
+        String str = packageLite.packageName;
+        for (i = 0; i < attributeSet.getAttributeCount(); i++) {
+            String attributeName = attributeSet.getAttributeName(i);
+            if (attributeName.equals("name")) {
+                packageLite.applicationClassName = buildClassName(str, attributeSet.getAttributeValue(i));
+            } else if (attributeName.equals("icon")) {
+                packageLite.applicationIcon = attributeSet.getAttributeResourceValue(i, 0);
+            } else if (attributeName.equals("label")) {
+                packageLite.applicationLabel = attributeSet.getAttributeResourceValue(i, 0);
+            } else if (attributeName.equals("description")) {
+                packageLite.applicationDescription = attributeSet.getAttributeResourceValue(i, 0);
+            }
+        }
+        i = xmlPullParser.getDepth();
+        while (true) {
+            int next = xmlPullParser.next();
+            if (next != 1) {
+                if (next == 3 && xmlPullParser.getDepth() <= i) {
+                    break;
+                } else if (next != 3 && next != 4) {
+                    str = xmlPullParser.getName();
+                    if (str.equals("meta-data")) {
+                        packageLite.metaData = parseMetaData(xmlPullParser, attributeSet, packageLite.metaData);
+                    } else if (str.equals("activity")) {
+                        parseComponentData(packageLite, xmlPullParser, attributeSet, false);
+                    } else if (str.equals("receiver")) {
+                        parseComponentData(packageLite, xmlPullParser, attributeSet, true);
+                    } else if (str.equals("service")) {
+                        parseComponentData(packageLite, xmlPullParser, attributeSet, true);
+                    } else if (str.equals("provider")) {
+                        parseComponentData(packageLite, xmlPullParser, attributeSet, false);
+                    } else {
+                        skipCurrentTag(xmlPullParser);
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+        return true;
     }
 
     private static Bundle parseMetaData(XmlPullParser xmlPullParser, AttributeSet attributeSet, Bundle bundle) throws XmlPullParserException, IOException {
