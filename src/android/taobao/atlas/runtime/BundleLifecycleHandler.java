@@ -1,5 +1,10 @@
 package android.taobao.atlas.runtime;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.ServicePermission;
+import org.osgi.framework.SynchronousBundleListener;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.os.AsyncTask;
@@ -11,15 +16,6 @@ import android.taobao.atlas.hack.AtlasHacks;
 import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.taobao.atlas.util.StringUtils;
-import com.taobao.dp.DeviceSecuritySDK;
-import com.taobao.open.OpenBase;
-import com.taobao.securityjni.StaticDataStore;
-import com.taobao.wireless.security.sdk.staticdataencrypt.IStaticDataEncryptComponent;
-import mtopsdk.common.util.SymbolExpUtil;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.ServicePermission;
-import org.osgi.framework.SynchronousBundleListener;
 
 public class BundleLifecycleHandler implements SynchronousBundleListener {
     static final Logger log;
@@ -41,11 +37,11 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
     @SuppressLint({"NewApi"})
     public void bundleChanged(BundleEvent bundleEvent) {
         switch (bundleEvent.getType()) {
-            case DeviceSecuritySDK.ENVIRONMENT_ONLINE /*0*/:
+            case 0 /*0*/:
                 loaded(bundleEvent.getBundle());
-            case OpenBase.OAUTH_CREATE /*1*/:
+            case 1 /*1*/:
                 installed(bundleEvent.getBundle());
-            case StaticDataStore.SECURITY_KEY_TYPE /*2*/:
+            case 2 /*2*/:
                 if (isLewaOS()) {
                     if (Looper.myLooper() == null) {
                         Looper.prepare();
@@ -61,11 +57,11 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
                 } else {
                     started(bundleEvent.getBundle());
                 }
-            case StaticDataStore.INVALID_KEY_TYPE /*4*/:
+            case 4 /*4*/:
                 stopped(bundleEvent.getBundle());
-            case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT128 /*8*/:
+            case 8 /*8*/:
                 updated(bundleEvent.getBundle());
-            case IStaticDataEncryptComponent.GCRY_CIPHER_AES128 /*16*/:
+            case 16 /*16*/:
                 uninstalled(bundleEvent.getBundle());
             default:
         }
@@ -103,7 +99,7 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
         String str = (String) bundleImpl.getHeaders().get("Bundle-Application");
         if (StringUtils.isNotEmpty(str)) {
             String[] strArr;
-            String[] split = StringUtils.split(str, SymbolExpUtil.SYMBOL_COMMA);
+            String[] split = StringUtils.split(str, ",");
             if (split == null || split.length == 0) {
                 strArr = new String[]{str};
             } else {
@@ -113,8 +109,9 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
                 for (String str2 : strArr) {
                     String trim = StringUtils.trim(str2);
                     if (StringUtils.isNotEmpty(trim)) {
+                    	
                         try {
-                            Application newApplication;
+                          
                             int i;
                             for (Application newApplication2 : DelegateComponent.apkApplications.values()) {
                                 if (newApplication2.getClass().getName().equals(trim)) {
@@ -124,7 +121,7 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
                             }
                             i = 0;
                             if (i == 0) {
-                                newApplication2 = newApplication(trim, bundleImpl.getClassLoader());
+                            	Application  newApplication2 = newApplication(trim, bundleImpl.getClassLoader());
                                 newApplication2.onCreate();
                                 DelegateComponent.apkApplications.put("system:" + trim, newApplication2);
                             }
@@ -137,7 +134,7 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
         } else {
             PackageLite packageLite = DelegateComponent.getPackage(bundleImpl.getLocation());
             if (packageLite != null) {
-                str2 = packageLite.applicationClassName;
+             String   str2 = packageLite.applicationClassName;
                 if (StringUtils.isNotEmpty(str2)) {
                     try {
                         newApplication(str2, bundleImpl.getClassLoader()).onCreate();

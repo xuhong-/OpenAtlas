@@ -52,7 +52,7 @@ public class ContextImplHook extends ContextWrapper {
 
     public void startActivity(Intent intent) {
         String packageName;
-        Object obj = null;
+        String obj = null;
         if (intent.getComponent() != null) {
             packageName = intent.getComponent().getPackageName();
             obj = intent.getComponent().getClassName();

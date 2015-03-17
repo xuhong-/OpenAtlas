@@ -1,14 +1,5 @@
 package android.taobao.atlas.runtime;
 
-import android.content.pm.PackageInfo;
-import android.taobao.atlas.bundleInfo.BundleInfoList;
-import android.taobao.atlas.framework.Atlas;
-import android.taobao.atlas.framework.BundleImpl;
-import android.taobao.atlas.framework.Framework;
-import android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
-import android.util.Log;
-import com.taobao.tao.util.Constants;
-import com.taobao.weapp.tb.utils.CacheUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -17,7 +8,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import org.osgi.framework.Bundle;
+
+import android.content.pm.PackageInfo;
+import android.taobao.atlas.bundleInfo.BundleInfoList;
+import android.taobao.atlas.framework.Atlas;
+import android.taobao.atlas.framework.BundleImpl;
+import android.taobao.atlas.framework.Framework;
+import android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
+import android.util.Log;
 
 public class ClassLoadFromBundle {
     private static final String TAG = "ClassLoadFromBundle";
@@ -32,11 +32,11 @@ public class ClassLoadFromBundle {
 
     public static String getClassNotFoundReason(String str) {
         for (int i = 0; i < classNotFoundReason.size(); i++) {
-            if ((classNotFoundReason.get(Integer.valueOf(i)) + Constants.ALIPAY_PARNER).contains(str + Constants.ALIPAY_PARNER)) {
-                return classNotFoundReason.get(Integer.valueOf(i)) + Constants.ALIPAY_PARNER;
+            if ((classNotFoundReason.get(Integer.valueOf(i)) + "").contains(str + "")) {
+                return classNotFoundReason.get(Integer.valueOf(i)) + "";
             }
         }
-        return Constants.ALIPAY_PARNER;
+        return "";
     }
 
     private static void insertToReasonList(String str, String str2) {
@@ -47,7 +47,7 @@ public class ClassLoadFromBundle {
     }
 
     public static String getPackageNameFromEntryName(String str) {
-        return str.substring(str.indexOf("lib/armeabi/lib") + "lib/armeabi/lib".length(), str.indexOf(".so")).replace(CacheUtils.CACHE_KEY_SEP, ".");
+        return str.substring(str.indexOf("lib/armeabi/lib") + "lib/armeabi/lib".length(), str.indexOf(".so")).replace("_", ".");
     }
 
     public static synchronized void resolveInternalBundles() {
@@ -79,7 +79,7 @@ public class ClassLoadFromBundle {
         BundleInfoList instance = BundleInfoList.getInstance();
         String bundleForComponet = instance.getBundleForComponet(str);
         if (bundleForComponet == null) {
-            "Failed to find the bundle in BundleInfoList for component " + str;
+           Log.e("me", "Failed to find the bundle in BundleInfoList for component " + str);
             insertToReasonList(str, "not found in BundleInfoList!");
             return null;
         } else if (sInternalBundles != null && !sInternalBundles.contains(bundleForComponet)) {
@@ -92,7 +92,7 @@ public class ClassLoadFromBundle {
             }
             linkedList.add(bundleForComponet);
             for (String str2 : linkedList) {
-                File file = new File(new File(Framework.getProperty("android.taobao.atlas.AppDirectory"), "lib"), "lib".concat(str2.replace(".", CacheUtils.CACHE_KEY_SEP)).concat(".so"));
+                File file = new File(new File(Framework.getProperty("android.taobao.atlas.AppDirectory"), "lib"), "lib".concat(str2.replace(".", "_")).concat(".so"));
                 if (Atlas.getInstance().getBundle(str2) == null) {
                     try {
                         if (!file.exists()) {
@@ -100,12 +100,11 @@ public class ClassLoadFromBundle {
                         }
                         installBundle = Atlas.getInstance().installBundle(str2, file);
                         if (installBundle != null) {
-                            "Succeed to install bundle " + str2;
-                        }
+                           Log.e("me",  "Succeed to install bundle " + str2);
                         try {
                             long currentTimeMillis = System.currentTimeMillis();
                             ((BundleImpl) installBundle).optDexFile();
-                            "Succeed to dexopt bundle " + str2 + " cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms";
+                           Log.e("me",  "Succeed to dexopt bundle " + str2 + " cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
                         } catch (Throwable e) {
                             Log.e(TAG, "Error while dexopt >>>", e);
                             insertToReasonList(str, "dexopt failed!");
@@ -114,7 +113,7 @@ public class ClassLoadFromBundle {
                             }
                             throw ((RuntimeException) e);
                         }
-                    } catch (Throwable e2) {
+                        }} catch (Throwable e2) {
                         Log.e(TAG, "Could not install bundle.", e2);
                         insertToReasonList(str, "bundle installation failed");
                         return null;
