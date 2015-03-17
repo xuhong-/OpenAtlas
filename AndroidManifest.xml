@@ -9,6 +9,7 @@
         android:targetSdkVersion="21" />
 
     <application
+        android:name="test.blue.stack.loader.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -16,6 +17,15 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="test.blue.stack.loader.LoaderTesstActivity"
+            android:label="@string/title_activity_loader_tesst" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
