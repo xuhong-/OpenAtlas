@@ -27,8 +27,10 @@ import android.taobao.atlas.util.StringUtils;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import blus.stack.android.InstrumentationInvoke;
 
 import java.util.List;
+
 import org.osgi.framework.BundleException;
 
 public class InstrumentationHook extends Instrumentation {
@@ -58,7 +60,8 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode);
+        	return InstrumentationInvoke.execStartActivity(mBase,this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode);
+          //  return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode);
         }
     }
 
@@ -82,7 +85,8 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
+        return	InstrumentationInvoke.execStartActivity(mBase,this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
+          //  return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
         }
     }
 
@@ -104,7 +108,13 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode);
+        	
+
+        	
+        	return InstrumentationInvoke.execStartActivity(mBase,this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode);
+          //  return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
+        
+         //   return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode);
         }
     }
 
@@ -128,7 +138,9 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
+        	
+        	return InstrumentationInvoke.execStartActivity(mBase,this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
+          //  return InstrumentationHook.this.mBase.execStartActivity(this.val$who, this.val$contextThread, this.val$token, this.val$target, this.val$intent, this.val$requestCode, this.val$options);
         }
     }
 
