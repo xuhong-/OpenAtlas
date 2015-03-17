@@ -535,6 +535,8 @@ public final class Framework {
             }
         }
         catch(Throwable v0) {
+        	
+        	v0.printStackTrace();
             BundleLock.WriteUnLock(arg7);
             throw new BundleException(v0.getMessage());
         }

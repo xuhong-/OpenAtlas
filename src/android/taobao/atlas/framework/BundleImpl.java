@@ -38,7 +38,7 @@ public final class BundleImpl implements Bundle {
     private final BundleContextImpl context;
     int currentStartlevel;
     ProtectionDomain domain;
-    Hashtable<String, String> headers;
+    Hashtable<String, String> headers=new Hashtable<String, String>();
     final String location;
     boolean persistently;
     List<BundleListener> registeredBundleListeners;
