@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -144,6 +145,7 @@ public final class Framework {
             }
         }
 
+//TODO  this is a old version impl
         class AnonymousClass_3 extends Thread {
             final /* synthetic */ Bundle[] val$bundleArray;
 
@@ -152,307 +154,91 @@ public final class Framework {
             }
 
             public void run() {
-                /* JADX: method processing error */
-/*
-                Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominator not found, method:android.taobao.atlas.framework.Framework.SystemBundle.AnonymousClass_3.run():void. bs: []
-	at jadx.core.dex.visitors.regions.ProcessTryCatchRegions.searchTryCatchDominators(ProcessTryCatchRegions.java:82)
-	at jadx.core.dex.visitors.regions.ProcessTryCatchRegions.process(ProcessTryCatchRegions.java:45)
-	at jadx.core.dex.visitors.regions.RegionMakerVisitor.postProcessRegions(RegionMakerVisitor.java:57)
-	at jadx.core.dex.visitors.regions.RegionMakerVisitor.visit(RegionMakerVisitor.java:52)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:31)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:17)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:14)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:14)
-	at jadx.core.ProcessClass.process(ProcessClass.java:34)
-	at jadx.api.JadxDecompiler.processClass(JadxDecompiler.java:281)
-	at jadx.api.JavaClass.decompile(JavaClass.java:59)
-	at jadx.api.JavaClass.getCode(JavaClass.java:45)
-	at jadx.gui.treemodel.JClass.getContent(JClass.java:74)
-	at jadx.gui.ui.ContentArea.<init>(ContentArea.java:66)
-	at jadx.gui.ui.ContentPanel.<init>(ContentPanel.java:28)
-	at jadx.gui.ui.TabbedPane.getCodePanel(TabbedPane.java:112)
-	at jadx.gui.ui.TabbedPane.showCode(TabbedPane.java:69)
-	at jadx.gui.ui.MainWindow.treeClickAction(MainWindow.java:241)
-	at jadx.gui.ui.MainWindow.access$1000(MainWindow.java:66)
-	at jadx.gui.ui.MainWindow$15.mouseClicked(MainWindow.java:519)
-	at java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:270)
-	at java.awt.Component.processMouseEvent(Component.java:6528)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3322)
-	at java.awt.Component.processEvent(Component.java:6290)
-	at java.awt.Container.processEvent(Container.java:2234)
-	at java.awt.Component.dispatchEventImpl(Component.java:4881)
-	at java.awt.Container.dispatchEventImpl(Container.java:2292)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4542)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
-	at java.awt.Container.dispatchEventImpl(Container.java:2278)
-	at java.awt.Window.dispatchEventImpl(Window.java:2739)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:751)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:702)
-	at java.awt.EventQueue$3.run(EventQueue.java:696)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.awt.EventQueue$4.run(EventQueue.java:724)
-	at java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:721)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-*/
-                /*
-                r9 = this;
-                r2 = 0;
-                r4 = android.taobao.atlas.framework.Framework.exportedPackages;
-                monitor-enter(r4);
-                r0 = r9.val$bundleArray;	 Catch:{ all -> 0x0047 }
-                if (r0 != 0) goto L_0x002f;	 Catch:{ all -> 0x0047 }
-            L_0x0008:
-                r0 = android.taobao.atlas.framework.Framework.getBundles();	 Catch:{ all -> 0x0047 }
-                r1 = r0.size();	 Catch:{ all -> 0x0047 }
-                r1 = new org.osgi.framework.Bundle[r1];	 Catch:{ all -> 0x0047 }
-                r0 = r0.toArray(r1);	 Catch:{ all -> 0x0047 }
-                r0 = (org.osgi.framework.Bundle[]) r0;	 Catch:{ all -> 0x0047 }
-                r0 = (org.osgi.framework.Bundle[]) r0;	 Catch:{ all -> 0x0047 }
-                r3 = r0;	 Catch:{ all -> 0x0047 }
-            L_0x001b:
-                r5 = new java.util.ArrayList;	 Catch:{ all -> 0x0047 }
-                r0 = r3.length;	 Catch:{ all -> 0x0047 }
-                r5.<init>(r0);	 Catch:{ all -> 0x0047 }
-                r1 = r2;	 Catch:{ all -> 0x0047 }
-            L_0x0022:
-                r0 = r3.length;	 Catch:{ all -> 0x0047 }
-                if (r1 >= r0) goto L_0x004a;	 Catch:{ all -> 0x0047 }
-            L_0x0025:
-                r0 = r3[r1];	 Catch:{ all -> 0x0047 }
-                r6 = android.taobao.atlas.framework.Framework.systemBundle;	 Catch:{ all -> 0x0047 }
-                if (r0 != r6) goto L_0x0033;	 Catch:{ all -> 0x0047 }
-            L_0x002b:
-                r0 = r1 + 1;	 Catch:{ all -> 0x0047 }
-                r1 = r0;	 Catch:{ all -> 0x0047 }
-                goto L_0x0022;	 Catch:{ all -> 0x0047 }
-            L_0x002f:
-                r0 = r9.val$bundleArray;	 Catch:{ all -> 0x0047 }
-                r3 = r0;	 Catch:{ all -> 0x0047 }
-                goto L_0x001b;	 Catch:{ all -> 0x0047 }
-            L_0x0033:
-                r0 = r3[r1];	 Catch:{ all -> 0x0047 }
-                r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ all -> 0x0047 }
-                r6 = r0.classloader;	 Catch:{ all -> 0x0047 }
-                if (r6 == 0) goto L_0x0041;	 Catch:{ all -> 0x0047 }
-            L_0x003b:
-                r0 = r0.classloader;	 Catch:{ all -> 0x0047 }
-                r0 = r0.originalExporter;	 Catch:{ all -> 0x0047 }
-                if (r0 == 0) goto L_0x002b;	 Catch:{ all -> 0x0047 }
-            L_0x0041:
-                r0 = r3[r1];	 Catch:{ all -> 0x0047 }
-                r5.add(r0);	 Catch:{ all -> 0x0047 }
-                goto L_0x002b;
-            L_0x0047:
-                r0 = move-exception;
-                monitor-exit(r4);
-                throw r0;
-            L_0x004a:
-                r0 = r5.isEmpty();	 Catch:{ all -> 0x0047 }
-                if (r0 == 0) goto L_0x0052;	 Catch:{ all -> 0x0047 }
-            L_0x0050:
-                monitor-exit(r4);	 Catch:{ all -> 0x0047 }
-            L_0x0051:
-                return;	 Catch:{ all -> 0x0047 }
-            L_0x0052:
-                r0 = android.taobao.atlas.framework.Framework.DEBUG_PACKAGES;	 Catch:{ all -> 0x0047 }
-                if (r0 == 0) goto L_0x0077;	 Catch:{ all -> 0x0047 }
-            L_0x0056:
-                r0 = android.taobao.atlas.framework.Framework.log;	 Catch:{ all -> 0x0047 }
-                r0 = r0.isDebugEnabled();	 Catch:{ all -> 0x0047 }
-                if (r0 == 0) goto L_0x0077;	 Catch:{ all -> 0x0047 }
-            L_0x005e:
-                r0 = android.taobao.atlas.framework.Framework.log;	 Catch:{ all -> 0x0047 }
-                r1 = new java.lang.StringBuilder;	 Catch:{ all -> 0x0047 }
-                r1.<init>();	 Catch:{ all -> 0x0047 }
-                r3 = "REFRESHING PACKAGES FROM BUNDLES ";	 Catch:{ all -> 0x0047 }
-                r1 = r1.append(r3);	 Catch:{ all -> 0x0047 }
-                r1 = r1.append(r5);	 Catch:{ all -> 0x0047 }
-                r1 = r1.toString();	 Catch:{ all -> 0x0047 }
-                r0.debug(r1);	 Catch:{ all -> 0x0047 }
-            L_0x0077:
-                r6 = new java.util.HashSet;	 Catch:{ all -> 0x0047 }
-                r6.<init>();	 Catch:{ all -> 0x0047 }
-            L_0x007c:
-                r0 = r5.isEmpty();	 Catch:{ all -> 0x0047 }
-                if (r0 != 0) goto L_0x00ca;	 Catch:{ all -> 0x0047 }
-            L_0x0082:
-                r0 = 0;	 Catch:{ all -> 0x0047 }
-                r0 = r5.remove(r0);	 Catch:{ all -> 0x0047 }
-                r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ all -> 0x0047 }
-                r1 = r6.contains(r0);	 Catch:{ all -> 0x0047 }
-                if (r1 != 0) goto L_0x007c;	 Catch:{ all -> 0x0047 }
-            L_0x008f:
-                r1 = android.taobao.atlas.framework.Framework.SystemBundle.this;	 Catch:{ all -> 0x0047 }
-                r3 = 1;	 Catch:{ all -> 0x0047 }
-                r7 = r1.getExportedPackages(r0, r3);	 Catch:{ all -> 0x0047 }
-                if (r7 == 0) goto L_0x00c2;	 Catch:{ all -> 0x0047 }
-            L_0x0098:
-                r3 = r2;	 Catch:{ all -> 0x0047 }
-            L_0x0099:
-                r1 = r7.length;	 Catch:{ all -> 0x0047 }
-                if (r3 >= r1) goto L_0x00c2;	 Catch:{ all -> 0x0047 }
-            L_0x009c:
-                r1 = r7[r3];	 Catch:{ all -> 0x0047 }
-                r1 = (android.taobao.atlas.framework.Package) r1;	 Catch:{ all -> 0x0047 }
-                r8 = r1.importingBundles;	 Catch:{ all -> 0x0047 }
-                if (r8 != 0) goto L_0x00a8;	 Catch:{ all -> 0x0047 }
-            L_0x00a4:
-                r1 = r3 + 1;	 Catch:{ all -> 0x0047 }
-                r3 = r1;	 Catch:{ all -> 0x0047 }
-                goto L_0x0099;	 Catch:{ all -> 0x0047 }
-            L_0x00a8:
-                r8 = r1.importingBundles;	 Catch:{ all -> 0x0047 }
-                r1 = r1.importingBundles;	 Catch:{ all -> 0x0047 }
-                r1 = r1.size();	 Catch:{ all -> 0x0047 }
-                r1 = new org.osgi.framework.Bundle[r1];	 Catch:{ all -> 0x0047 }
-                r1 = r8.toArray(r1);	 Catch:{ all -> 0x0047 }
-                r1 = (org.osgi.framework.Bundle[]) r1;	 Catch:{ all -> 0x0047 }
-                r1 = (org.osgi.framework.Bundle[]) r1;	 Catch:{ all -> 0x0047 }
-                r1 = java.util.Arrays.asList(r1);	 Catch:{ all -> 0x0047 }
-                r5.addAll(r1);	 Catch:{ all -> 0x0047 }
-                goto L_0x00a4;	 Catch:{ all -> 0x0047 }
-            L_0x00c2:
-                r1 = r0.classloader;	 Catch:{ all -> 0x0047 }
-                if (r1 == 0) goto L_0x007c;	 Catch:{ all -> 0x0047 }
-            L_0x00c6:
-                r6.add(r0);	 Catch:{ all -> 0x0047 }
-                goto L_0x007c;	 Catch:{ all -> 0x0047 }
-            L_0x00ca:
-                r0 = android.taobao.atlas.framework.Framework.DEBUG_PACKAGES;	 Catch:{ all -> 0x0047 }
-                if (r0 == 0) goto L_0x00ef;	 Catch:{ all -> 0x0047 }
-            L_0x00ce:
-                r0 = android.taobao.atlas.framework.Framework.log;	 Catch:{ all -> 0x0047 }
-                r0 = r0.isDebugEnabled();	 Catch:{ all -> 0x0047 }
-                if (r0 == 0) goto L_0x00ef;	 Catch:{ all -> 0x0047 }
-            L_0x00d6:
-                r0 = android.taobao.atlas.framework.Framework.log;	 Catch:{ all -> 0x0047 }
-                r1 = new java.lang.StringBuilder;	 Catch:{ all -> 0x0047 }
-                r1.<init>();	 Catch:{ all -> 0x0047 }
-                r3 = "UPDATE GRAPH IS ";	 Catch:{ all -> 0x0047 }
-                r1 = r1.append(r3);	 Catch:{ all -> 0x0047 }
-                r1 = r1.append(r6);	 Catch:{ all -> 0x0047 }
-                r1 = r1.toString();	 Catch:{ all -> 0x0047 }
-                r0.debug(r1);	 Catch:{ all -> 0x0047 }
-            L_0x00ef:
-                r0 = r6.size();	 Catch:{ all -> 0x0047 }
-                r5 = new org.osgi.framework.Bundle[r0];	 Catch:{ all -> 0x0047 }
-                r1 = -1;	 Catch:{ all -> 0x0047 }
-                r0 = android.taobao.atlas.framework.Framework.getBundles();	 Catch:{ all -> 0x0047 }
-                r3 = r0.size();	 Catch:{ all -> 0x0047 }
-                r3 = new org.osgi.framework.Bundle[r3];	 Catch:{ all -> 0x0047 }
-                r0 = r0.toArray(r3);	 Catch:{ all -> 0x0047 }
-                r0 = (org.osgi.framework.Bundle[]) r0;	 Catch:{ all -> 0x0047 }
-                r0 = (org.osgi.framework.Bundle[]) r0;	 Catch:{ all -> 0x0047 }
-                r3 = r2;	 Catch:{ all -> 0x0047 }
-            L_0x0109:
-                r7 = r0.length;	 Catch:{ all -> 0x0047 }
-                if (r3 >= r7) goto L_0x011d;	 Catch:{ all -> 0x0047 }
-            L_0x010c:
-                r7 = r0[r3];	 Catch:{ all -> 0x0047 }
-                r7 = r6.contains(r7);	 Catch:{ all -> 0x0047 }
-                if (r7 == 0) goto L_0x011a;	 Catch:{ all -> 0x0047 }
-            L_0x0114:
-                r1 = r1 + 1;	 Catch:{ all -> 0x0047 }
-                r7 = r0[r3];	 Catch:{ all -> 0x0047 }
-                r5[r1] = r7;	 Catch:{ all -> 0x0047 }
-            L_0x011a:
-                r3 = r3 + 1;	 Catch:{ all -> 0x0047 }
-                goto L_0x0109;	 Catch:{ all -> 0x0047 }
-            L_0x011d:
-                r3 = android.taobao.atlas.framework.Framework.startlevel;	 Catch:{ all -> 0x0047 }
-                r0 = android.taobao.atlas.framework.Framework.SystemBundle.this;	 Catch:{ all -> 0x0047 }
-                r1 = 0;	 Catch:{ all -> 0x0047 }
-                r6 = 1;	 Catch:{ all -> 0x0047 }
-                r0.setLevel(r5, r1, r6);	 Catch:{ all -> 0x0047 }
-                r1 = r2;	 Catch:{ all -> 0x0047 }
-            L_0x0127:
-                r0 = r5.length;	 Catch:{ all -> 0x0047 }
-                if (r1 >= r0) goto L_0x0144;
-            L_0x012a:
-                r0 = r5[r1];	 Catch:{ Exception -> 0x013f }
-                r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ Exception -> 0x013f }
-                r0 = r0.classloader;	 Catch:{ Exception -> 0x013f }
-                r6 = 0;	 Catch:{ Exception -> 0x013f }
-                r0.cleanup(r6);	 Catch:{ Exception -> 0x013f }
-                r0 = r5[r1];	 Catch:{ Exception -> 0x013f }
-                r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ Exception -> 0x013f }
-                r6 = 0;	 Catch:{ Exception -> 0x013f }
-                r0.staleExportedPackages = r6;	 Catch:{ Exception -> 0x013f }
-            L_0x013b:
-                r0 = r1 + 1;
-                r1 = r0;
-                goto L_0x0127;
-            L_0x013f:
-                r0 = move-exception;
-                r0.printStackTrace();	 Catch:{ all -> 0x0047 }
-                goto L_0x013b;	 Catch:{ all -> 0x0047 }
-            L_0x0144:
-                r1 = r2;	 Catch:{ all -> 0x0047 }
-            L_0x0145:
-                r0 = r5.length;	 Catch:{ all -> 0x0047 }
-                if (r1 >= r0) goto L_0x015d;	 Catch:{ all -> 0x0047 }
-            L_0x0148:
-                r0 = r5[r1];	 Catch:{ all -> 0x0047 }
-                r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ all -> 0x0047 }
-                r0 = r0.classloader;	 Catch:{ all -> 0x0047 }
-                r6 = r0.exports;	 Catch:{ all -> 0x0047 }
-                r6 = r6.length;	 Catch:{ all -> 0x0047 }
-                if (r6 <= 0) goto L_0x0159;	 Catch:{ all -> 0x0047 }
-            L_0x0153:
-                r6 = r0.exports;	 Catch:{ all -> 0x0047 }
-                r7 = 0;	 Catch:{ all -> 0x0047 }
-                android.taobao.atlas.framework.Framework.export(r0, r6, r7);	 Catch:{ all -> 0x0047 }
-            L_0x0159:
-                r0 = r1 + 1;	 Catch:{ all -> 0x0047 }
-                r1 = r0;	 Catch:{ all -> 0x0047 }
-                goto L_0x0145;	 Catch:{ all -> 0x0047 }
-            L_0x015d:
-                r1 = r2;	 Catch:{ all -> 0x0047 }
-            L_0x015e:
-                r0 = r5.length;	 Catch:{ all -> 0x0047 }
-                if (r1 >= r0) goto L_0x0179;
-            L_0x0161:
-                r0 = r5[r1];	 Catch:{ BundleException -> 0x0174 }
-                r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ BundleException -> 0x0174 }
-                r0 = r0.classloader;	 Catch:{ BundleException -> 0x0174 }
-                r2 = 1;	 Catch:{ BundleException -> 0x0174 }
-                r6 = new java.util.HashSet;	 Catch:{ BundleException -> 0x0174 }
-                r6.<init>();	 Catch:{ BundleException -> 0x0174 }
-                r0.resolveBundle(r2, r6);	 Catch:{ BundleException -> 0x0174 }
-            L_0x0170:
-                r0 = r1 + 1;
-                r1 = r0;
-                goto L_0x015e;
-            L_0x0174:
-                r0 = move-exception;
-                r0.printStackTrace();	 Catch:{ all -> 0x0047 }
-                goto L_0x0170;	 Catch:{ all -> 0x0047 }
-            L_0x0179:
-                r0 = android.taobao.atlas.framework.Framework.SystemBundle.this;	 Catch:{ all -> 0x0047 }
-                r1 = 1;	 Catch:{ all -> 0x0047 }
-                r0.setLevel(r5, r3, r1);	 Catch:{ all -> 0x0047 }
-                r0 = 4;	 Catch:{ all -> 0x0047 }
-                r1 = android.taobao.atlas.framework.Framework.systemBundle;	 Catch:{ all -> 0x0047 }
-                r2 = 0;	 Catch:{ all -> 0x0047 }
-                android.taobao.atlas.framework.Framework.notifyFrameworkListeners(r0, r1, r2);	 Catch:{ all -> 0x0047 }
-                monitor-exit(r4);	 Catch:{ all -> 0x0047 }
-                goto L_0x0051;
-                */
-                throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.framework.Framework.SystemBundle.AnonymousClass_3.run():void");
+                synchronized (exportedPackages) {
+                    try {
+                        List bundles;
+                        Bundle[] bundleArr;
+                        int i;
+                        BundleImpl bundleImpl;
+                        if (this.val$bundleArray == null) {
+                            bundles = Framework.getBundles();
+                            bundleArr = (Bundle[]) bundles.toArray(new Bundle[bundles.size()]);
+                        } else {
+                            bundleArr = this.val$bundleArray;
+                        }
+                        List arrayList = new ArrayList(bundleArr.length);
+                        for (i = 0; i < bundleArr.length; i++) {
+                            if (bundleArr[i] != systemBundle) {
+                                bundleImpl = (BundleImpl) bundleArr[i];
+                                if (bundleImpl.classloader == null || bundleImpl.classloader.originalExporter != null) {
+                                    arrayList.add(bundleArr[i]);
+                                }
+                            }
+                        }
+                        if (arrayList.isEmpty()) {
+                            return;
+                        }
+                        int i2;
+                        if (DEBUG_PACKAGES && log.isDebugEnabled()) {
+                            log.debug("REFRESHING PACKAGES FROM BUNDLES " + arrayList);
+                        }
+                        Set hashSet = new HashSet();
+                        while (!arrayList.isEmpty()) {
+                            bundleImpl = (BundleImpl) arrayList.remove(0);
+                            if (!hashSet.contains(bundleImpl)) {
+                                ExportedPackage[] access$100 = SystemBundle.this.getExportedPackages(bundleImpl, true);
+                                if (access$100 != null) {
+                                    for (ExportedPackage exportedPackage : access$100) {
+                                        Package packageR = (Package) exportedPackage;
+                                        if (packageR.importingBundles != null) {
+                                            arrayList.addAll(Arrays.asList((Bundle[]) packageR.importingBundles.toArray(new Bundle[packageR.importingBundles.size()])));
+                                        }
+                                    }
+                                }
+                                if (bundleImpl.classloader != null) {
+                                    hashSet.add(bundleImpl);
+                                }
+                            }
+                        }
+                        if (DEBUG_PACKAGES && log.isDebugEnabled()) {
+                            log.debug("UPDATE GRAPH IS " + hashSet);
+                        }
+                        Bundle[] bundleArr2 = new Bundle[hashSet.size()];
+                        i = -1;
+                        bundles = Framework.getBundles();
+                        Bundle[] bundleArr3 = (Bundle[]) bundles.toArray(new Bundle[bundles.size()]);
+                        for (i2 = 0; i2 < bundleArr3.length; i2++) {
+                            if (hashSet.contains(bundleArr3[i2])) {
+                                i++;
+                                bundleArr2[i] = bundleArr3[i2];
+                            }
+                        }
+                        i2 = startlevel;
+                        SystemBundle.this.setLevel(bundleArr2, 0, true);
+                        for (i = 0; i < bundleArr2.length; i++) {
+                            ((BundleImpl) bundleArr2[i]).classloader.cleanup(false);
+                            ((BundleImpl) bundleArr2[i]).staleExportedPackages = null;
+                        }
+                        for (Bundle bundle : bundleArr2) {
+                            BundleClassLoader bundleClassLoader = ((BundleImpl) bundle).classloader;
+                            if (bundleClassLoader.exports.length > 0) {
+                                Framework.export(bundleClassLoader, bundleClassLoader.exports, false);
+                            }
+                        }
+                        for (Bundle bundle2 : bundleArr2) {
+                            try {
+                                ((BundleImpl) bundle2).classloader.resolveBundle(true, new HashSet());
+                            } catch (BundleException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        SystemBundle.this.setLevel(bundleArr2, i2, true);
+                        Framework.notifyFrameworkListeners(4, systemBundle, null);
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    } catch (Throwable th) {
+                    }
+                }
             }
         }
 
@@ -708,103 +494,23 @@ public final class Framework {
             }
         }
 
-        public org.osgi.service.packageadmin.ExportedPackage getExportedPackage(java.lang.String r7) {
-            /* JADX: method processing error */
-/*
-            Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominator not found, method:android.taobao.atlas.framework.Framework.SystemBundle.getExportedPackage(java.lang.String):org.osgi.service.packageadmin.ExportedPackage. bs: []
-	at jadx.core.dex.visitors.regions.ProcessTryCatchRegions.searchTryCatchDominators(ProcessTryCatchRegions.java:82)
-	at jadx.core.dex.visitors.regions.ProcessTryCatchRegions.process(ProcessTryCatchRegions.java:45)
-	at jadx.core.dex.visitors.regions.RegionMakerVisitor.postProcessRegions(RegionMakerVisitor.java:57)
-	at jadx.core.dex.visitors.regions.RegionMakerVisitor.visit(RegionMakerVisitor.java:52)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:31)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:17)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:14)
-	at jadx.core.ProcessClass.process(ProcessClass.java:34)
-	at jadx.api.JadxDecompiler.processClass(JadxDecompiler.java:281)
-	at jadx.api.JavaClass.decompile(JavaClass.java:59)
-	at jadx.api.JavaClass.getCode(JavaClass.java:45)
-	at jadx.gui.treemodel.JClass.getContent(JClass.java:74)
-	at jadx.gui.ui.ContentArea.<init>(ContentArea.java:66)
-	at jadx.gui.ui.ContentPanel.<init>(ContentPanel.java:28)
-	at jadx.gui.ui.TabbedPane.getCodePanel(TabbedPane.java:112)
-	at jadx.gui.ui.TabbedPane.showCode(TabbedPane.java:69)
-	at jadx.gui.ui.MainWindow.treeClickAction(MainWindow.java:241)
-	at jadx.gui.ui.MainWindow.access$1000(MainWindow.java:66)
-	at jadx.gui.ui.MainWindow$15.mouseClicked(MainWindow.java:519)
-	at java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:270)
-	at java.awt.Component.processMouseEvent(Component.java:6528)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3322)
-	at java.awt.Component.processEvent(Component.java:6290)
-	at java.awt.Container.processEvent(Container.java:2234)
-	at java.awt.Component.dispatchEventImpl(Component.java:4881)
-	at java.awt.Container.dispatchEventImpl(Container.java:2292)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4542)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
-	at java.awt.Container.dispatchEventImpl(Container.java:2278)
-	at java.awt.Window.dispatchEventImpl(Window.java:2739)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:751)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:702)
-	at java.awt.EventQueue$3.run(EventQueue.java:696)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.awt.EventQueue$4.run(EventQueue.java:724)
-	at java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:721)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-*/
-            /*
-            r6 = this;
-            r1 = 0;
-            r2 = android.taobao.atlas.framework.Framework.exportedPackages;
-            monitor-enter(r2);
-            r0 = android.taobao.atlas.framework.Framework.exportedPackages;	 Catch:{ all -> 0x002d }
-            r3 = new android.taobao.atlas.framework.Package;	 Catch:{ all -> 0x002d }
-            r4 = 0;	 Catch:{ all -> 0x002d }
-            r5 = 0;	 Catch:{ all -> 0x002d }
-            r3.<init>(r7, r4, r5);	 Catch:{ all -> 0x002d }
-            r0 = r0.get(r3);	 Catch:{ all -> 0x002d }
-            r0 = (android.taobao.atlas.framework.Package) r0;	 Catch:{ all -> 0x002d }
-            if (r0 != 0) goto L_0x0018;	 Catch:{ all -> 0x002d }
-        L_0x0015:
-            monitor-exit(r2);	 Catch:{ all -> 0x002d }
-            r0 = r1;	 Catch:{ all -> 0x002d }
-        L_0x0017:
-            return r0;	 Catch:{ all -> 0x002d }
-        L_0x0018:
-            r3 = r0.resolved;	 Catch:{ all -> 0x002d }
-            if (r3 != 0) goto L_0x0027;
-        L_0x001c:
-            r3 = r0.classloader;	 Catch:{ BundleException -> 0x0029 }
-            r4 = 1;	 Catch:{ BundleException -> 0x0029 }
-            r5 = new java.util.HashSet;	 Catch:{ BundleException -> 0x0029 }
-            r5.<init>();	 Catch:{ BundleException -> 0x0029 }
-            r3.resolveBundle(r4, r5);	 Catch:{ BundleException -> 0x0029 }
-        L_0x0027:
-            monitor-exit(r2);
-            goto L_0x0017;
-        L_0x0029:
-            r0 = move-exception;
-            monitor-exit(r2);	 Catch:{ all -> 0x002d }
-            r0 = r1;
-            goto L_0x0017;
-        L_0x002d:
-            r0 = move-exception;
-            monitor-exit(r2);
-            throw r0;
-            */
-            throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.framework.Framework.SystemBundle.getExportedPackage(java.lang.String):org.osgi.service.packageadmin.ExportedPackage");
+        public ExportedPackage getExportedPackage(String str) {
+            synchronized (exportedPackages) {
+                try {
+                    Package packageR = (Package) exportedPackages.get(new Package(str, null, false));
+                    if (packageR == null) {
+                        return null;
+                    }
+                    if (!packageR.resolved) {
+                        packageR.classloader.resolveBundle(true, new HashSet());
+                    }
+                    return packageR;
+                } catch (BundleException e) {
+                    return null;
+                } catch (Throwable th) {
+                }
+            }
+			return null;
         }
 
         public void refreshPackages(Bundle[] bundleArr) {
@@ -816,178 +522,47 @@ public final class Framework {
         }
     }
 
-    static android.taobao.atlas.framework.BundleImpl installNewBundle(java.lang.String r7, java.io.File r8) throws org.osgi.framework.BundleException {
-        /* JADX: method processing error */
-/*
-        Error: jadx.core.utils.exceptions.JadxRuntimeException: Incorrect nodes count for selectOther: B:4:0x000f in [B:4:0x000f, B:8:0x002c, B:3:0x000e]
-	at jadx.core.utils.BlockUtils.selectOther(BlockUtils.java:53)
-	at jadx.core.dex.instructions.IfNode.initBlocks(IfNode.java:62)
-	at jadx.core.dex.visitors.blocksmaker.BlockFinish.initBlocksInIfNodes(BlockFinish.java:48)
-	at jadx.core.dex.visitors.blocksmaker.BlockFinish.visit(BlockFinish.java:33)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:31)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:17)
-	at jadx.core.ProcessClass.process(ProcessClass.java:34)
-	at jadx.api.JadxDecompiler.processClass(JadxDecompiler.java:281)
-	at jadx.api.JavaClass.decompile(JavaClass.java:59)
-	at jadx.api.JavaClass.getCode(JavaClass.java:45)
-	at jadx.gui.treemodel.JClass.getContent(JClass.java:74)
-	at jadx.gui.ui.ContentArea.<init>(ContentArea.java:66)
-	at jadx.gui.ui.ContentPanel.<init>(ContentPanel.java:28)
-	at jadx.gui.ui.TabbedPane.getCodePanel(TabbedPane.java:112)
-	at jadx.gui.ui.TabbedPane.showCode(TabbedPane.java:69)
-	at jadx.gui.ui.MainWindow.treeClickAction(MainWindow.java:241)
-	at jadx.gui.ui.MainWindow.access$1000(MainWindow.java:66)
-	at jadx.gui.ui.MainWindow$15.mouseClicked(MainWindow.java:519)
-	at java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:270)
-	at java.awt.Component.processMouseEvent(Component.java:6528)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3322)
-	at java.awt.Component.processEvent(Component.java:6290)
-	at java.awt.Container.processEvent(Container.java:2234)
-	at java.awt.Component.dispatchEventImpl(Component.java:4881)
-	at java.awt.Container.dispatchEventImpl(Container.java:2292)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4542)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
-	at java.awt.Container.dispatchEventImpl(Container.java:2278)
-	at java.awt.Window.dispatchEventImpl(Window.java:2739)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:751)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:702)
-	at java.awt.EventQueue$3.run(EventQueue.java:696)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.awt.EventQueue$4.run(EventQueue.java:724)
-	at java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:721)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-*/
-        /*
-        android.taobao.atlas.util.BundleLock.WriteLock(r7);	 Catch:{ all -> 0x002b }
-        r0 = getBundle(r7);	 Catch:{ all -> 0x002b }
-        r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ all -> 0x002b }
-        if (r0 == 0) goto L_0x000f;
-    L_0x000b:
-        android.taobao.atlas.util.BundleLock.WriteUnLock(r7);
-    L_0x000e:
-        return r0;
-    L_0x000f:
-        r1 = new java.io.File;	 Catch:{ all -> 0x002b }
-        r0 = STORAGE_LOCATION;	 Catch:{ all -> 0x002b }
-        r1.<init>(r0, r7);	 Catch:{ all -> 0x002b }
-        r0 = new android.taobao.atlas.framework.BundleImpl;	 Catch:{ all -> 0x002b }
-        r3 = new android.taobao.atlas.framework.BundleContextImpl;	 Catch:{ all -> 0x002b }
-        r3.<init>();	 Catch:{ all -> 0x002b }
-        r4 = 0;	 Catch:{ all -> 0x002b }
-        r6 = 1;	 Catch:{ all -> 0x002b }
-        r2 = r7;	 Catch:{ all -> 0x002b }
-        r5 = r8;	 Catch:{ all -> 0x002b }
-        r0.<init>(r1, r2, r3, r4, r5, r6);	 Catch:{ all -> 0x002b }
-        storeMetadata();	 Catch:{ all -> 0x002b }
-        android.taobao.atlas.util.BundleLock.WriteUnLock(r7);
-        goto L_0x000e;
-    L_0x002b:
-        r0 = move-exception;
-        android.taobao.atlas.util.BundleLock.WriteUnLock(r7);
-        throw r0;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.framework.Framework.installNewBundle(java.lang.String, java.io.File):android.taobao.atlas.framework.BundleImpl");
+    static BundleImpl installNewBundle(String arg7, File arg8) throws BundleException {
+        Bundle v0_1;
+        try {
+            BundleLock.WriteLock(arg7);
+            v0_1 = Framework.getBundle(arg7);
+            if(v0_1 != null) {
+            }
+            else {
+            	v0_1 = new BundleImpl(new File(Framework.STORAGE_LOCATION, arg7), arg7, new BundleContextImpl(), 
+                        null, arg8, true);
+            }
+        }
+        catch(Throwable v0) {
+            BundleLock.WriteUnLock(arg7);
+            throw new BundleException(v0.getMessage());
+        }
+
+        return ((BundleImpl)v0_1);
     }
 
-    static android.taobao.atlas.framework.BundleImpl installNewBundle(java.lang.String r7, java.io.InputStream r8) throws org.osgi.framework.BundleException {
-        /* JADX: method processing error */
-/*
-        Error: jadx.core.utils.exceptions.JadxRuntimeException: Incorrect nodes count for selectOther: B:4:0x000f in [B:4:0x000f, B:8:0x002c, B:3:0x000e]
-	at jadx.core.utils.BlockUtils.selectOther(BlockUtils.java:53)
-	at jadx.core.dex.instructions.IfNode.initBlocks(IfNode.java:62)
-	at jadx.core.dex.visitors.blocksmaker.BlockFinish.initBlocksInIfNodes(BlockFinish.java:48)
-	at jadx.core.dex.visitors.blocksmaker.BlockFinish.visit(BlockFinish.java:33)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:31)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:17)
-	at jadx.core.ProcessClass.process(ProcessClass.java:34)
-	at jadx.api.JadxDecompiler.processClass(JadxDecompiler.java:281)
-	at jadx.api.JavaClass.decompile(JavaClass.java:59)
-	at jadx.api.JavaClass.getCode(JavaClass.java:45)
-	at jadx.gui.treemodel.JClass.getContent(JClass.java:74)
-	at jadx.gui.ui.ContentArea.<init>(ContentArea.java:66)
-	at jadx.gui.ui.ContentPanel.<init>(ContentPanel.java:28)
-	at jadx.gui.ui.TabbedPane.getCodePanel(TabbedPane.java:112)
-	at jadx.gui.ui.TabbedPane.showCode(TabbedPane.java:69)
-	at jadx.gui.ui.MainWindow.treeClickAction(MainWindow.java:241)
-	at jadx.gui.ui.MainWindow.access$1000(MainWindow.java:66)
-	at jadx.gui.ui.MainWindow$15.mouseClicked(MainWindow.java:519)
-	at java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:270)
-	at java.awt.Component.processMouseEvent(Component.java:6528)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3322)
-	at java.awt.Component.processEvent(Component.java:6290)
-	at java.awt.Container.processEvent(Container.java:2234)
-	at java.awt.Component.dispatchEventImpl(Component.java:4881)
-	at java.awt.Container.dispatchEventImpl(Container.java:2292)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4542)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
-	at java.awt.Container.dispatchEventImpl(Container.java:2278)
-	at java.awt.Window.dispatchEventImpl(Window.java:2739)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:751)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:702)
-	at java.awt.EventQueue$3.run(EventQueue.java:696)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.awt.EventQueue$4.run(EventQueue.java:724)
-	at java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:721)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-*/
-        /*
-        android.taobao.atlas.util.BundleLock.WriteLock(r7);	 Catch:{ all -> 0x002b }
-        r0 = getBundle(r7);	 Catch:{ all -> 0x002b }
-        r0 = (android.taobao.atlas.framework.BundleImpl) r0;	 Catch:{ all -> 0x002b }
-        if (r0 == 0) goto L_0x000f;
-    L_0x000b:
-        android.taobao.atlas.util.BundleLock.WriteUnLock(r7);
-    L_0x000e:
-        return r0;
-    L_0x000f:
-        r1 = new java.io.File;	 Catch:{ all -> 0x002b }
-        r0 = STORAGE_LOCATION;	 Catch:{ all -> 0x002b }
-        r1.<init>(r0, r7);	 Catch:{ all -> 0x002b }
-        r0 = new android.taobao.atlas.framework.BundleImpl;	 Catch:{ all -> 0x002b }
-        r3 = new android.taobao.atlas.framework.BundleContextImpl;	 Catch:{ all -> 0x002b }
-        r3.<init>();	 Catch:{ all -> 0x002b }
-        r5 = 0;	 Catch:{ all -> 0x002b }
-        r6 = 1;	 Catch:{ all -> 0x002b }
-        r2 = r7;	 Catch:{ all -> 0x002b }
-        r4 = r8;	 Catch:{ all -> 0x002b }
-        r0.<init>(r1, r2, r3, r4, r5, r6);	 Catch:{ all -> 0x002b }
-        storeMetadata();	 Catch:{ all -> 0x002b }
-        android.taobao.atlas.util.BundleLock.WriteUnLock(r7);
-        goto L_0x000e;
-    L_0x002b:
-        r0 = move-exception;
-        android.taobao.atlas.util.BundleLock.WriteUnLock(r7);
-        throw r0;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.framework.Framework.installNewBundle(java.lang.String, java.io.InputStream):android.taobao.atlas.framework.BundleImpl");
+
+    static BundleImpl installNewBundle(String arg7, InputStream arg8) throws BundleException {
+        Bundle v0_1 = null;
+        try {
+            BundleLock.WriteLock(arg7);
+            v0_1 = Framework.getBundle(arg7);
+            if(v0_1 != null) {
+            }
+            else {
+                BundleImpl v0_2 = new BundleImpl(new File(Framework.STORAGE_LOCATION, arg7), arg7, new BundleContextImpl(), 
+                        arg8, null, true);
+                Framework.storeMetadata();
+                return v0_2;
+            }
+        }
+        catch(Throwable v0) {
+            BundleLock.WriteUnLock(arg7);
+        }
+
+
+        return ((BundleImpl)v0_1);
     }
 
     static {
@@ -1568,177 +1143,42 @@ public final class Framework {
         }
     }
 
-    static android.taobao.atlas.framework.BundleClassLoader getImport(android.taobao.atlas.framework.BundleImpl r6, java.lang.String r7, boolean r8, java.util.HashSet<android.taobao.atlas.framework.BundleClassLoader> r9) {
-        /* JADX: method processing error */
-/*
-        Error: jadx.core.utils.exceptions.JadxRuntimeException: Exception block dominator not found, method:android.taobao.atlas.framework.Framework.getImport(android.taobao.atlas.framework.BundleImpl, java.lang.String, boolean, java.util.HashSet):android.taobao.atlas.framework.BundleClassLoader. bs: []
-	at jadx.core.dex.visitors.regions.ProcessTryCatchRegions.searchTryCatchDominators(ProcessTryCatchRegions.java:82)
-	at jadx.core.dex.visitors.regions.ProcessTryCatchRegions.process(ProcessTryCatchRegions.java:45)
-	at jadx.core.dex.visitors.regions.RegionMakerVisitor.postProcessRegions(RegionMakerVisitor.java:57)
-	at jadx.core.dex.visitors.regions.RegionMakerVisitor.visit(RegionMakerVisitor.java:52)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:31)
-	at jadx.core.dex.visitors.DepthTraversal.visit(DepthTraversal.java:17)
-	at jadx.core.ProcessClass.process(ProcessClass.java:34)
-	at jadx.api.JadxDecompiler.processClass(JadxDecompiler.java:281)
-	at jadx.api.JavaClass.decompile(JavaClass.java:59)
-	at jadx.api.JavaClass.getCode(JavaClass.java:45)
-	at jadx.gui.treemodel.JClass.getContent(JClass.java:74)
-	at jadx.gui.ui.ContentArea.<init>(ContentArea.java:66)
-	at jadx.gui.ui.ContentPanel.<init>(ContentPanel.java:28)
-	at jadx.gui.ui.TabbedPane.getCodePanel(TabbedPane.java:112)
-	at jadx.gui.ui.TabbedPane.showCode(TabbedPane.java:69)
-	at jadx.gui.ui.MainWindow.treeClickAction(MainWindow.java:241)
-	at jadx.gui.ui.MainWindow.access$1000(MainWindow.java:66)
-	at jadx.gui.ui.MainWindow$15.mouseClicked(MainWindow.java:519)
-	at java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:270)
-	at java.awt.Component.processMouseEvent(Component.java:6528)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3322)
-	at java.awt.Component.processEvent(Component.java:6290)
-	at java.awt.Container.processEvent(Container.java:2234)
-	at java.awt.Component.dispatchEventImpl(Component.java:4881)
-	at java.awt.Container.dispatchEventImpl(Container.java:2292)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4542)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462)
-	at java.awt.Container.dispatchEventImpl(Container.java:2278)
-	at java.awt.Window.dispatchEventImpl(Window.java:2739)
-	at java.awt.Component.dispatchEvent(Component.java:4703)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:751)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:702)
-	at java.awt.EventQueue$3.run(EventQueue.java:696)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86)
-	at java.awt.EventQueue$4.run(EventQueue.java:724)
-	at java.awt.EventQueue$4.run(EventQueue.java:722)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:721)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-*/
-        /*
-        r2 = 0;
-        r0 = DEBUG_PACKAGES;
-        if (r0 == 0) goto L_0x0031;
-    L_0x0005:
-        r0 = log;
-        r0 = r0.isDebugEnabled();
-        if (r0 == 0) goto L_0x0031;
-    L_0x000d:
-        r0 = log;
-        r1 = new java.lang.StringBuilder;
-        r1.<init>();
-        r3 = "Bundle ";
-        r1 = r1.append(r3);
-        r1 = r1.append(r6);
-        r3 = " requests package ";
-        r1 = r1.append(r3);
-        r1 = r1.append(r7);
-        r1 = r1.toString();
-        r0.debug(r1);
-    L_0x0031:
-        r3 = exportedPackages;
-        monitor-enter(r3);
-        r0 = exportedPackages;	 Catch:{ all -> 0x00c4 }
-        r1 = new android.taobao.atlas.framework.Package;	 Catch:{ all -> 0x00c4 }
-        r4 = 0;	 Catch:{ all -> 0x00c4 }
-        r5 = 0;	 Catch:{ all -> 0x00c4 }
-        r1.<init>(r7, r4, r5);	 Catch:{ all -> 0x00c4 }
-        r0 = r0.get(r1);	 Catch:{ all -> 0x00c4 }
-        r0 = (android.taobao.atlas.framework.Package) r0;	 Catch:{ all -> 0x00c4 }
-        if (r0 == 0) goto L_0x004b;	 Catch:{ all -> 0x00c4 }
-    L_0x0045:
-        r1 = r0.resolved;	 Catch:{ all -> 0x00c4 }
-        if (r1 != 0) goto L_0x004e;	 Catch:{ all -> 0x00c4 }
-    L_0x0049:
-        if (r8 != 0) goto L_0x004e;	 Catch:{ all -> 0x00c4 }
-    L_0x004b:
-        monitor-exit(r3);	 Catch:{ all -> 0x00c4 }
-        r0 = r2;	 Catch:{ all -> 0x00c4 }
-    L_0x004d:
-        return r0;	 Catch:{ all -> 0x00c4 }
-    L_0x004e:
-        r1 = r0.classloader;	 Catch:{ all -> 0x00c4 }
-        r4 = r6.classloader;	 Catch:{ all -> 0x00c4 }
-        if (r1 != r4) goto L_0x0057;	 Catch:{ all -> 0x00c4 }
-    L_0x0054:
-        monitor-exit(r3);	 Catch:{ all -> 0x00c4 }
-        r0 = r1;	 Catch:{ all -> 0x00c4 }
-        goto L_0x004d;	 Catch:{ all -> 0x00c4 }
-    L_0x0057:
-        if (r8 == 0) goto L_0x0070;	 Catch:{ all -> 0x00c4 }
-    L_0x0059:
-        r4 = r0.resolved;	 Catch:{ all -> 0x00c4 }
-        if (r4 != 0) goto L_0x0070;	 Catch:{ all -> 0x00c4 }
-    L_0x005d:
-        r4 = r0.classloader;	 Catch:{ all -> 0x00c4 }
-        r4 = r9.contains(r4);	 Catch:{ all -> 0x00c4 }
-        if (r4 != 0) goto L_0x0070;
-    L_0x0065:
-        r4 = r6.classloader;	 Catch:{ Exception -> 0x00bd }
-        r9.add(r4);	 Catch:{ Exception -> 0x00bd }
-        r4 = r0.classloader;	 Catch:{ Exception -> 0x00bd }
-        r5 = 1;	 Catch:{ Exception -> 0x00bd }
-        r4.resolveBundle(r5, r9);	 Catch:{ Exception -> 0x00bd }
-    L_0x0070:
-        r2 = r0.importingBundles;	 Catch:{ all -> 0x00c4 }
-        if (r2 != 0) goto L_0x007b;	 Catch:{ all -> 0x00c4 }
-    L_0x0074:
-        r2 = new java.util.ArrayList;	 Catch:{ all -> 0x00c4 }
-        r2.<init>();	 Catch:{ all -> 0x00c4 }
-        r0.importingBundles = r2;	 Catch:{ all -> 0x00c4 }
-    L_0x007b:
-        r2 = r0.importingBundles;	 Catch:{ all -> 0x00c4 }
-        r2 = r2.contains(r6);	 Catch:{ all -> 0x00c4 }
-        if (r2 != 0) goto L_0x0088;	 Catch:{ all -> 0x00c4 }
-    L_0x0083:
-        r0 = r0.importingBundles;	 Catch:{ all -> 0x00c4 }
-        r0.add(r6);	 Catch:{ all -> 0x00c4 }
-    L_0x0088:
-        r0 = DEBUG_PACKAGES;	 Catch:{ all -> 0x00c4 }
-        if (r0 == 0) goto L_0x00ba;	 Catch:{ all -> 0x00c4 }
-    L_0x008c:
-        r0 = log;	 Catch:{ all -> 0x00c4 }
-        r0 = r0.isDebugEnabled();	 Catch:{ all -> 0x00c4 }
-        if (r0 == 0) goto L_0x00ba;	 Catch:{ all -> 0x00c4 }
-    L_0x0094:
-        r0 = log;	 Catch:{ all -> 0x00c4 }
-        r2 = new java.lang.StringBuilder;	 Catch:{ all -> 0x00c4 }
-        r2.<init>();	 Catch:{ all -> 0x00c4 }
-        r4 = "REQUESTED PACKAGE ";	 Catch:{ all -> 0x00c4 }
-        r2 = r2.append(r4);	 Catch:{ all -> 0x00c4 }
-        r2 = r2.append(r7);	 Catch:{ all -> 0x00c4 }
-        r4 = ", RETURNED DELEGATION TO ";	 Catch:{ all -> 0x00c4 }
-        r2 = r2.append(r4);	 Catch:{ all -> 0x00c4 }
-        r4 = r1.bundle;	 Catch:{ all -> 0x00c4 }
-        r2 = r2.append(r4);	 Catch:{ all -> 0x00c4 }
-        r2 = r2.toString();	 Catch:{ all -> 0x00c4 }
-        r0.debug(r2);	 Catch:{ all -> 0x00c4 }
-    L_0x00ba:
-        monitor-exit(r3);	 Catch:{ all -> 0x00c4 }
-        r0 = r1;	 Catch:{ all -> 0x00c4 }
-        goto L_0x004d;	 Catch:{ all -> 0x00c4 }
-    L_0x00bd:
-        r0 = move-exception;	 Catch:{ all -> 0x00c4 }
-        r0.printStackTrace();	 Catch:{ all -> 0x00c4 }
-        monitor-exit(r3);	 Catch:{ all -> 0x00c4 }
-        r0 = r2;
-        goto L_0x004d;
-    L_0x00c4:
-        r0 = move-exception;
-        monitor-exit(r3);
-        throw r0;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.framework.Framework.getImport(android.taobao.atlas.framework.BundleImpl, java.lang.String, boolean, java.util.HashSet):android.taobao.atlas.framework.BundleClassLoader");
+    static BundleClassLoader getImport(BundleImpl bundleImpl, String str, boolean z, HashSet<BundleClassLoader> hashSet) {
+        if (DEBUG_PACKAGES && log.isDebugEnabled()) {
+            log.debug("Bundle " + bundleImpl + " requests package " + str);
+        }
+        synchronized (exportedPackages) {
+            try {
+                Package packageR = (Package) exportedPackages.get(new Package(str, null, false));
+                if (packageR == null || !(packageR.resolved || z)) {
+                    return null;
+                }
+                BundleClassLoader bundleClassLoader = packageR.classloader;
+                if (bundleClassLoader == bundleImpl.classloader) {
+                    return bundleClassLoader;
+                }
+                if (!(!z || packageR.resolved || hashSet.contains(packageR.classloader))) {
+                    hashSet.add(bundleImpl.classloader);
+                    packageR.classloader.resolveBundle(true, hashSet);
+                }
+                if (packageR.importingBundles == null) {
+                    packageR.importingBundles = new ArrayList();
+                }
+                if (!packageR.importingBundles.contains(bundleImpl)) {
+                    packageR.importingBundles.add(bundleImpl);
+                }
+                if (DEBUG_PACKAGES && log.isDebugEnabled()) {
+                    log.debug("REQUESTED PACKAGE " + str + ", RETURNED DELEGATION TO " + bundleClassLoader.bundle);
+                }
+                return bundleClassLoader;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            } catch (Throwable th) {
+            }
+        }
+		return null;
     }
-
     public static boolean isFrameworkStartupShutdown() {
         return frameworkStartupShutdown;
     }

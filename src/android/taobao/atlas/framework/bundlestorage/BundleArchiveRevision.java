@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -366,122 +367,113 @@ public class BundleArchiveRevision {
         }
         return null;
     }
-
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public java.util.jar.Manifest getManifest() throws java.io.IOException {
-        /*
-        r7 = this;
-        r2 = 0;
-        r0 = r7.manifest;
-        if (r0 == 0) goto L_0x0008;
-    L_0x0005:
-        r0 = r7.manifest;
-    L_0x0007:
-        return r0;
-    L_0x0008:
-        r0 = android.content.res.AssetManager.class;
-        r0 = r0.newInstance();	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r0 = (android.content.res.AssetManager) r0;	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r1 = android.taobao.atlas.hack.AtlasHacks.AssetManager_addAssetPath;	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r3 = 1;
-        r3 = new java.lang.Object[r3];	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r4 = 0;
-        r5 = r7.bundleFile;	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r5 = r5.getAbsolutePath();	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r3[r4] = r5;	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r1 = r1.invoke(r0, r3);	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r1 = (java.lang.Integer) r1;	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        r1 = r1.intValue();	 Catch:{ Exception -> 0x006f, all -> 0x007f }
-        if (r1 == 0) goto L_0x0099;
-    L_0x002a:
-        r1 = "OSGI.MF";
-        r1 = r0.open(r1);	 Catch:{ FileNotFoundException -> 0x0040, Exception -> 0x0068, all -> 0x007f }
-        r0 = new java.util.jar.Manifest;	 Catch:{ FileNotFoundException -> 0x0096, Exception -> 0x0094 }
-        r0.<init>(r1);	 Catch:{ FileNotFoundException -> 0x0096, Exception -> 0x0094 }
-        r7.manifest = r0;	 Catch:{ FileNotFoundException -> 0x0096, Exception -> 0x0094 }
-        r0 = r7.manifest;	 Catch:{ FileNotFoundException -> 0x0096, Exception -> 0x0094 }
-        if (r1 == 0) goto L_0x0007;
-    L_0x003c:
-        r1.close();
-        goto L_0x0007;
-    L_0x0040:
-        r0 = move-exception;
-        r0 = r2;
-    L_0x0042:
-        r1 = log;	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r3 = new java.lang.StringBuilder;	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r3.<init>();	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r4 = "Could not find OSGI.MF in ";
-        r3 = r3.append(r4);	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r4 = r7.bundleFile;	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r4 = r4.getAbsolutePath();	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r3 = r3.append(r4);	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r3 = r3.toString();	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-        r1.warn(r3);	 Catch:{ Exception -> 0x008d, all -> 0x0089 }
-    L_0x0061:
-        if (r0 == 0) goto L_0x0066;
-    L_0x0063:
-        r0.close();
-    L_0x0066:
-        r0 = r2;
-        goto L_0x0007;
-    L_0x0068:
-        r0 = move-exception;
-        r1 = r2;
-    L_0x006a:
-        r0.printStackTrace();	 Catch:{ Exception -> 0x0092 }
-        r0 = r1;
-        goto L_0x0061;
-    L_0x006f:
-        r0 = move-exception;
-        r1 = r2;
-    L_0x0071:
-        r3 = log;	 Catch:{ all -> 0x0086 }
-        r4 = "Exception while parse OSGI.MF >>>";
-        r3.error(r4, r0);	 Catch:{ all -> 0x0086 }
-        if (r1 == 0) goto L_0x0066;
-    L_0x007b:
-        r1.close();
-        goto L_0x0066;
-    L_0x007f:
-        r0 = move-exception;
-    L_0x0080:
-        if (r2 == 0) goto L_0x0085;
-    L_0x0082:
-        r2.close();
-    L_0x0085:
-        throw r0;
-    L_0x0086:
-        r0 = move-exception;
-        r2 = r1;
-        goto L_0x0080;
-    L_0x0089:
-        r1 = move-exception;
-        r2 = r0;
-        r0 = r1;
-        goto L_0x0080;
-    L_0x008d:
-        r1 = move-exception;
-        r6 = r1;
-        r1 = r0;
-        r0 = r6;
-        goto L_0x0071;
-    L_0x0092:
-        r0 = move-exception;
-        goto L_0x0071;
-    L_0x0094:
-        r0 = move-exception;
-        goto L_0x006a;
-    L_0x0096:
-        r0 = move-exception;
-        r0 = r1;
-        goto L_0x0042;
-    L_0x0099:
-        r0 = r2;
-        goto L_0x0061;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.getManifest():java.util.jar.Manifest");
+//TODO  impl
+    public Manifest getManifest() throws IOException {
+        InputStream open;
+        InputStream inputStream;
+        Throwable th;
+        Exception e;
+        InputStream inputStream2 = null;
+        if (this.manifest != null) {
+            return this.manifest;
+        }
+        try {
+            AssetManager assetManager = (AssetManager) AssetManager.class.newInstance();
+            if (((Integer) AtlasHacks.AssetManager_addAssetPath.invoke(assetManager, this.bundleFile.getAbsolutePath())).intValue() != 0) {
+                try {
+                    open = assetManager.open("OSGI.MF");
+                } catch (FileNotFoundException e2) {
+                    inputStream = null;
+                    try {
+                        log.warn("Could not find OSGI.MF in " + this.bundleFile.getAbsolutePath());
+                    } catch (Throwable e3) {
+                        Throwable th2 = e3;
+                        open = inputStream;
+                        th = th2;
+                        log.error("Exception while parse OSGI.MF >>>", th);
+                        return null;
+                    } 
+                    return null;
+                } catch (Exception e4) {
+                    e = e4;
+                    open = null;
+                    try {
+                        e.printStackTrace();
+                        inputStream = open;
+                    } catch (Exception e5) {
+                        th = e5;
+                        log.error("Exception while parse OSGI.MF >>>", th);
+                        if (open != null) {
+                            open.close();
+                        }
+                        return null;
+                    }
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                    return null;
+                } catch (Throwable th3) {
+                    th = th3;
+                    if (inputStream2 != null) {
+                        inputStream2.close();
+                    }
+                    throw th;
+                }
+                try {
+                    this.manifest = new Manifest(open);
+                    Manifest manifest = this.manifest;
+                    if (open == null) {
+                        return manifest;
+                    }
+                    open.close();
+                    return manifest;
+                } catch (FileNotFoundException e6) {
+                    inputStream = open;
+                    log.warn("Could not find OSGI.MF in " + this.bundleFile.getAbsolutePath());
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                    return null;
+                } catch (Exception e7) {
+                    e = e7;
+                    e.printStackTrace();
+                    inputStream = open;
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                    return null;
+                }
+            }
+            inputStream = null;
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            return null;
+        } catch (Exception e8) {
+            th = e8;
+            open = null;
+            try {
+                log.error("Exception while parse OSGI.MF >>>", th);
+                if (open != null) {
+                    open.close();
+                }
+            } catch (Throwable th4) {
+                th = th4;
+                inputStream2 = open;
+                if (inputStream2 != null) {
+                    inputStream2.close();
+                }
+               // throw th;
+            }
+            return null;
+        } catch (Throwable th32) {
+            th = th32;
+            if (inputStream2 != null) {
+                inputStream2.close();
+            }
+           // throw th;
+        }
+		return manifest;
     }
 
     Class<?> findClass(String str, ClassLoader classLoader) throws ClassNotFoundException {
