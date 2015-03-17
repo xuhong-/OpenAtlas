@@ -1,22 +1,5 @@
 package android.taobao.atlas.framework.bundlestorage;
 
-import android.content.res.AssetManager;
-import android.os.Build;
-import android.taobao.atlas.bundleInfo.BundleInfoList;
-import android.taobao.atlas.framework.Framework;
-import android.taobao.atlas.hack.AtlasHacks;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
-import android.taobao.atlas.runtime.RuntimeVariables;
-import android.taobao.atlas.util.ApkUtils;
-import android.taobao.atlas.util.AtlasFileLock;
-import android.taobao.atlas.util.StringUtils;
-import android.text.TextUtils;
-import com.alipay.mobile.quinox.classloader.InitExecutor;
-import com.squareup.okhttp.internal.http.HttpTransport;
-import com.tencent.mm.sdk.platformtools.FilePathGenerator;
-import dalvik.system.DexClassLoader;
-import dalvik.system.DexFile;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -34,6 +17,24 @@ import java.util.List;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import android.content.res.AssetManager;
+import android.os.Build;
+import android.taobao.atlas.bundleInfo.BundleInfoList;
+import android.taobao.atlas.framework.Framework;
+import android.taobao.atlas.hack.AtlasHacks;
+import android.taobao.atlas.log.Logger;
+import android.taobao.atlas.log.LoggerFactory;
+import android.taobao.atlas.runtime.RuntimeVariables;
+import android.taobao.atlas.util.ApkUtils;
+import android.taobao.atlas.util.AtlasFileLock;
+import android.taobao.atlas.util.StringUtils;
+import android.text.TextUtils;
+
+import com.alipay.mobile.quinox.classloader.InitExecutor;
+
+import dalvik.system.DexClassLoader;
+import dalvik.system.DexFile;
 
 public class BundleArchiveRevision {
     static final String BUNDLE_FILE_NAME = "bundle.zip";
@@ -218,7 +219,7 @@ public class BundleArchiveRevision {
                                 e4.printStackTrace();
                             }
                         }
-                        throw e;
+                        
                     }
                 } catch (Throwable th2) {
                     e = th2;
@@ -227,7 +228,7 @@ public class BundleArchiveRevision {
                     if (dataOutputStream != null) {
                         dataOutputStream.close();
                     }
-                    throw e;
+                   
                 }
             }
             log.error("Failed to get fileLock for " + file.getAbsolutePath());
@@ -282,13 +283,13 @@ public class BundleArchiveRevision {
                         InitExecutor.optDexFile(this.bundleFile.getAbsolutePath(), file.getAbsolutePath());
                         loadDex(file);
                         AtlasFileLock.getInstance().unLock(file);
-                        "bundle archieve dexopt bundle " + this.bundleFile.getAbsolutePath() + " cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms";
+                       // "bundle archieve dexopt bundle " + this.bundleFile.getAbsolutePath() + " cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms";
                     }
                 } catch (Throwable e) {
                     log.error("Failed optDexFile '" + this.bundleFile.getAbsolutePath() + "' >>> ", e);
                 } finally {
-                    currentTimeMillis = AtlasFileLock.getInstance();
-                    currentTimeMillis.unLock(file);
+                	AtlasFileLock    mAtlasFileLock = AtlasFileLock.getInstance();
+                	mAtlasFileLock.unLock(file);
                 }
             } else {
                 DexClassLoader dexClassLoader = new DexClassLoader(this.bundleFile.getAbsolutePath(), this.revisionDir.getAbsolutePath(), null, ClassLoader.getSystemClassLoader());
@@ -327,7 +328,7 @@ public class BundleArchiveRevision {
                         }
                         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(str));
                         BufferedInputStream bufferedInputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry));
-                        byte[] bArr = new byte[HttpTransport.DEFAULT_CHUNK_LENGTH];
+                        byte[] bArr = new byte[4096];
                         for (int read = bufferedInputStream.read(bArr); read != -1; read = bufferedInputStream.read(bArr)) {
                             bufferedOutputStream.write(bArr, 0, read);
                         }
@@ -349,10 +350,6 @@ public class BundleArchiveRevision {
             }
         } catch (Throwable e) {
             log.error("Exception while openNonAssetInputStream >>>", e);
-        } catch (Throwable e2) {
-            log.error("Exception while openNonAssetInputStream >>>", e2);
-        } catch (InvocationTargetException e3) {
-            log.error("Exception while openNonAssetInputStream >>>", e3.getTargetException());
         }
         return null;
     }
@@ -366,10 +363,6 @@ public class BundleArchiveRevision {
             }
         } catch (Throwable e) {
             log.error("Exception while openNonAssetInputStream >>>", e);
-        } catch (Throwable e2) {
-            log.error("Exception while openNonAssetInputStream >>>", e2);
-        } catch (InvocationTargetException e3) {
-            log.error("Exception while openNonAssetInputStream >>>", e3.getTargetException());
         }
         return null;
     }
