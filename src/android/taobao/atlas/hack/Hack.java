@@ -130,20 +130,20 @@ public class Hack {
             if (!(this.mField == null || cls.isAssignableFrom(this.mField.getType()))) {
                 Hack.fail(new HackAssertionException(new ClassCastException(this.mField + " is not of type " + cls)));
             }
-            return this;
+            return (HackedField<C, T2>) this;
         }
 
         public <T2> android.taobao.atlas.hack.Hack.HackedField<C, T2> ofType(Class<T2> cls) throws HackAssertionException {
             if (!(this.mField == null || cls.isAssignableFrom(this.mField.getType()))) {
                 Hack.fail(new HackAssertionException(new ClassCastException(this.mField + " is not of type " + cls)));
             }
-            return this;
+            return (HackedField<C, T2>) this;
         }
 
         public android.taobao.atlas.hack.Hack.HackedField<C, T> ofType(String str) throws HackAssertionException {
-            android.taobao.atlas.hack.Hack.HackedField<C, T> ofType;
+            android.taobao.atlas.hack.Hack.HackedField<C, T> ofType = null;
             try {
-                ofType = ofType(Class.forName(str));
+                ofType = (HackedField<C, T>) ofType(Class.forName(str));
             } catch (Exception e) {
                 Hack.fail(new HackAssertionException(e));
             }
@@ -152,7 +152,7 @@ public class Hack {
 
         public T get(C c) {
             try {
-                return this.mField.get(c);
+                return (T) this.mField.get(c);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 return null;
