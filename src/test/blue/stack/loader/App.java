@@ -70,7 +70,7 @@ public class App extends Application {
 
     static {
         SORTED_PACKAGES = new String[]{"com.taobao.login4android", "com.taobao.taobao.home", "com.taobao.passivelocation", "com.taobao.mytaobao", "com.taobao.wangxin", "com.taobao.allspark", "com.taobao.search", "com.taobao.android.scancode", "com.taobao.android.trade", "com.taobao.taobao.cashdesk", "com.taobao.weapp", "com.taobao.taobao.alipay"};
-        AUTOSTART_PACKAGES = new String[]{ "com.taobao.android.scancode","com.taobao.login4android", "com.taobao.taobao.home", "com.taobao.mytaobao", "com.taobao.wangxin", "com.taobao.passivelocation", "com.taobao.allspark"};
+        AUTOSTART_PACKAGES = new String[]{ "com.taobao.scan","com.taobao.login4android", "com.taobao.taobao.home", "com.taobao.mytaobao", "com.taobao.wangxin", "com.taobao.passivelocation", "com.taobao.allspark"};
         DELAYED_PACKAGES = new String[]{"com.taobao.fmagazine", "com.taobao.taobao.pluginservice", "com.taobao.legacy", "com.ut.share", "com.taobao.taobao.map", "com.taobao.android.gamecenter", "com.taobao.tongxue", "com.taobao.taobao.zxing", "com.taobao.labs"};
        // START = 0;
     }
