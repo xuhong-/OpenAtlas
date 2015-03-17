@@ -110,6 +110,7 @@ public class AtlasHacks extends HackDeclaration implements AssertionFailureHandl
             Hack.setAssertionFailureHandler(null);
             sIsReflectChecked = true;
         }
+		return sIsIgnoreFailure;
     }
 
     public static void allClasses() throws HackAssertionException {

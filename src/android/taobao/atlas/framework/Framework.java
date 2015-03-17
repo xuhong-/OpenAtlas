@@ -1,19 +1,5 @@
 package android.taobao.atlas.framework;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.taobao.atlas.framework.bundlestorage.BundleArchive;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
-import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
-import android.taobao.atlas.runtime.RuntimeVariables;
-import android.taobao.atlas.util.AtlasFileLock;
-import android.taobao.atlas.util.BundleLock;
-import android.taobao.atlas.util.StringUtils;
-import com.taobao.android.taotv.mediaplayer.api.PlayerConstant;
-import com.tencent.mm.sdk.platformtools.C0264v;
-import com.tencent.mm.sdk.platformtools.FilePathGenerator;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -37,7 +23,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
-import mtopsdk.common.util.SymbolExpUtil;
+
 import org.osgi.framework.AdminPermission;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleEvent;
@@ -54,6 +40,18 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.ExportedPackage;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.service.startlevel.StartLevel;
+
+import android.annotation.SuppressLint;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.taobao.atlas.framework.bundlestorage.BundleArchive;
+import android.taobao.atlas.log.Logger;
+import android.taobao.atlas.log.LoggerFactory;
+import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
+import android.taobao.atlas.runtime.RuntimeVariables;
+import android.taobao.atlas.util.AtlasFileLock;
+import android.taobao.atlas.util.BundleLock;
+import android.taobao.atlas.util.StringUtils;
 
 public final class Framework {
     private static final AdminPermission ADMIN_PERMISSION;
@@ -642,16 +640,18 @@ public final class Framework {
                                     System.out.println("STARTING " + bundleImplArr[i4].location);
                                     bundleImplArr[i4].startBundle();
                                 } catch (Throwable e) {
-                                    e.getNestedException().printStackTrace();
+                                  e.printStackTrace();
                                     e.printStackTrace();
                                     Framework.notifyFrameworkListeners(2, Framework.systemBundle, e);
-                                } catch (Throwable e2) {
-                                    e2.printStackTrace();
-                                    Framework.notifyFrameworkListeners(2, Framework.systemBundle, e2);
                                 }
                             } else if (bundleImplArr[i4].getState() != 1) {
                                 System.out.println("STOPPING " + bundleImplArr[i4].location);
-                                bundleImplArr[(bundleImplArr.length - i4) - 1].stopBundle();
+                                try {
+									bundleImplArr[(bundleImplArr.length - i4) - 1].stopBundle();
+								} catch (BundleException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
                             }
                         }
                     }
@@ -1018,7 +1018,7 @@ public final class Framework {
         int property;
         frameworkStartupShutdown = true;
         System.out.println("---------------------------------------------------------");
-        System.out.println("  Atlas OSGi 0.9.0 on " + Build.MODEL + FilePathGenerator.ANDROID_DIR_SEP + Build.CPU_ABI + FilePathGenerator.ANDROID_DIR_SEP + VERSION.RELEASE + " starting ...");
+        System.out.println("  Atlas OSGi 0.9.0 on " + Build.MODEL + "/" + Build.CPU_ABI + "/" + VERSION.RELEASE + " starting ...");
         System.out.println("---------------------------------------------------------");
         long currentTimeMillis = System.currentTimeMillis();
         boolean property2 = getProperty("osgi.init", false);
@@ -1120,7 +1120,7 @@ public final class Framework {
         }
         BASEDIR = properties.getProperty("android.taobao.atlas.basedir", filesDir.getAbsolutePath());
         BUNDLE_LOCATION = properties.getProperty("android.taobao.atlas.jars", "file:" + BASEDIR);
-        CLASSLOADER_BUFFER_SIZE = getProperty("android.taobao.atlas.classloader.buffersize", (int) PlayerConstant.PLAYER_PLATFORM_WMWEB);
+        CLASSLOADER_BUFFER_SIZE = getProperty("android.taobao.atlas.classloader.buffersize", 1024*10);
         LOG_LEVEL = getProperty("android.taobao.atlas.log.level", 6);
         DEBUG_BUNDLES = getProperty("android.taobao.atlas.debug.bundles", false);
         DEBUG_PACKAGES = getProperty("android.taobao.atlas.debug.packages", false);
@@ -1137,13 +1137,13 @@ public final class Framework {
         STRICT_STARTUP = getProperty("android.taobao.atlas.strictStartup", false);
         String property = properties.getProperty("org.osgi.framework.system.packages");
         if (property != null) {
-            StringTokenizer stringTokenizer = new StringTokenizer(property, SymbolExpUtil.SYMBOL_COMMA);
+            StringTokenizer stringTokenizer = new StringTokenizer(property, ",");
             int countTokens = stringTokenizer.countTokens();
             for (int i = 0; i < countTokens; i++) {
                 BundleClassLoader.FRAMEWORK_PACKAGES.add(stringTokenizer.nextToken().trim());
             }
         }
-        properties.put(Constants.FRAMEWORK_EXECUTIONENVIRONMENT, System.getProperty("java.specification.name") + FilePathGenerator.ANDROID_DIR_SEP + System.getProperty("java.specification.version"));
+        properties.put(Constants.FRAMEWORK_EXECUTIONENVIRONMENT, System.getProperty("java.specification.name") + "/" + System.getProperty("java.specification.version"));
         Properties properties2 = properties;
         String str = Constants.FRAMEWORK_OS_NAME;
         Object property2 = System.getProperty("os.name");
@@ -1171,7 +1171,7 @@ public final class Framework {
         properties2 = properties;
         str = Constants.FRAMEWORK_LANGUAGE;
         if (property2 == null) {
-            property2 = C0264v.ENGLISH;
+            property2 = "en";
         }
         properties2.put(str, property2);
         STORAGE_LOCATION = properties.getProperty("android.taobao.atlas.storage", properties.getProperty("org.osgi.framework.dir", BASEDIR + File.separatorChar + "storage")) + File.separatorChar;
@@ -1240,9 +1240,9 @@ public final class Framework {
                 } else {
                     DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(file));
                     dataOutputStream.writeInt(startlevel);
-                    String join = StringUtils.join(writeAheads.toArray(), SymbolExpUtil.SYMBOL_COMMA);
+                    String join = StringUtils.join(writeAheads.toArray(), ",");
                     if (join == null) {
-                        join = com.taobao.tao.util.Constants.ALIPAY_PARNER;
+                        join = "";
                     }
                     dataOutputStream.writeUTF(join);
                     dataOutputStream.flush();
@@ -1269,7 +1269,7 @@ public final class Framework {
             e = th2;
             file = null;
             AtlasFileLock.getInstance().unLock(file);
-            throw e;
+            
         }
     }
 
@@ -1280,7 +1280,7 @@ public final class Framework {
             if (file.exists()) {
                 DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file));
                 int readInt = dataInputStream.readInt();
-                String[] split = StringUtils.split(dataInputStream.readUTF(), SymbolExpUtil.SYMBOL_COMMA);
+                String[] split = StringUtils.split(dataInputStream.readUTF(), ",");
                 if (split != null) {
                     writeAheads.addAll(Arrays.asList(split));
                 }

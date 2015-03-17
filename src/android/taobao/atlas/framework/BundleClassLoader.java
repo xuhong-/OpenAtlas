@@ -1,13 +1,5 @@
 package android.taobao.atlas.framework;
 
-import android.taobao.atlas.framework.bundlestorage.Archive;
-import android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
-import android.taobao.atlas.hack.AtlasHacks;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
-import android.taobao.filecache.FileInfoBase;
-import com.taobao.android.dexposed.ClassUtils;
-import com.tencent.mm.sdk.platformtools.FilePathGenerator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,10 +20,16 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import mtopsdk.common.util.SymbolExpUtil;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+
+import android.taobao.atlas.framework.bundlestorage.Archive;
+import android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
+import android.taobao.atlas.hack.AtlasHacks;
+import android.taobao.atlas.log.Logger;
+import android.taobao.atlas.log.LoggerFactory;
 
 public final class BundleClassLoader extends ClassLoader {
     private static final List<URL> EMPTY_LIST;
@@ -186,8 +184,8 @@ public final class BundleClassLoader extends ClassLoader {
                 this.importDelegations = new HashMap(this.imports.length);
             }
             for (int i2 = 0; i2 < this.imports.length; i2++) {
-                Object obj = Package.parsePackageString(this.imports[i2])[0];
-                if (!FRAMEWORK_PACKAGES.contains(obj) && this.importDelegations.get(obj) == null && (r0 == null || !r0.contains(obj))) {
+                String obj = Package.parsePackageString(this.imports[i2])[0];
+                if (!FRAMEWORK_PACKAGES.contains(obj) && this.importDelegations.get(obj) == null && (hashSet2 == null || !hashSet2.contains(obj))) {
                     BundleClassLoader bundleClassLoader = Framework.getImport(this.bundle, this.imports[i2], z, hashSet);
                     if (bundleClassLoader != null) {
                         if (bundleClassLoader != this) {
@@ -284,7 +282,7 @@ public final class BundleClassLoader extends ClassLoader {
         }
         if (this.dynamicImports.length > 0) {
             for (int i = 0; i < this.dynamicImports.length; i++) {
-                if (this.dynamicImports[i].indexOf(com.taobao.tao.util.Constants.VERSION) > -1) {
+                if (this.dynamicImports[i].indexOf("version") > -1) {
                     Package[] packageArr = (Package[]) Framework.exportedPackages.keySet().toArray(new Package[Framework.exportedPackages.size()]);
                     for (int i2 = 0; i2 < packageArr.length; i2++) {
                         if (packageArr[i2].matches(this.dynamicImports[i])) {
@@ -414,7 +412,7 @@ public final class BundleClassLoader extends ClassLoader {
 
     private static String[] readProperty(Attributes attributes, String str) throws BundleException {
         String value = attributes.getValue(str);
-        if (value == null || !value.equals(com.taobao.tao.util.Constants.ALIPAY_PARNER)) {
+        if (value == null || !value.equals("")) {
             return splitString(value);
         }
         return new String[0];
@@ -425,7 +423,7 @@ public final class BundleClassLoader extends ClassLoader {
         if (str == null) {
             return new String[0];
         }
-        StringTokenizer stringTokenizer = new StringTokenizer(str, SymbolExpUtil.SYMBOL_COMMA);
+        StringTokenizer stringTokenizer = new StringTokenizer(str, ",");
         if (stringTokenizer.countTokens() == 0) {
             return new String[]{str};
         }
@@ -438,15 +436,15 @@ public final class BundleClassLoader extends ClassLoader {
     }
 
     private static String stripTrailing(String str) {
-        return (str.startsWith(FilePathGenerator.ANDROID_DIR_SEP) || str.startsWith("\\")) ? str.substring(1) : str;
+        return (str.startsWith("/") || str.startsWith("\\")) ? str.substring(1) : str;
     }
 
     private static String packageOf(String str) {
         int lastIndexOf = str.lastIndexOf(46);
-        return lastIndexOf > -1 ? str.substring(0, lastIndexOf) : com.taobao.tao.util.Constants.ALIPAY_PARNER;
+        return (String) (lastIndexOf > -1 ? str.substring(0, lastIndexOf) : "");
     }
 
     private static String pseudoClassname(String str) {
-        return stripTrailing(str).replace(ClassUtils.PACKAGE_SEPARATOR_CHAR, FileInfoBase.DIVISION).replace('/', ClassUtils.PACKAGE_SEPARATOR_CHAR).replace('\\', ClassUtils.PACKAGE_SEPARATOR_CHAR);
+        return stripTrailing(str).replace('.', '-').replace('/', '.').replace('\\', '.');
     }
 }

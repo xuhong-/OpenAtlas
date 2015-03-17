@@ -1,6 +1,5 @@
 package android.taobao.atlas.framework;
 
-import com.taobao.weapp.data.WeAppDataParser;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -9,6 +8,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceFactory;
@@ -53,7 +53,7 @@ final class ServiceReferenceImpl implements ServiceReference {
             }
             keys = dictionary.keys();
             while (keys.hasMoreElements()) {
-                str = (String) keys.nextElement();
+              String  str = (String) keys.nextElement();
                 Object obj = dictionary.get(str);
                 String toLowerCase2 = str.toLowerCase(Locale.US);
                 if (!ServiceReferenceImpl.forbidden.contains(toLowerCase2)) {
@@ -205,7 +205,7 @@ final class ServiceReferenceImpl implements ServiceReference {
             } else {
                 valueOf = Integer.valueOf(num.intValue() + 1);
             }
-            this.useCounters.put(bundle, valueOf);
+            this.useCounters.put(bundle, (Integer)valueOf);
             if (this.isServiceFactory) {
                 if (this.cachedServices == null) {
                     this.cachedServices = new HashMap();
@@ -252,6 +252,6 @@ final class ServiceReferenceImpl implements ServiceReference {
     }
 
     public String toString() {
-        return "ServiceReference{" + this.service + WeAppDataParser.KEY_SURFIX;
+        return "ServiceReference{" + this.service + "}";
     }
 }

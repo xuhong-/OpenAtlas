@@ -36,7 +36,7 @@ public class Interception {
         }
     }
 
-    public static <T> T proxy(Object obj, Class<T> cls, InterceptionHandler<T> interceptionHandler) throws IllegalArgumentException {
+    public static Object proxy(Object obj, Class cls, InterceptionHandler  interceptionHandler) throws IllegalArgumentException {
         if (obj instanceof Intercepted) {
             return obj;
         }
@@ -44,7 +44,7 @@ public class Interception {
         return Proxy.newProxyInstance(Interception.class.getClassLoader(), new Class[]{cls, Intercepted.class}, interceptionHandler);
     }
 
-    public static <T> T proxy(Object obj, InterceptionHandler<T> interceptionHandler, Class<?>... clsArr) throws IllegalArgumentException {
+    public static Object proxy(Object obj, InterceptionHandler  interceptionHandler, Class<?>... clsArr) throws IllegalArgumentException {
         interceptionHandler.setDelegatee(obj);
         return Proxy.newProxyInstance(Interception.class.getClassLoader(), clsArr, interceptionHandler);
     }

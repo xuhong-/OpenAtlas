@@ -321,7 +321,7 @@ public class BundleArchiveRevision {
                             file2.mkdirs();
                         }
                     } else {
-                        File file3 = new File(str.substring(0, str.lastIndexOf(FilePathGenerator.ANDROID_DIR_SEP)));
+                        File file3 = new File(str.substring(0, str.lastIndexOf("/")));
                         if (!file3.exists()) {
                             file3.mkdirs();
                         }
@@ -547,7 +547,7 @@ public class BundleArchiveRevision {
     }
 
     private boolean isSameDriver(File file, File file2) {
-        return StringUtils.equals(StringUtils.substringBetween(file.getAbsolutePath(), FilePathGenerator.ANDROID_DIR_SEP, FilePathGenerator.ANDROID_DIR_SEP), StringUtils.substringBetween(file2.getAbsolutePath(), FilePathGenerator.ANDROID_DIR_SEP, FilePathGenerator.ANDROID_DIR_SEP));
+        return StringUtils.equals(StringUtils.substringBetween(file.getAbsolutePath(), "/", "/"), StringUtils.substringBetween(file2.getAbsolutePath(), "/", "/"));
     }
 
     private void ensureZipFile() throws IOException {

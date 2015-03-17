@@ -1,9 +1,8 @@
 package android.taobao.atlas.framework;
 
-import com.taobao.tao.util.Constants;
 import java.util.List;
 import java.util.StringTokenizer;
-import mtopsdk.common.util.SymbolExpUtil;
+
 import org.osgi.framework.Bundle;
 import org.osgi.service.packageadmin.ExportedPackage;
 
@@ -67,7 +66,7 @@ final class Package implements ExportedPackage {
         if (this.version == null) {
             return this.pkg;
         }
-        return this.pkg + "; specification-version=" + getSpecificationVersion() + (this.resolved ? Constants.ALIPAY_PARNER : " (UNRESOLVED)");
+        return this.pkg + "; specification-version=" + getSpecificationVersion() + (this.resolved ? "" : " (UNRESOLVED)");
     }
 
     public int hashCode() {
@@ -75,10 +74,10 @@ final class Package implements ExportedPackage {
     }
 
     static String[] parsePackageString(String str) {
-        if (str.indexOf(SymbolExpUtil.SYMBOL_SEMICOLON) > -1) {
-            return new String[]{str.substring(0, str.indexOf(SymbolExpUtil.SYMBOL_SEMICOLON)).trim(), str.substring(str.indexOf(SymbolExpUtil.SYMBOL_SEMICOLON) + 1).trim()};
+        if (str.indexOf(";") > -1) {
+            return new String[]{str.substring(0, str.indexOf(";")).trim(), str.substring(str.indexOf(";") + 1).trim()};
         }
-        return new String[]{str.trim(), Constants.ALIPAY_PARNER};
+        return new String[]{str.trim(), ""};
     }
 
     boolean matches(String str) {

@@ -23,7 +23,7 @@ public class AndroidHack {
     private static Object _mLoadedApk;
     private static Object _sActivityThread;
 
-    final class AnonymousClass_1 implements Callback {
+    static final class AnonymousClass_1 implements Callback {
         final /* synthetic */ Object val$activityThread;
         final /* synthetic */ Handler val$handler;
 

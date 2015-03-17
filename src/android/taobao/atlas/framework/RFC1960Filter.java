@@ -1,8 +1,5 @@
 package android.taobao.atlas.framework;
 
-import android.support.v4.media.TransportMediator;
-import com.taobao.tao.util.Constants;
-import com.taobao.tao.util.TBImageQuailtyStrategy;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -13,10 +10,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
-import mtopsdk.common.util.SymbolExpUtil;
+
 import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+
+import android.support.v4.media.TransportMediator;
 
 final class RFC1960Filter implements Filter {
     private static final int AND_OPERATOR = 1;
@@ -100,7 +99,7 @@ final class RFC1960Filter implements Filter {
                     }
                     return false;
                 } else if (obj instanceof Boolean) {
-                    boolean z = ((this.comparator == 0 || this.comparator == RFC1960Filter.OR_OPERATOR) && ((Boolean) obj).equals(Boolean.valueOf(this.value))) ? RFC1960Filter.PRESENT : false;
+                    boolean z = (Boolean) (((this.comparator == 0 || this.comparator == RFC1960Filter.OR_OPERATOR) && ((Boolean) obj).equals(Boolean.valueOf(this.value))) ? RFC1960Filter.PRESENT : false);
                     return z;
                 } else if (obj instanceof Character) {
                     if (this.value.length() == RFC1960Filter.PRESENT) {
@@ -390,7 +389,7 @@ final class RFC1960Filter implements Filter {
         }
 
         public String toString() {
-            return "(" + this.id + RFC1960Filter.OP[this.comparator] + (this.value == null ? Constants.ALIPAY_PARNER : this.value) + ")";
+            return "(" + this.id + RFC1960Filter.OP[this.comparator] + (this.value == null ? "" : this.value) + ")";
         }
 
         public boolean equals(Object obj) {
@@ -410,7 +409,7 @@ final class RFC1960Filter implements Filter {
     }
 
     static {
-        OP = new String[]{SymbolExpUtil.SYMBOL_EQUAL, "=*", "~=", ">=", "<="};
+        OP = new String[]{ "=", "=*", "~=", ">=", "<="};
         Class[] clsArr = new Class[PRESENT];
         clsArr[EQUALS] = String.class;
         STRINGCLASS = clsArr;
@@ -451,7 +450,7 @@ final class RFC1960Filter implements Filter {
                 int i7;
                 String trim;
                 switch (toCharArray[i4]) {
-                    case TBImageQuailtyStrategy.CDN_SIZE_40 /*40*/:
+                    case 40 /*40*/:
                         char c = toCharArray[i4 + PRESENT];
                         i5 = i4;
                         while (Character.isWhitespace(c)) {
@@ -497,11 +496,11 @@ final class RFC1960Filter implements Filter {
                                 if (!stack.isEmpty()) {
                                     rFC1960Filter = (RFC1960Filter) stack.peek();
                                     substring = str.substring(i2 + PRESENT, i4);
-                                    if (substring.equals(Constants.VERSION) && i3 == 0) {
+                                    if (substring.equals("version") && i3 == 0) {
                                         i3 = PRESENT;
                                         substring = null;
                                     }
-                                    rFC1960Filter.operands.add(new RFC1960SimpleFilter(i3, substring, null));
+                                    rFC1960Filter.operands.add(new RFC1960SimpleFilter(null,i3, substring));
                                     i3 = EQUALS;
                                     i7 = -1;
                                     int i8 = i4;
@@ -511,13 +510,13 @@ final class RFC1960Filter implements Filter {
                                     break;
                                 } else if (i4 == length - 1) {
                                     String substring2 = str.substring(i2 + PRESENT, length - 1);
-                                    if (substring2.equals(Constants.VERSION) && i3 == 0) {
+                                    if (substring2.equals("version") && i3 == 0) {
                                         i3 = PRESENT;
                                         substring = null;
                                     } else {
                                         substring = substring2;
                                     }
-                                    return new RFC1960SimpleFilter(i3, substring, null);
+                                    return new RFC1960SimpleFilter(null,i3, substring);
                                 } else {
                                     throw new InvalidSyntaxException("Unexpected literal: " + str.substring(i4), str);
                                 }
@@ -543,7 +542,7 @@ final class RFC1960Filter implements Filter {
                         }
                         throw new InvalidSyntaxException("Unexpected literal: " + str.substring(i4), str);
                         break;
-                    case TBImageQuailtyStrategy.CDN_SIZE_60 /*60*/:
+                    case 60 /*60*/:
                         if (i2 == 0 && toCharArray[i4 + PRESENT] == '=') {
                             trim = str.substring(i + PRESENT, i4).trim();
                             i6 = LESS;

@@ -1,10 +1,18 @@
 package android.taobao.atlas.runtime;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.osgi.framework.Bundle;
+
 import android.app.Application;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.Resources.NotFoundException;
 import android.taobao.atlas.framework.BundleImpl;
 import android.taobao.atlas.framework.Framework;
 import android.taobao.atlas.hack.AndroidHack;
@@ -13,15 +21,6 @@ import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import com.tencent.mm.sdk.platformtools.FilePathGenerator;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import mtopsdk.common.util.SymbolExpUtil;
-import org.osgi.framework.Bundle;
 
 public class DelegateResources extends Resources {
     static final Logger log;
@@ -63,7 +62,7 @@ public class DelegateResources extends Resources {
                 stringBuffer.append("newDelegateResources [");
                 for (int i = 0; i < arrayList.size(); i++) {
                     if (i > 0) {
-                        stringBuffer.append(SymbolExpUtil.SYMBOL_COMMA);
+                        stringBuffer.append(",");
                     }
                     stringBuffer.append((String) arrayList.get(i));
                 }
@@ -79,8 +78,8 @@ public class DelegateResources extends Resources {
             return identifier;
         }
         if (str2 == null && str3 == null) {
-            str = str.substring(str.indexOf(FilePathGenerator.ANDROID_DIR_SEP) + 1);
-            str2 = str.substring(str.indexOf(":") + 1, str.indexOf(FilePathGenerator.ANDROID_DIR_SEP));
+            str = str.substring(str.indexOf("/") + 1);
+            str2 = str.substring(str.indexOf(":") + 1, str.indexOf("/"));
         }
         if (TextUtils.isEmpty(str) || TextUtils.isEmpty(str2)) {
             return 0;

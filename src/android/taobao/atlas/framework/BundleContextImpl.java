@@ -1,14 +1,16 @@
 package android.taobao.atlas.framework;
 
+import android.taobao.atlas.framework.Framework.ServiceListenerEntry;
 import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
-import com.tencent.mm.sdk.platformtools.MAlarmHandler;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.List;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -116,7 +118,7 @@ public class BundleContextImpl implements BundleContext {
         checkValid();
         List bundles = Framework.getBundles();
         Bundle[] bundleArr = (Bundle[]) bundles.toArray(new Bundle[bundles.size()]);
-        Object obj = new Bundle[(bundleArr.length + 1)];
+        Bundle []obj = new Bundle[(bundleArr.length + 1)];
         obj[0] = Framework.systemBundle;
         System.arraycopy(bundleArr, 0, obj, 1, bundleArr.length);
         return obj;
@@ -147,7 +149,7 @@ public class BundleContextImpl implements BundleContext {
     }
 
     public ServiceReference[] getServiceReferences(String str, String str2) throws InvalidSyntaxException {
-        Collection collection;
+        Collection collection = null;
         checkValid();
         Filter fromString = RFC1960Filter.fromString(str2);
         if (str == null) {
@@ -176,7 +178,7 @@ public class BundleContextImpl implements BundleContext {
         ServiceReference serviceReference = null;
         checkValid();
         int i = -1;
-        long j = MAlarmHandler.NEXT_FIRE_INTERVAL;
+        long j = 5000;//MAlarmHandler.NEXT_FIRE_INTERVAL;
         List list = (List) Framework.classes_services.get(str);
         if (list != null) {
             ServiceReference[] serviceReferenceArr = (ServiceReference[]) list.toArray(new ServiceReference[list.size()]);
@@ -234,7 +236,7 @@ public class BundleContextImpl implements BundleContext {
         if (obj == null) {
             throw new IllegalArgumentException("Cannot register a null service");
         }
-        Object serviceReferenceImpl = new ServiceReferenceImpl(this.bundle, obj, dictionary, strArr);
+        ServiceReferenceImpl serviceReferenceImpl = new ServiceReferenceImpl(this.bundle, obj, dictionary, strArr);
         Framework.services.add(serviceReferenceImpl);
         if (this.bundle.registeredServices == null) {
             this.bundle.registeredServices = new ArrayList();

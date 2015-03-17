@@ -55,7 +55,7 @@ public class Atlas {
         String packageName = application.getPackageName();
         AtlasHacks.defineAndVerify();
         ClassLoader classLoader = Atlas.class.getClassLoader();
-        ClassLoader delegateClassLoader = new DelegateClassLoader(classLoader);
+        DelegateClassLoader delegateClassLoader = new DelegateClassLoader(classLoader);
         Framework.systemClassLoader = classLoader;
         RuntimeVariables.delegateClassLoader = delegateClassLoader;
         RuntimeVariables.delegateResources = application.getResources();

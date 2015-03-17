@@ -74,7 +74,12 @@ public final class BundleImpl implements Bundle {
                 throw new BundleException("Could not install bundle " + str, e);
             }
         } else if (file2 != null) {
-            this.archive = new BundleArchive(str, file, file2);
+            try {
+				this.archive = new BundleArchive(str, file, file2);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
         this.state = 2;
         Framework.notifyBundleListeners(1, this);
@@ -435,7 +440,7 @@ public final class BundleImpl implements Bundle {
                     dataOutputStream2.writeInt(this.currentStartlevel);
                     dataOutputStream2.writeBoolean(this.persistently);
                     dataOutputStream2.flush();
-                    fileOutputStream.getFD().sync();
+                    ((FileOutputStream) fileOutputStream).getFD().sync();
                     AtlasFileLock.getInstance().unLock(file);
                     if (dataOutputStream2 != null) {
                         try {
@@ -471,7 +476,7 @@ public final class BundleImpl implements Bundle {
                                 e4.printStackTrace();
                             }
                         }
-                        throw e;
+                     
                     }
                 } catch (Throwable th2) {
                     e = th2;
@@ -480,7 +485,7 @@ public final class BundleImpl implements Bundle {
                     if (dataOutputStream != null) {
                         dataOutputStream.close();
                     }
-                    throw e;
+                  
                 }
             }
             log.error("Failed to get file lock for " + file.getAbsolutePath());
@@ -497,7 +502,12 @@ public final class BundleImpl implements Bundle {
             log.error("Could not save meta data " + file.getAbsolutePath(), e);
             AtlasFileLock.getInstance().unLock(file);
             if (dataOutputStream != null) {
-                dataOutputStream.close();
+                try {
+					dataOutputStream.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         }
     }

@@ -170,7 +170,7 @@ public class ClassLoadFromBundle {
             for (Bundle bundle2 : Framework.getBundles()) {
                 bundleImpl = (BundleImpl) bundle2;
                 if (bundleImpl.getArchive().isDexOpted()) {
-                    Class<?> loadClass;
+                    Class<?> loadClass = null;
                     ClassLoader classLoader2 = bundleImpl.getClassLoader();
                     if (classLoader2 != null) {
                         try {

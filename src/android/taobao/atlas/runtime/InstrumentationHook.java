@@ -220,7 +220,7 @@ public class InstrumentationHook extends Instrumentation {
 
     public Activity newActivity(ClassLoader classLoader, String str, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         Activity newActivity;
-        String str2;
+        String str2 = null;
         try {
             newActivity = this.mBase.newActivity(classLoader, str, intent);
         } catch (ClassNotFoundException e) {
