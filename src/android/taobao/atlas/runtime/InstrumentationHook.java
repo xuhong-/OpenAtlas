@@ -1,5 +1,10 @@
 package android.taobao.atlas.runtime;
 
+import java.util.List;
+
+import org.osgi.framework.BundleException;
+
+import blue.stack.android.InstrumentationInvoke;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -7,8 +12,6 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Application;
 import android.app.Fragment;
 import android.app.Instrumentation;
-import android.app.Instrumentation.ActivityMonitor;
-import android.app.Instrumentation.ActivityResult;
 import android.app.UiAutomation;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,11 +30,7 @@ import android.taobao.atlas.util.StringUtils;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import blus.stack.android.InstrumentationInvoke;
 
-import java.util.List;
-
-import org.osgi.framework.BundleException;
 
 public class InstrumentationHook extends Instrumentation {
     static final Logger log;
