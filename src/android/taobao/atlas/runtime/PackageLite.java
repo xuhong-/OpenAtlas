@@ -1,5 +1,13 @@
 package android.taobao.atlas.runtime;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.content.res.AssetManager;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -8,16 +16,7 @@ import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.taobao.atlas.util.StringUtils;
 import android.util.AttributeSet;
-import com.taobao.android.dexposed.ClassUtils;
-import com.tencent.mm.sdk.plugin.C0272d.C0271c;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import org.android.agoo.p121b.MtopResponse;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
+//This Class can ref PackageParser
 public class PackageLite {
     private static final String XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AlipayAuthenticationService";
     private static final String XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AuthenticationService";
@@ -100,8 +99,9 @@ public class PackageLite {
             if (xmlResourceParser != null) {
                 xmlResourceParser.close();
             }
-            throw e;
+           
         }
+		return null;
     }
 
     /* JADX WARNING: inconsistent code. */
@@ -345,10 +345,10 @@ public class PackageLite {
         int i2 = 0;
         while (i < attributeSet.getAttributeCount()) {
             String attributeName = attributeSet.getAttributeName(i);
-            if (attributeName.equals(MtopResponse.KEY_NAME)) {
+            if (attributeName.equals("name")) {
                 str2 = attributeSet.getAttributeValue(i);
                 i2++;
-            } else if (attributeName.equals(C0271c.VALUE)) {
+            } else if (attributeName.equals("value")) {
                 str = attributeSet.getAttributeValue(i);
                 i2++;
             }
@@ -370,12 +370,12 @@ public class PackageLite {
         }
         String obj = charSequence.toString();
         char charAt = obj.charAt(0);
-        if (charAt == ClassUtils.PACKAGE_SEPARATOR_CHAR) {
+        if (charAt == '.') {
             return (str + obj).intern();
         }
         if (obj.indexOf(46) < 0) {
             StringBuilder stringBuilder = new StringBuilder(str);
-            stringBuilder.append(ClassUtils.PACKAGE_SEPARATOR_CHAR);
+            stringBuilder.append('.');
             stringBuilder.append(obj);
             return stringBuilder.toString().intern();
         } else if (charAt >= 'a' && charAt <= 'z') {
@@ -404,7 +404,7 @@ public class PackageLite {
         String str = packageLite.packageName;
         int i2 = 0;
         while (i < attributeSet.getAttributeCount()) {
-            if (attributeSet.getAttributeName(i).equals(MtopResponse.KEY_NAME)) {
+            if (attributeSet.getAttributeName(i).equals("name")) {
                 String attributeValue = attributeSet.getAttributeValue(i);
                 if (attributeValue.startsWith(".")) {
                     attributeValue = str.concat(str);

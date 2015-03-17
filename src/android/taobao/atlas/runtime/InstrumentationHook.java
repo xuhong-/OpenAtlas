@@ -27,7 +27,7 @@ import android.taobao.atlas.util.StringUtils;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import com.taobao.tao.detail.export.DetailConstants;
+
 import java.util.List;
 import org.osgi.framework.BundleException;
 
@@ -162,7 +162,7 @@ public class InstrumentationHook extends Instrumentation {
 
     private ActivityResult execStartActivityInternal(Context context, Intent intent, ExecStartActivityCallback execStartActivityCallback) {
         String packageName;
-        Object className;
+        String className;
         if (intent.getComponent() != null) {
             packageName = intent.getComponent().getPackageName();
             className = intent.getComponent().getClassName();
@@ -234,7 +234,7 @@ public class InstrumentationHook extends Instrumentation {
             if (TextUtils.isEmpty(str2)) {
                 throw classNotFoundException;
             }
-            List runningTasks = ((ActivityManager) this.context.getSystemService(DetailConstants.SECKILL_LIST_TYPE)).getRunningTasks(1);
+            List runningTasks = ((ActivityManager) this.context.getSystemService("activity")).getRunningTasks(1);
             if (runningTasks != null && runningTasks.size() > 0 && ((RunningTaskInfo) runningTasks.get(0)).numActivities > 1 && Framework.getClassNotFoundCallback() != null) {
                 if (intent.getComponent() == null) {
                     intent.setClassName(this.context, str);
@@ -265,7 +265,7 @@ public class InstrumentationHook extends Instrumentation {
                     log.error(e.getMessage() + " Caused by: ", e.getNestedException());
                 }
             }
-            Object property = Framework.getProperty("android.taobao.atlas.welcome", "com.taobao.tao.welcome.Welcome");
+            String property = Framework.getProperty("android.taobao.atlas.welcome", "com.taobao.tao.welcome.Welcome");
             if (TextUtils.isEmpty(property)) {
                 property = "com.taobao.tao.welcome.Welcome";
             }

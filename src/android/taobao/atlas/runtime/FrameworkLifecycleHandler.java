@@ -1,5 +1,8 @@
 package android.taobao.atlas.runtime;
 
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
+
 import android.app.Application;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
@@ -7,12 +10,6 @@ import android.taobao.atlas.framework.Framework;
 import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.taobao.atlas.util.StringUtils;
-import com.taobao.dp.DeviceSecuritySDK;
-import com.taobao.open.OpenBase;
-import com.taobao.tao.util.TBImageQuailtyStrategy;
-import mtopsdk.common.util.SymbolExpUtil;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
 
 public class FrameworkLifecycleHandler implements FrameworkListener {
     static final Logger log;
@@ -23,9 +20,9 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
 
     public void frameworkEvent(FrameworkEvent frameworkEvent) {
         switch (frameworkEvent.getType()) {
-            case DeviceSecuritySDK.ENVIRONMENT_ONLINE /*0*/:
+            case 0 /*0*/:
                 starting();
-            case OpenBase.OAUTH_CREATE /*1*/:
+            case 1 /*1*/:
                 started();
             default:
         }
@@ -35,7 +32,7 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
         Bundle bundle;
         long currentTimeMillis = System.currentTimeMillis();
         try {
-            bundle = RuntimeVariables.androidApplication.getPackageManager().getApplicationInfo(RuntimeVariables.androidApplication.getPackageName(), TBImageQuailtyStrategy.CDN_SIZE_128).metaData;
+            bundle = RuntimeVariables.androidApplication.getPackageManager().getApplicationInfo(RuntimeVariables.androidApplication.getPackageName(), 128).metaData;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             bundle = null;
@@ -46,11 +43,11 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
                 if (log.isDebugEnabled()) {
                     log.debug("Found extra application: " + string);
                 }
-                String[] split = StringUtils.split(string, SymbolExpUtil.SYMBOL_COMMA);
+                String[] split = StringUtils.split(string, ",");
                 if (split == null || split.length == 0) {
                     split = new String[]{string};
                 }
-                for (String str : r0) {
+                for (String str : split) {
                     try {
                         Application newApplication = BundleLifecycleHandler.newApplication(str, Framework.getSystemClassLoader());
                         newApplication.onCreate();
