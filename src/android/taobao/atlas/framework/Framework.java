@@ -59,10 +59,10 @@ public final class Framework {
     private static String BASEDIR = null;
     private static String BUNDLE_LOCATION = null;
     static int CLASSLOADER_BUFFER_SIZE = 0;
-    static boolean DEBUG_BUNDLES = false;
-    static boolean DEBUG_CLASSLOADING = false;
-    static boolean DEBUG_PACKAGES = false;
-    static boolean DEBUG_SERVICES = false;
+    static boolean DEBUG_BUNDLES = true;
+    static boolean DEBUG_CLASSLOADING = true;
+    static boolean DEBUG_PACKAGES = true;
+    static boolean DEBUG_SERVICES = true;
     static final String FRAMEWORK_VERSION = "0.9.0";
     static int LOG_LEVEL;
     static String STORAGE_LOCATION;

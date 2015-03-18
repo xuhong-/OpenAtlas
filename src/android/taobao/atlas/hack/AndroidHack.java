@@ -14,6 +14,8 @@ import android.taobao.atlas.hack.Hack.HackDeclaration.HackAssertionException;
 import android.taobao.atlas.runtime.DelegateClassLoader;
 import android.taobao.atlas.runtime.DelegateResources;
 import android.taobao.atlas.runtime.RuntimeVariables;
+import android.util.Log;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -35,10 +37,12 @@ public class AndroidHack {
         public boolean handleMessage(Message message) {
             try {
                 AndroidHack.ensureLoadedApk();
+                Log.e("me", "handleMessage"+(val$handler==null)+"|"+(message==null));
                 this.val$handler.handleMessage(message);
                 AndroidHack.ensureLoadedApk();
             } catch (Throwable th) {
                 Throwable th2 = th;
+                th.printStackTrace();
                 RuntimeException runtimeException;
                 if ((th2 instanceof ClassNotFoundException) || th2.toString().contains("ClassNotFoundException")) {
                     if (message.what != 113) {

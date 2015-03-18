@@ -6,6 +6,7 @@ import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.taobao.atlas.util.AtlasFileLock;
 import android.taobao.atlas.util.StringUtils;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -21,6 +22,7 @@ import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleException;
@@ -29,6 +31,7 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+
 
 public final class BundleImpl implements Bundle {
     static final Logger log;
@@ -220,6 +223,7 @@ public final class BundleImpl implements Bundle {
     }
 
     public synchronized void startBundle() throws BundleException {
+    	state=0;//TODO
         if (this.state == 1) {
             throw new IllegalStateException("Cannot start uninstalled bundle " + toString());
         } else if (this.state != 32) {
@@ -227,7 +231,9 @@ public final class BundleImpl implements Bundle {
                 resolveBundle(true);
             }
             this.state = 8;
-            try {
+            try {this.classloader.activatorClassName="com.taobao.scan.SimpleBundle";
+//            	Bundle-Activator="com.taobao.scan.SimpleBundle"
+//            	Bundle-Activity="com.taobao.scan.MainActivity"
                 this.context.isValid = true;
                 if (!(this.classloader.activatorClassName == null || StringUtils.isBlank(this.classloader.activatorClassName))) {
                     Class loadClass = this.classloader.loadClass(this.classloader.activatorClassName);
@@ -236,6 +242,8 @@ public final class BundleImpl implements Bundle {
                     }
                     this.classloader.activator = (BundleActivator) loadClass.newInstance();
                     this.classloader.activator.start(this.context);
+                    
+                    
                 }
                 this.state = 32;
                 Framework.notifyBundleListeners(2, this);

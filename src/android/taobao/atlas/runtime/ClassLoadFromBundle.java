@@ -72,7 +72,7 @@ public class ClassLoadFromBundle {
         }
     }
 
-    static Class<?> loadFromUninstalledBundles(String str) throws ClassNotFoundException {
+    public static Class<?> loadFromUninstalledBundles(String str) throws ClassNotFoundException {
         if (sInternalBundles == null) {
             resolveInternalBundles();
         }
