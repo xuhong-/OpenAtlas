@@ -71,7 +71,7 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
         long currentTimeMillis = System.currentTimeMillis();
         BundleImpl bundleImpl = (BundleImpl) bundle;
         try {
-            DelegateResources.newDelegateResources(RuntimeVariables.androidApplication, RuntimeVariables.delegateResources);
+            DelegateResources.newDelegateResources(RuntimeVariables.androidApplication, RuntimeVariables.getDelegateResources());
         } catch (Throwable e) {
             log.error("Could not load resource in bundle " + bundleImpl.getLocation(), e);
         }

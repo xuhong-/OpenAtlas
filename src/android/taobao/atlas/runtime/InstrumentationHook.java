@@ -225,7 +225,7 @@ public class InstrumentationHook extends Instrumentation {
     public Activity newActivity(Class<?> cls, Context context, IBinder iBinder, Application application, Intent intent, ActivityInfo activityInfo, CharSequence charSequence, Activity activity, String str, Object obj) throws InstantiationException, IllegalAccessException {
         Activity newActivity = this.mBase.newActivity(cls, context, iBinder, application, intent, activityInfo, charSequence, activity, str, obj);
         if (RuntimeVariables.androidApplication.getPackageName().equals(activityInfo.packageName) && AtlasHacks.ContextThemeWrapper_mResources != null) {
-            AtlasHacks.ContextThemeWrapper_mResources.set(newActivity, RuntimeVariables.delegateResources);
+            AtlasHacks.ContextThemeWrapper_mResources.set(newActivity, RuntimeVariables.getDelegateResources());
         }
         return newActivity;
     }
@@ -258,7 +258,7 @@ public class InstrumentationHook extends Instrumentation {
             newActivity = this.mBase.newActivity(classLoader, str2, intent);
         }
         if ((classLoader instanceof DelegateClassLoader) && AtlasHacks.ContextThemeWrapper_mResources != null) {
-            AtlasHacks.ContextThemeWrapper_mResources.set(newActivity, RuntimeVariables.delegateResources);
+            AtlasHacks.ContextThemeWrapper_mResources.set(newActivity, RuntimeVariables.getDelegateResources());
         }
         return newActivity;
     }

@@ -64,7 +64,7 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
     private void started() {
         long currentTimeMillis = System.currentTimeMillis();
         try {
-            DelegateResources.newDelegateResources(RuntimeVariables.androidApplication, RuntimeVariables.delegateResources);
+            DelegateResources.newDelegateResources(RuntimeVariables.androidApplication, RuntimeVariables.getDelegateResources());
         } catch (Throwable e) {
             log.error("Failed to newDelegateResources", e);
         }

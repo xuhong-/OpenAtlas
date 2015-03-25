@@ -32,11 +32,11 @@ public class ContextImplHook extends ContextWrapper {
     }
 
     public Resources getResources() {
-        return RuntimeVariables.delegateResources;
+        return RuntimeVariables.getDelegateResources();
     }
 
     public AssetManager getAssets() {
-        return RuntimeVariables.delegateResources.getAssets();
+        return RuntimeVariables.getDelegateResources().getAssets();
     }
 
     public PackageManager getPackageManager() {

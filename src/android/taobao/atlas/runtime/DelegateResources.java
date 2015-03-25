@@ -56,7 +56,7 @@ public class DelegateResources extends Resources {
                 declaredConstructor.setAccessible(true);
                 delegateResources = (Resources) declaredConstructor.newInstance(new Object[]{assetManager, resources.getDisplayMetrics(), resources.getConfiguration()});
             }
-            RuntimeVariables.delegateResources = delegateResources;
+            RuntimeVariables.setDelegateResources(delegateResources);
             AndroidHack.injectResources(application, delegateResources);
             if (log.isDebugEnabled()) {
                 StringBuffer stringBuffer = new StringBuffer();

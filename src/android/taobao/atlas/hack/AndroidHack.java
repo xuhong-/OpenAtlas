@@ -135,7 +135,7 @@ public class AndroidHack {
         activityThread = loadedApk;
         if (!(((ClassLoader) AtlasHacks.LoadedApk_mClassLoader.get(activityThread)) instanceof DelegateClassLoader)) {
             AtlasHacks.LoadedApk_mClassLoader.set(activityThread, RuntimeVariables.delegateClassLoader);
-            AtlasHacks.LoadedApk_mResources.set(activityThread, RuntimeVariables.delegateResources);
+            AtlasHacks.LoadedApk_mResources.set(activityThread, RuntimeVariables.getDelegateResources());
         }
     }
 

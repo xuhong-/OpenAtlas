@@ -58,7 +58,7 @@ public class Atlas {
         DelegateClassLoader delegateClassLoader = new DelegateClassLoader(classLoader);
         Framework.systemClassLoader = classLoader;
         RuntimeVariables.delegateClassLoader = delegateClassLoader;
-        RuntimeVariables.delegateResources = application.getResources();
+        RuntimeVariables.setDelegateResources( application.getResources());
         RuntimeVariables.androidApplication = application;
         AndroidHack.injectClassLoader(packageName, delegateClassLoader);
         AndroidHack.injectInstrumentationHook(new InstrumentationHook(AndroidHack.getInstrumentation(), application.getBaseContext()));
@@ -148,7 +148,7 @@ public class Atlas {
     }
 
     public Resources getDelegateResources() {
-        return RuntimeVariables.delegateResources;
+        return RuntimeVariables.getDelegateResources() ;
     }
 
     public ClassLoader getDelegateClassLoader() {

@@ -271,7 +271,9 @@ public static App  instaceApp;
         int i = 0;
         super.onCreate();
         instaceApp=this;
+     
         this.mAtlasInitializer.startUp();
+        RuntimeVariables.setDelegateResources(getResources());
 //    	RuntimeVariables.androidApplication=this;
 //    	RuntimeVariables.delegateResources=getResources();
 //    	RuntimeVariables.delegateClassLoader=new DelegateClassLoader(getClassLoader());
