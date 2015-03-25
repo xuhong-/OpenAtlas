@@ -62,30 +62,30 @@ public class Welcome extends Activity {
 	}
 @Override
 public boolean onTouchEvent(MotionEvent event) {
-Intent mIntent = new  Intent(Intent.ACTION_VIEW);
-mIntent.setPackage("com.taobao.taobao");
-mIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.scan.MainActivity"));
 
-//mComponent = {ComponentName@6742} "ComponentInfo{com.taobao.taobao/com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity}"
-//mClass = {String@6750} "com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity"
-//mPackage = {String@6751} "com.taobao.taobao"
-//shadow$_klass_ = {Class@700} "class android.content.ComponentName"
-//shadow$_monitor_ = -1442943439
-//mData = {Uri$StringUri@6743} "http://tb.cn/n/scancode"
-//mExtras = {Bundle@6744} "Bundle[{callback_action=null, referrer=http://m.taobao.com/index.htm}]"
-//mPackage = {String@6745} "com.taobao.taobao"
+	Intent mIntent = new  Intent(Intent.ACTION_VIEW);
+	mIntent.setPackage("com.taobao.taobao");
+	mIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.scan.MainActivity"));
 
-//	try {
-//		mIntent = new Intent(this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
-//	} catch (ClassNotFoundException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
+	//mComponent = {ComponentName@6742} "ComponentInfo{com.taobao.taobao/com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity}"
+	//mClass = {String@6750} "com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity"
+	//mPackage = {String@6751} "com.taobao.taobao"
+	//shadow$_klass_ = {Class@700} "class android.content.ComponentName"
+	//shadow$_monitor_ = -1442943439
+	//mData = {Uri$StringUri@6743} "http://tb.cn/n/scancode"
+	//mExtras = {Bundle@6744} "Bundle[{callback_action=null, referrer=http://m.taobao.com/index.htm}]"
+	//mPackage = {String@6745} "com.taobao.taobao"
 
-	mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	//mIntent.setClassName("com.taobao.scan", "com.taobao.scan.MainActivity");
-	startActivity(mIntent);
-	
+//		try {
+//			mIntent = new Intent(this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+		mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//mIntent.setClassName("com.taobao.scan", "com.taobao.scan.MainActivity");
+		startActivity(mIntent);
 	return super.onTouchEvent(event);
 }
 	@Override
@@ -94,6 +94,8 @@ mIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.scan.Mai
 		getMenuInflater().inflate(R.menu.loader_tesst, menu);
 		return true;
 	}
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
