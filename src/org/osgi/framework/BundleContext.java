@@ -11,7 +11,8 @@ public interface BundleContext {
 
     void addServiceListener(ServiceListener serviceListener);
 
-    void addServiceListener(ServiceListener serviceListener, String str) throws InvalidSyntaxException;
+    void addServiceListener(ServiceListener serviceListener, String str)
+            throws InvalidSyntaxException;
 
     Filter createFilter(String str) throws InvalidSyntaxException;
 
@@ -29,15 +30,19 @@ public interface BundleContext {
 
     ServiceReference getServiceReference(String str);
 
-    ServiceReference[] getServiceReferences(String str, String str2) throws InvalidSyntaxException;
+    ServiceReference[] getServiceReferences(String str, String str2)
+            throws InvalidSyntaxException;
 
     Bundle installBundle(String str) throws BundleException;
 
-    Bundle installBundle(String str, InputStream inputStream) throws BundleException;
+    Bundle installBundle(String str, InputStream inputStream)
+            throws BundleException;
 
-    ServiceRegistration registerService(String str, Object obj, Dictionary<String, ?> dictionary);
+    ServiceRegistration registerService(String str, Object obj,
+            Dictionary<String, ?> dictionary);
 
-    ServiceRegistration registerService(String[] strArr, Object obj, Dictionary<String, ?> dictionary);
+    ServiceRegistration registerService(String[] strArr, Object obj,
+            Dictionary<String, ?> dictionary);
 
     void removeBundleListener(BundleListener bundleListener);
 

@@ -9,7 +9,8 @@ final class a implements IdleHandler {
     }
 
     public boolean queueIdle() {
-        TaggedRunnable taggedRunnable = (TaggedRunnable) Coordinator.mIdleTasks.poll();
+        TaggedRunnable taggedRunnable = (TaggedRunnable) Coordinator.mIdleTasks
+                .poll();
         if (taggedRunnable == null) {
             return false;
         }

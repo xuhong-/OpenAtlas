@@ -22,7 +22,8 @@ import dalvik.system.DexClassLoader;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class AtlasHacks extends HackDeclaration implements AssertionFailureHandler {
+public class AtlasHacks extends HackDeclaration implements
+        AssertionFailureHandler {
     public static HackedClass<Object> ActivityThread;
     public static HackedMethod ActivityThread_currentActivityThread;
     public static HackedField<Object, ArrayList<Application>> ActivityThread_mAllApplications;
@@ -91,7 +92,8 @@ public class AtlasHacks extends HackDeclaration implements AssertionFailureHandl
         try {
             Hack.setAssertionFailureHandler(atlasHacks);
             if (VERSION.SDK_INT == 11) {
-                atlasHacks.onAssertionFailure(new HackAssertionException("Hack Assertion Failed: Android OS Version 11"));
+                atlasHacks.onAssertionFailure(new HackAssertionException(
+                        "Hack Assertion Failed: Android OS Version 11"));
             }
             allClasses();
             allConstructors();
@@ -110,7 +112,7 @@ public class AtlasHacks extends HackDeclaration implements AssertionFailureHandl
             Hack.setAssertionFailureHandler(null);
             sIsReflectChecked = true;
         }
-		return sIsIgnoreFailure;
+        return sIsIgnoreFailure;
     }
 
     public static void allClasses() throws HackAssertionException {
@@ -136,54 +138,79 @@ public class AtlasHacks extends HackDeclaration implements AssertionFailureHandl
     }
 
     public static void allFields() throws HackAssertionException {
-        ActivityThread_mInstrumentation = ActivityThread.field("mInstrumentation").ofType(Instrumentation.class);
-        ActivityThread_mAllApplications = ActivityThread.field("mAllApplications").ofGenericType(ArrayList.class);
-        ActivityThread_mInitialApplication = ActivityThread.field("mInitialApplication").ofType(Application.class);
-        ActivityThread_mPackages = ActivityThread.field("mPackages").ofGenericType(Map.class);
-        ActivityThread_sPackageManager = ActivityThread.staticField("sPackageManager").ofType(IPackageManager.getmClass());
-        LoadedApk_mApplication = LoadedApk.field("mApplication").ofType(Application.class);
-        LoadedApk_mResources = LoadedApk.field("mResources").ofType(Resources.class);
+        ActivityThread_mInstrumentation = ActivityThread.field(
+                "mInstrumentation").ofType(Instrumentation.class);
+        ActivityThread_mAllApplications = ActivityThread.field(
+                "mAllApplications").ofGenericType(ArrayList.class);
+        ActivityThread_mInitialApplication = ActivityThread.field(
+                "mInitialApplication").ofType(Application.class);
+        ActivityThread_mPackages = ActivityThread.field("mPackages")
+                .ofGenericType(Map.class);
+        ActivityThread_sPackageManager = ActivityThread.staticField(
+                "sPackageManager").ofType(IPackageManager.getmClass());
+        LoadedApk_mApplication = LoadedApk.field("mApplication").ofType(
+                Application.class);
+        LoadedApk_mResources = LoadedApk.field("mResources").ofType(
+                Resources.class);
         LoadedApk_mResDir = LoadedApk.field("mResDir").ofType(String.class);
-        LoadedApk_mClassLoader = LoadedApk.field("mClassLoader").ofType(ClassLoader.class);
-        LoadedApk_mBaseClassLoader = LoadedApk.field("mBaseClassLoader").ofType(ClassLoader.class);
+        LoadedApk_mClassLoader = LoadedApk.field("mClassLoader").ofType(
+                ClassLoader.class);
+        LoadedApk_mBaseClassLoader = LoadedApk.field("mBaseClassLoader")
+                .ofType(ClassLoader.class);
         LoadedApk_mAppDir = LoadedApk.field("mAppDir").ofType(String.class);
-        ContextImpl_mResources = ContextImpl.field("mResources").ofType(Resources.class);
+        ContextImpl_mResources = ContextImpl.field("mResources").ofType(
+                Resources.class);
         ContextImpl_mTheme = ContextImpl.field("mTheme").ofType(Theme.class);
         sIsIgnoreFailure = true;
-        ContextThemeWrapper_mBase = ContextThemeWrapper.field("mBase").ofType(Context.class);
+        ContextThemeWrapper_mBase = ContextThemeWrapper.field("mBase").ofType(
+                Context.class);
         sIsIgnoreFailure = false;
-        ContextThemeWrapper_mTheme = ContextThemeWrapper.field("mTheme").ofType(Theme.class);
+        ContextThemeWrapper_mTheme = ContextThemeWrapper.field("mTheme")
+                .ofType(Theme.class);
         try {
-            if (VERSION.SDK_INT >= 17 && ContextThemeWrapper.getmClass().getDeclaredField("mResources") != null) {
-                ContextThemeWrapper_mResources = ContextThemeWrapper.field("mResources").ofType(Resources.class);
+            if (VERSION.SDK_INT >= 17
+                    && ContextThemeWrapper.getmClass().getDeclaredField(
+                            "mResources") != null) {
+                ContextThemeWrapper_mResources = ContextThemeWrapper.field(
+                        "mResources").ofType(Resources.class);
             }
         } catch (NoSuchFieldException e) {
-            log.warn("Not found ContextThemeWrapper.mResources on VERSION " + VERSION.SDK_INT);
+            log.warn("Not found ContextThemeWrapper.mResources on VERSION "
+                    + VERSION.SDK_INT);
         }
-        ContextWrapper_mBase = ContextWrapper.field("mBase").ofType(Context.class);
+        ContextWrapper_mBase = ContextWrapper.field("mBase").ofType(
+                Context.class);
         Resources_mAssets = Resources.field("mAssets");
     }
 
     public static void allMethods() throws HackAssertionException {
-        ActivityThread_currentActivityThread = ActivityThread.method("currentActivityThread", new Class[0]);
-        AssetManager_addAssetPath = AssetManager.method("addAssetPath", String.class);
+        ActivityThread_currentActivityThread = ActivityThread.method(
+                "currentActivityThread", new Class[0]);
+        AssetManager_addAssetPath = AssetManager.method("addAssetPath",
+                String.class);
         Application_attach = Application.method("attach", Context.class);
-        ClassLoader_findLibrary = ClassLoader.method("findLibrary", String.class);
+        ClassLoader_findLibrary = ClassLoader.method("findLibrary",
+                String.class);
         if (LexFile != null && LexFile.getmClass() != null) {
-            LexFile_loadLex = LexFile.method("loadLex", String.class, Integer.TYPE);
-            LexFile_loadClass = LexFile.method("loadClass", String.class, ClassLoader.class);
+            LexFile_loadLex = LexFile.method("loadLex", String.class,
+                    Integer.TYPE);
+            LexFile_loadClass = LexFile.method("loadClass", String.class,
+                    ClassLoader.class);
             LexFile_close = LexFile.method("close", new Class[0]);
-            DexClassLoader_findClass = DexClassLoader.method("findClass", String.class);
+            DexClassLoader_findClass = DexClassLoader.method("findClass",
+                    String.class);
         }
     }
 
     public static void allConstructors() throws HackAssertionException {
     }
 
-    public boolean onAssertionFailure(HackAssertionException hackAssertionException) {
+    public boolean onAssertionFailure(
+            HackAssertionException hackAssertionException) {
         if (!sIsIgnoreFailure) {
             if (this.mExceptionArray == null) {
-                this.mExceptionArray = new AssertionArrayException("atlas hack assert failed");
+                this.mExceptionArray = new AssertionArrayException(
+                        "atlas hack assert failed");
             }
             this.mExceptionArray.addException(hackAssertionException);
         }

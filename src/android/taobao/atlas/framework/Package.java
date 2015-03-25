@@ -31,7 +31,7 @@ final class Package implements ExportedPackage {
 
     public Bundle[] getImportingBundles() {
         if (this.importingBundles == null) {
-            return new Bundle[]{this.classloader.bundle};
+            return new Bundle[] { this.classloader.bundle };
         }
         Bundle[] bundleArr = new Bundle[(this.importingBundles.size() + 1)];
         this.importingBundles.toArray(bundleArr);
@@ -44,7 +44,8 @@ final class Package implements ExportedPackage {
     }
 
     public String getSpecificationVersion() {
-        return this.version == null ? null : this.version[0] + "." + this.version[1] + "." + this.version[2];
+        return this.version == null ? null : this.version[0] + "."
+                + this.version[1] + "." + this.version[2];
     }
 
     public boolean isRemovalPending() {
@@ -57,7 +58,8 @@ final class Package implements ExportedPackage {
         }
         Package packageR = (Package) obj;
         if (this.classloader == null) {
-            return matches(this.pkg, this.version, packageR.pkg, packageR.version);
+            return matches(this.pkg, this.version, packageR.pkg,
+                    packageR.version);
         }
         return obj.hashCode() == hashCode();
     }
@@ -66,7 +68,9 @@ final class Package implements ExportedPackage {
         if (this.version == null) {
             return this.pkg;
         }
-        return this.pkg + "; specification-version=" + getSpecificationVersion() + (this.resolved ? "" : " (UNRESOLVED)");
+        return this.pkg + "; specification-version="
+                + getSpecificationVersion()
+                + (this.resolved ? "" : " (UNRESOLVED)");
     }
 
     public int hashCode() {
@@ -75,17 +79,20 @@ final class Package implements ExportedPackage {
 
     static String[] parsePackageString(String str) {
         if (str.indexOf(";") > -1) {
-            return new String[]{str.substring(0, str.indexOf(";")).trim(), str.substring(str.indexOf(";") + 1).trim()};
+            return new String[] { str.substring(0, str.indexOf(";")).trim(),
+                    str.substring(str.indexOf(";") + 1).trim() };
         }
-        return new String[]{str.trim(), ""};
+        return new String[] { str.trim(), "" };
     }
 
     boolean matches(String str) {
         String[] parsePackageString = parsePackageString(str);
-        return matches(this.pkg, this.version, parsePackageString[0], getVersionNumber(parsePackageString[1]));
+        return matches(this.pkg, this.version, parsePackageString[0],
+                getVersionNumber(parsePackageString[1]));
     }
 
-    private static boolean matches(String str, short[] sArr, String str2, short[] sArr2) {
+    private static boolean matches(String str, short[] sArr, String str2,
+            short[] sArr2) {
         int indexOf = str2.indexOf(42);
         if (indexOf > -1) {
             if (indexOf == 0) {
@@ -127,7 +134,10 @@ final class Package implements ExportedPackage {
     static boolean matches(String str, String str2) {
         String[] parsePackageString = parsePackageString(str);
         String[] parsePackageString2 = parsePackageString(str2);
-        return matches(parsePackageString[0], getVersionNumber(parsePackageString[1]), parsePackageString2[0], getVersionNumber(parsePackageString2[1]));
+        return matches(parsePackageString[0],
+                getVersionNumber(parsePackageString[1]),
+                parsePackageString2[0],
+                getVersionNumber(parsePackageString2[1]));
     }
 
     private static short[] getVersionNumber(String str) {
@@ -142,7 +152,7 @@ final class Package implements ExportedPackage {
             trim = trim.substring(0, trim.length() - 1);
         }
         StringTokenizer stringTokenizer = new StringTokenizer(trim, ".");
-        short[] sArr = new short[]{(short) 0, (short) 0, (short) 0};
+        short[] sArr = new short[] { (short) 0, (short) 0, (short) 0 };
         int i = 0;
         while (stringTokenizer.hasMoreTokens() && i <= 2) {
             sArr[i] = Short.parseShort(stringTokenizer.nextToken());

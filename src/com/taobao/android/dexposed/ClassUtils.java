@@ -1,6 +1,5 @@
 package com.taobao.android.dexposed;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,9 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.osgi.framework.Constants;
-
-
-
 
 public class ClassUtils {
     public static final String INNER_CLASS_SEPARATOR;
@@ -94,14 +90,16 @@ public class ClassUtils {
         } else {
             str2 = str;
         }
-        int lastIndexOf = str2.lastIndexOf(Constants.LOGIN_HANDLER_KEY_SHOWMAINPAGE);
+        int lastIndexOf = str2
+                .lastIndexOf(Constants.LOGIN_HANDLER_KEY_SHOWMAINPAGE);
         if (lastIndexOf != -1) {
             i = lastIndexOf + 1;
         }
         i = str2.indexOf(Constants.LOGIN_HANDLER_KEY_CAIPIAO_MYORDER, i);
         str2 = str2.substring(lastIndexOf + 1);
         if (i != -1) {
-            str2 = str2.replace(INNER_CLASS_SEPARATOR_CHAR, PACKAGE_SEPARATOR_CHAR);
+            str2 = str2.replace(INNER_CLASS_SEPARATOR_CHAR,
+                    PACKAGE_SEPARATOR_CHAR);
         }
         return str2 + stringBuilder;
     }
@@ -132,7 +130,8 @@ public class ClassUtils {
         if (str.charAt(0) == 'L' && str.charAt(str.length() - 1) == ';') {
             str = str.substring(1);
         }
-        int lastIndexOf = str.lastIndexOf(Constants.LOGIN_HANDLER_KEY_SHOWMAINPAGE);
+        int lastIndexOf = str
+                .lastIndexOf(Constants.LOGIN_HANDLER_KEY_SHOWMAINPAGE);
         return lastIndexOf == -1 ? STRING_EMPTY : str.substring(0, lastIndexOf);
     }
 
@@ -141,7 +140,8 @@ public class ClassUtils {
             return null;
         }
         List<Class<?>> arrayList = new ArrayList();
-        for (Class superclass = cls.getSuperclass(); superclass != null; superclass = superclass.getSuperclass()) {
+        for (Class superclass = cls.getSuperclass(); superclass != null; superclass = superclass
+                .getSuperclass()) {
             arrayList.add(superclass);
         }
         return arrayList;
@@ -197,19 +197,28 @@ public class ClassUtils {
         return arrayList;
     }
 
-    public static Class<?> getClass(ClassLoader classLoader, String str, boolean z) throws ClassNotFoundException {
+    public static Class<?> getClass(ClassLoader classLoader, String str,
+            boolean z) throws ClassNotFoundException {
         ClassNotFoundException e;
         int lastIndexOf;
         try {
-            return abbreviationMap.containsKey(str) ? Class.forName("[" + ((String) abbreviationMap.get(str)), z, classLoader).getComponentType() : Class.forName(toCanonicalName(str), z, classLoader);
+            return abbreviationMap.containsKey(str) ? Class.forName(
+                    "[" + ((String) abbreviationMap.get(str)), z, classLoader)
+                    .getComponentType() : Class.forName(toCanonicalName(str),
+                    z, classLoader);
         } catch (ClassNotFoundException e2) {
             e = e2;
-           
-            lastIndexOf = str.lastIndexOf(Constants.LOGIN_HANDLER_KEY_SHOWMAINPAGE);
-       
+
+            lastIndexOf = str
+                    .lastIndexOf(Constants.LOGIN_HANDLER_KEY_SHOWMAINPAGE);
+
             if (lastIndexOf != -1) {
                 try {
-                    return getClass(classLoader, str.substring(0, lastIndexOf) + INNER_CLASS_SEPARATOR_CHAR + str.substring(lastIndexOf + 1), z);
+                    return getClass(
+                            classLoader,
+                            str.substring(0, lastIndexOf)
+                                    + INNER_CLASS_SEPARATOR_CHAR
+                                    + str.substring(lastIndexOf + 1), z);
                 } catch (ClassNotFoundException e3) {
                     throw e;
                 }
@@ -218,7 +227,8 @@ public class ClassUtils {
         }
     }
 
-    public static Class<?> getClass(ClassLoader classLoader, String str) throws ClassNotFoundException {
+    public static Class<?> getClass(ClassLoader classLoader, String str)
+            throws ClassNotFoundException {
         return getClass(classLoader, str, true);
     }
 
@@ -226,8 +236,10 @@ public class ClassUtils {
         return getClass(str, true);
     }
 
-    public static Class<?> getClass(String str, boolean z) throws ClassNotFoundException {
-        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+    public static Class<?> getClass(String str, boolean z)
+            throws ClassNotFoundException {
+        ClassLoader contextClassLoader = Thread.currentThread()
+                .getContextClassLoader();
         if (contextClassLoader == null) {
             contextClassLoader = ClassUtils.class.getClassLoader();
         }

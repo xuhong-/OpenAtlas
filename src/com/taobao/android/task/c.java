@@ -3,8 +3,6 @@ package com.taobao.android.task;
 import java.io.File;
 import java.io.FilenameFilter;
 
-
-
 import java.io.File;
 import java.io.FileFilter;
 
@@ -14,6 +12,7 @@ final class c implements FileFilter {
     }
 
     public boolean accept(File file) {
-        return SaturativeExecutor.PATTERN_CPU_ENTRIES.matcher(file.getName()).matches();
+        return SaturativeExecutor.PATTERN_CPU_ENTRIES.matcher(file.getName())
+                .matches();
     }
 }

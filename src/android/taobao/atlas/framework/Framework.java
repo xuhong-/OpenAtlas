@@ -92,7 +92,8 @@ public final class Framework {
         final Filter filter;
         final ServiceListener listener;
 
-        ServiceListenerEntry(ServiceListener serviceListener, String str) throws InvalidSyntaxException {
+        ServiceListenerEntry(ServiceListener serviceListener, String str)
+                throws InvalidSyntaxException {
             this.listener = serviceListener;
             this.filter = str == null ? null : RFC1960Filter.fromString(str);
         }
@@ -105,7 +106,8 @@ public final class Framework {
         }
 
         public int hashCode() {
-            return (this.filter != null ? this.filter.hashCode() >> 8 : 0) + this.listener.hashCode();
+            return (this.filter != null ? this.filter.hashCode() >> 8 : 0)
+                    + this.listener.hashCode();
         }
 
         public String toString() {
@@ -113,13 +115,14 @@ public final class Framework {
         }
     }
 
-    private static final class SystemBundle implements Bundle, PackageAdmin, StartLevel {
+    private static final class SystemBundle implements Bundle, PackageAdmin,
+            StartLevel {
         private final Dictionary<String, String> props;
         private final ServiceReference[] registeredServices;
         int state;
 
         class AnonymousClass_1 extends Thread {
-            final /* synthetic */ boolean val$restart;
+            final/* synthetic */boolean val$restart;
 
             AnonymousClass_1(boolean z) {
                 this.val$restart = z;
@@ -131,7 +134,7 @@ public final class Framework {
         }
 
         class AnonymousClass_2 extends Thread {
-            final /* synthetic */ int val$targetLevel;
+            final/* synthetic */int val$targetLevel;
 
             AnonymousClass_2(int i) {
                 this.val$targetLevel = i;
@@ -139,15 +142,18 @@ public final class Framework {
 
             public void run() {
                 List bundles = Framework.getBundles();
-                SystemBundle.this.setLevel((Bundle[]) bundles.toArray(new Bundle[bundles.size()]), this.val$targetLevel, false);
-                Framework.notifyFrameworkListeners(8, Framework.systemBundle, null);
+                SystemBundle.this.setLevel(
+                        (Bundle[]) bundles.toArray(new Bundle[bundles.size()]),
+                        this.val$targetLevel, false);
+                Framework.notifyFrameworkListeners(8, Framework.systemBundle,
+                        null);
                 Framework.storeMetadata();
             }
         }
 
-//TODO  this is a old version impl
+        // TODO this is a old version impl
         class AnonymousClass_3 extends Thread {
-            final /* synthetic */ Bundle[] val$bundleArray;
+            final/* synthetic */Bundle[] val$bundleArray;
 
             AnonymousClass_3(Bundle[] bundleArr) {
                 this.val$bundleArray = bundleArr;
@@ -162,7 +168,8 @@ public final class Framework {
                         BundleImpl bundleImpl;
                         if (this.val$bundleArray == null) {
                             bundles = Framework.getBundles();
-                            bundleArr = (Bundle[]) bundles.toArray(new Bundle[bundles.size()]);
+                            bundleArr = (Bundle[]) bundles
+                                    .toArray(new Bundle[bundles.size()]);
                         } else {
                             bundleArr = this.val$bundleArray;
                         }
@@ -170,7 +177,8 @@ public final class Framework {
                         for (i = 0; i < bundleArr.length; i++) {
                             if (bundleArr[i] != systemBundle) {
                                 bundleImpl = (BundleImpl) bundleArr[i];
-                                if (bundleImpl.classloader == null || bundleImpl.classloader.originalExporter != null) {
+                                if (bundleImpl.classloader == null
+                                        || bundleImpl.classloader.originalExporter != null) {
                                     arrayList.add(bundleArr[i]);
                                 }
                             }
@@ -180,18 +188,24 @@ public final class Framework {
                         }
                         int i2;
                         if (DEBUG_PACKAGES && log.isDebugEnabled()) {
-                            log.debug("REFRESHING PACKAGES FROM BUNDLES " + arrayList);
+                            log.debug("REFRESHING PACKAGES FROM BUNDLES "
+                                    + arrayList);
                         }
                         Set hashSet = new HashSet();
                         while (!arrayList.isEmpty()) {
                             bundleImpl = (BundleImpl) arrayList.remove(0);
                             if (!hashSet.contains(bundleImpl)) {
-                                ExportedPackage[] access$100 = SystemBundle.this.getExportedPackages(bundleImpl, true);
+                                ExportedPackage[] access$100 = SystemBundle.this
+                                        .getExportedPackages(bundleImpl, true);
                                 if (access$100 != null) {
                                     for (ExportedPackage exportedPackage : access$100) {
                                         Package packageR = (Package) exportedPackage;
                                         if (packageR.importingBundles != null) {
-                                            arrayList.addAll(Arrays.asList((Bundle[]) packageR.importingBundles.toArray(new Bundle[packageR.importingBundles.size()])));
+                                            arrayList
+                                                    .addAll(Arrays
+                                                            .asList((Bundle[]) packageR.importingBundles
+                                                                    .toArray(new Bundle[packageR.importingBundles
+                                                                            .size()])));
                                         }
                                     }
                                 }
@@ -206,7 +220,8 @@ public final class Framework {
                         Bundle[] bundleArr2 = new Bundle[hashSet.size()];
                         i = -1;
                         bundles = Framework.getBundles();
-                        Bundle[] bundleArr3 = (Bundle[]) bundles.toArray(new Bundle[bundles.size()]);
+                        Bundle[] bundleArr3 = (Bundle[]) bundles
+                                .toArray(new Bundle[bundles.size()]);
                         for (i2 = 0; i2 < bundleArr3.length; i2++) {
                             if (hashSet.contains(bundleArr3[i2])) {
                                 i++;
@@ -216,24 +231,28 @@ public final class Framework {
                         i2 = startlevel;
                         SystemBundle.this.setLevel(bundleArr2, 0, true);
                         for (i = 0; i < bundleArr2.length; i++) {
-                            ((BundleImpl) bundleArr2[i]).classloader.cleanup(false);
+                            ((BundleImpl) bundleArr2[i]).classloader
+                                    .cleanup(false);
                             ((BundleImpl) bundleArr2[i]).staleExportedPackages = null;
                         }
                         for (Bundle bundle : bundleArr2) {
                             BundleClassLoader bundleClassLoader = ((BundleImpl) bundle).classloader;
                             if (bundleClassLoader.exports.length > 0) {
-                                Framework.export(bundleClassLoader, bundleClassLoader.exports, false);
+                                Framework.export(bundleClassLoader,
+                                        bundleClassLoader.exports, false);
                             }
                         }
                         for (Bundle bundle2 : bundleArr2) {
                             try {
-                                ((BundleImpl) bundle2).classloader.resolveBundle(true, new HashSet());
+                                ((BundleImpl) bundle2).classloader
+                                        .resolveBundle(true, new HashSet());
                             } catch (BundleException e) {
                                 e.printStackTrace();
                             }
                         }
                         SystemBundle.this.setLevel(bundleArr2, i2, true);
-                        Framework.notifyFrameworkListeners(4, systemBundle, null);
+                        Framework.notifyFrameworkListeners(4, systemBundle,
+                                null);
                     } catch (Exception e2) {
                         e2.printStackTrace();
                     } catch (Throwable th) {
@@ -244,14 +263,21 @@ public final class Framework {
 
         SystemBundle() {
             this.props = new Hashtable();
-            this.props.put(Constants.BUNDLE_NAME, Constants.SYSTEM_BUNDLE_LOCATION);
-            this.props.put(Constants.BUNDLE_VERSION, Framework.FRAMEWORK_VERSION);
+            this.props.put(Constants.BUNDLE_NAME,
+                    Constants.SYSTEM_BUNDLE_LOCATION);
+            this.props.put(Constants.BUNDLE_VERSION,
+                    Framework.FRAMEWORK_VERSION);
             this.props.put(Constants.BUNDLE_VENDOR, "Atlas");
-            ServiceReferenceImpl serviceReferenceImpl = new ServiceReferenceImpl(this, this, null, new String[]{StartLevel.class.getName(), PackageAdmin.class.getName()});
-            Framework.addValue(Framework.classes_services, StartLevel.class.getName(), serviceReferenceImpl);
-            Framework.addValue(Framework.classes_services, PackageAdmin.class.getName(), serviceReferenceImpl);
+            ServiceReferenceImpl serviceReferenceImpl = new ServiceReferenceImpl(
+                    this, this, null, new String[] {
+                            StartLevel.class.getName(),
+                            PackageAdmin.class.getName() });
+            Framework.addValue(Framework.classes_services,
+                    StartLevel.class.getName(), serviceReferenceImpl);
+            Framework.addValue(Framework.classes_services,
+                    PackageAdmin.class.getName(), serviceReferenceImpl);
             Framework.services.add(serviceReferenceImpl);
-            this.registeredServices = new ServiceReference[]{serviceReferenceImpl};
+            this.registeredServices = new ServiceReference[] { serviceReferenceImpl };
         }
 
         public long getBundleId() {
@@ -321,7 +347,8 @@ public final class Framework {
             if (bundleImpl.state != 1) {
                 return bundleImpl.currentStartlevel;
             }
-            throw new IllegalArgumentException("Bundle " + bundle + " has been uninstalled");
+            throw new IllegalArgumentException("Bundle " + bundle
+                    + " has been uninstalled");
         }
 
         public int getInitialBundleStartLevel() {
@@ -340,22 +367,27 @@ public final class Framework {
             if (bundleImpl.state != 1) {
                 return bundleImpl.persistently;
             }
-            throw new IllegalArgumentException("Bundle " + bundle + " has been uninstalled");
+            throw new IllegalArgumentException("Bundle " + bundle
+                    + " has been uninstalled");
         }
 
         public void setBundleStartLevel(Bundle bundle, int i) {
             if (bundle == this) {
-                throw new IllegalArgumentException("Cannot set the start level for the system bundle.");
+                throw new IllegalArgumentException(
+                        "Cannot set the start level for the system bundle.");
             }
             BundleImpl bundleImpl = (BundleImpl) bundle;
             if (bundleImpl.state == 1) {
-                throw new IllegalArgumentException("Bundle " + bundle + " has been uninstalled");
+                throw new IllegalArgumentException("Bundle " + bundle
+                        + " has been uninstalled");
             } else if (i <= 0) {
-                throw new IllegalArgumentException("Start level " + i + " is not a valid level");
+                throw new IllegalArgumentException("Start level " + i
+                        + " is not a valid level");
             } else {
                 bundleImpl.currentStartlevel = i;
                 bundleImpl.updateMetadata();
-                if (i <= Framework.startlevel && bundle.getState() != 32 && bundleImpl.persistently) {
+                if (i <= Framework.startlevel && bundle.getState() != 32
+                        && bundleImpl.persistently) {
                     try {
                         bundleImpl.startBundle();
                     } catch (Throwable e) {
@@ -377,36 +409,42 @@ public final class Framework {
 
         public void setInitialBundleStartLevel(int i) {
             if (i <= 0) {
-                throw new IllegalArgumentException("Start level " + i + " is not a valid level");
+                throw new IllegalArgumentException("Start level " + i
+                        + " is not a valid level");
             }
             Framework.initStartlevel = i;
         }
 
         public void setStartLevel(int i) {
             if (i <= 0) {
-                throw new IllegalArgumentException("Start level " + i + " is not a valid level");
+                throw new IllegalArgumentException("Start level " + i
+                        + " is not a valid level");
             }
             new AnonymousClass_2(i).start();
         }
 
-        @SuppressLint({"UseSparseArrays"})
+        @SuppressLint({ "UseSparseArrays" })
         private void setLevel(Bundle[] bundleArr, int i, boolean z) {
             if (Framework.startlevel != i) {
                 int i2 = i > Framework.startlevel ? 1 : 0;
-                int i3 = i2 != 0 ? i - Framework.startlevel : Framework.startlevel - i;
+                int i3 = i2 != 0 ? i - Framework.startlevel
+                        : Framework.startlevel - i;
                 Map hashMap = new HashMap(0);
                 int i4 = 0;
                 while (i4 < bundleArr.length) {
-                    if (bundleArr[i4] != Framework.systemBundle && (z || ((BundleImpl) bundleArr[i4]).persistently)) {
+                    if (bundleArr[i4] != Framework.systemBundle
+                            && (z || ((BundleImpl) bundleArr[i4]).persistently)) {
                         int i5;
                         BundleImpl bundleImpl = (BundleImpl) bundleArr[i4];
                         if (i2 != 0) {
                             i5 = (bundleImpl.currentStartlevel - Framework.startlevel) - 1;
                         } else {
-                            i5 = Framework.startlevel - bundleImpl.currentStartlevel;
+                            i5 = Framework.startlevel
+                                    - bundleImpl.currentStartlevel;
                         }
                         if (i5 >= 0 && i5 < i3) {
-                            Framework.addValue(hashMap, Integer.valueOf(i5), bundleImpl);
+                            Framework.addValue(hashMap, Integer.valueOf(i5),
+                                    bundleImpl);
                         }
                     }
                     i4++;
@@ -419,25 +457,30 @@ public final class Framework {
                     }
                     List list = (List) hashMap.get(Integer.valueOf(i6));
                     if (list != null) {
-                        BundleImpl[] bundleImplArr = (BundleImpl[]) list.toArray(new BundleImpl[list.size()]);
+                        BundleImpl[] bundleImplArr = (BundleImpl[]) list
+                                .toArray(new BundleImpl[list.size()]);
                         for (i4 = 0; i4 < bundleImplArr.length; i4++) {
                             if (i2 != 0) {
                                 try {
-                                    System.out.println("STARTING " + bundleImplArr[i4].location);
+                                    System.out.println("STARTING "
+                                            + bundleImplArr[i4].location);
                                     bundleImplArr[i4].startBundle();
                                 } catch (Throwable e) {
-                                  e.printStackTrace();
                                     e.printStackTrace();
-                                    Framework.notifyFrameworkListeners(2, Framework.systemBundle, e);
+                                    e.printStackTrace();
+                                    Framework.notifyFrameworkListeners(2,
+                                            Framework.systemBundle, e);
                                 }
                             } else if (bundleImplArr[i4].getState() != 1) {
-                                System.out.println("STOPPING " + bundleImplArr[i4].location);
+                                System.out.println("STOPPING "
+                                        + bundleImplArr[i4].location);
                                 try {
-									bundleImplArr[(bundleImplArr.length - i4) - 1].stopBundle();
-								} catch (BundleException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+                                    bundleImplArr[(bundleImplArr.length - i4) - 1]
+                                            .stopBundle();
+                                } catch (BundleException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
@@ -470,13 +513,16 @@ public final class Framework {
                         }
                         ArrayList arrayList = new ArrayList();
                         for (String str : strArr) {
-                            Package packageR = (Package) Framework.exportedPackages.get(new Package(str, null, false));
-                            if (packageR != null && packageR.classloader == bundleImpl.classloader) {
+                            Package packageR = (Package) Framework.exportedPackages
+                                    .get(new Package(str, null, false));
+                            if (packageR != null
+                                    && packageR.classloader == bundleImpl.classloader) {
                                 if (packageR.resolved) {
                                     arrayList.add(packageR);
                                 } else {
                                     try {
-                                        packageR.classloader.resolveBundle(true, new HashSet());
+                                        packageR.classloader.resolveBundle(
+                                                true, new HashSet());
                                         arrayList.add(packageR);
                                     } catch (BundleException e) {
                                     }
@@ -484,20 +530,29 @@ public final class Framework {
                             }
                         }
                         if (bundleImpl.staleExportedPackages != null) {
-                            arrayList.addAll(Arrays.asList(bundleImpl.staleExportedPackages));
+                            arrayList.addAll(Arrays
+                                    .asList(bundleImpl.staleExportedPackages));
                         }
-                        System.out.println("\tBundle " + bundleImpl + " has exported packages " + arrayList);
-                        return arrayList.isEmpty() ? null : (ExportedPackage[]) arrayList.toArray(new ExportedPackage[arrayList.size()]);
+                        System.out.println("\tBundle " + bundleImpl
+                                + " has exported packages " + arrayList);
+                        return arrayList.isEmpty() ? null
+                                : (ExportedPackage[]) arrayList
+                                        .toArray(new ExportedPackage[arrayList
+                                                .size()]);
                     }
                 }
-                return (ExportedPackage[]) Framework.exportedPackages.keySet().toArray(new ExportedPackage[Framework.exportedPackages.size()]);
+                return (ExportedPackage[]) Framework.exportedPackages.keySet()
+                        .toArray(
+                                new ExportedPackage[Framework.exportedPackages
+                                        .size()]);
             }
         }
 
         public ExportedPackage getExportedPackage(String str) {
             synchronized (exportedPackages) {
                 try {
-                    Package packageR = (Package) exportedPackages.get(new Package(str, null, false));
+                    Package packageR = (Package) exportedPackages
+                            .get(new Package(str, null, false));
                     if (packageR == null) {
                         return null;
                     }
@@ -510,7 +565,7 @@ public final class Framework {
                 } catch (Throwable th) {
                 }
             }
-			return null;
+            return null;
         }
 
         public void refreshPackages(Bundle[] bundleArr) {
@@ -522,49 +577,47 @@ public final class Framework {
         }
     }
 
-    static BundleImpl installNewBundle(String arg7, File arg8) throws BundleException {
+    static BundleImpl installNewBundle(String arg7, File arg8)
+            throws BundleException {
         Bundle v0_1;
         try {
             BundleLock.WriteLock(arg7);
             v0_1 = Framework.getBundle(arg7);
-            if(v0_1 != null) {
+            if (v0_1 != null) {
+            } else {
+                v0_1 = new BundleImpl(
+                        new File(Framework.STORAGE_LOCATION, arg7), arg7,
+                        new BundleContextImpl(), null, arg8, true);
             }
-            else {
-            	v0_1 = new BundleImpl(new File(Framework.STORAGE_LOCATION, arg7), arg7, new BundleContextImpl(), 
-                        null, arg8, true);
-            }
-        }
-        catch(Throwable v0) {
-        	
-        	v0.printStackTrace();
+        } catch (Throwable v0) {
+
+            v0.printStackTrace();
             BundleLock.WriteUnLock(arg7);
             throw new BundleException(v0.getMessage());
         }
 
-        return ((BundleImpl)v0_1);
+        return ((BundleImpl) v0_1);
     }
 
-
-    static BundleImpl installNewBundle(String arg7, InputStream arg8) throws BundleException {
+    static BundleImpl installNewBundle(String arg7, InputStream arg8)
+            throws BundleException {
         Bundle v0_1 = null;
         try {
             BundleLock.WriteLock(arg7);
             v0_1 = Framework.getBundle(arg7);
-            if(v0_1 != null) {
-            }
-            else {
-                BundleImpl v0_2 = new BundleImpl(new File(Framework.STORAGE_LOCATION, arg7), arg7, new BundleContextImpl(), 
-                        arg8, null, true);
+            if (v0_1 != null) {
+            } else {
+                BundleImpl v0_2 = new BundleImpl(new File(
+                        Framework.STORAGE_LOCATION, arg7), arg7,
+                        new BundleContextImpl(), arg8, null, true);
                 Framework.storeMetadata();
                 return v0_2;
             }
-        }
-        catch(Throwable v0) {
+        } catch (Throwable v0) {
             BundleLock.WriteUnLock(arg7);
         }
 
-
-        return ((BundleImpl)v0_1);
+        return ((BundleImpl) v0_1);
     }
 
     static {
@@ -594,9 +647,12 @@ public final class Framework {
         int i;
         int property;
         frameworkStartupShutdown = true;
-        System.out.println("---------------------------------------------------------");
-        System.out.println("  Atlas OSGi 0.9.0 on " + Build.MODEL + "/" + Build.CPU_ABI + "/" + VERSION.RELEASE + " starting ...");
-        System.out.println("---------------------------------------------------------");
+        System.out
+                .println("---------------------------------------------------------");
+        System.out.println("  Atlas OSGi 0.9.0 on " + Build.MODEL + "/"
+                + Build.CPU_ABI + "/" + VERSION.RELEASE + " starting ...");
+        System.out
+                .println("---------------------------------------------------------");
         long currentTimeMillis = System.currentTimeMillis();
         boolean property2 = getProperty("osgi.init", false);
         if (property2) {
@@ -618,7 +674,8 @@ public final class Framework {
             }
             try {
                 file.mkdirs();
-                Integer.getInteger("osgi.maxLevel", Integer.valueOf(1)).intValue();
+                Integer.getInteger("osgi.maxLevel", Integer.valueOf(1))
+                        .intValue();
                 initStartlevel = getProperty("osgi.startlevel.bundle", 1);
                 property = getProperty("osgi.startlevel.framework", 1);
             } catch (Throwable e2) {
@@ -626,7 +683,9 @@ public final class Framework {
             }
         }
         property = i;
-        systemBundle.setLevel((Bundle[]) getBundles().toArray(new Bundle[bundles.size()]), property, false);
+        systemBundle.setLevel(
+                (Bundle[]) getBundles().toArray(new Bundle[bundles.size()]),
+                property, false);
         frameworkStartupShutdown = false;
         if (!restart) {
             try {
@@ -635,10 +694,14 @@ public final class Framework {
                 throw new RuntimeException("storeProfile failed", e22);
             }
         }
-        long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
-        System.out.println("---------------------------------------------------------");
-        System.out.println("  Framework " + (restart ? "restarted" : "started") + " in " + currentTimeMillis2 + " milliseconds.");
-        System.out.println("---------------------------------------------------------");
+        long currentTimeMillis2 = System.currentTimeMillis()
+                - currentTimeMillis;
+        System.out
+                .println("---------------------------------------------------------");
+        System.out.println("  Framework " + (restart ? "restarted" : "started")
+                + " in " + currentTimeMillis2 + " milliseconds.");
+        System.out
+                .println("---------------------------------------------------------");
         System.out.flush();
         systemBundle.state = 32;
         try {
@@ -669,12 +732,16 @@ public final class Framework {
     }
 
     static void shutdown(boolean z) {
-        System.out.println("---------------------------------------------------------");
+        System.out
+                .println("---------------------------------------------------------");
         System.out.println("  Atlas OSGi shutting down ...");
         System.out.println("  Bye !");
-        System.out.println("---------------------------------------------------------");
+        System.out
+                .println("---------------------------------------------------------");
         systemBundle.state = 16;
-        systemBundle.setLevel((Bundle[]) getBundles().toArray(new Bundle[bundles.size()]), 0, true);
+        systemBundle.setLevel(
+                (Bundle[]) getBundles().toArray(new Bundle[bundles.size()]), 0,
+                true);
         bundles.clear();
         systemBundle.state = 1;
         if (z) {
@@ -695,14 +762,20 @@ public final class Framework {
         if (filesDir == null || !filesDir.exists()) {
             filesDir = RuntimeVariables.androidApplication.getFilesDir();
         }
-        BASEDIR = properties.getProperty("android.taobao.atlas.basedir", filesDir.getAbsolutePath());
-        BUNDLE_LOCATION = properties.getProperty("android.taobao.atlas.jars", "file:" + BASEDIR);
-        CLASSLOADER_BUFFER_SIZE = getProperty("android.taobao.atlas.classloader.buffersize", 1024*10);
+        BASEDIR = properties.getProperty("android.taobao.atlas.basedir",
+                filesDir.getAbsolutePath());
+        BUNDLE_LOCATION = properties.getProperty("android.taobao.atlas.jars",
+                "file:" + BASEDIR);
+        CLASSLOADER_BUFFER_SIZE = getProperty(
+                "android.taobao.atlas.classloader.buffersize", 1024 * 10);
         LOG_LEVEL = getProperty("android.taobao.atlas.log.level", 6);
         DEBUG_BUNDLES = getProperty("android.taobao.atlas.debug.bundles", false);
-        DEBUG_PACKAGES = getProperty("android.taobao.atlas.debug.packages", false);
-        DEBUG_SERVICES = getProperty("android.taobao.atlas.debug.services", false);
-        DEBUG_CLASSLOADING = getProperty("android.taobao.atlas.debug.classloading", false);
+        DEBUG_PACKAGES = getProperty("android.taobao.atlas.debug.packages",
+                false);
+        DEBUG_SERVICES = getProperty("android.taobao.atlas.debug.services",
+                false);
+        DEBUG_CLASSLOADING = getProperty(
+                "android.taobao.atlas.debug.classloading", false);
         if (getProperty("android.taobao.atlas.debug", false)) {
             System.out.println("SETTING ALL DEBUG FLAGS");
             LOG_LEVEL = 3;
@@ -711,16 +784,22 @@ public final class Framework {
             DEBUG_SERVICES = true;
             DEBUG_CLASSLOADING = true;
         }
-        STRICT_STARTUP = getProperty("android.taobao.atlas.strictStartup", false);
-        String property = properties.getProperty("org.osgi.framework.system.packages");
+        STRICT_STARTUP = getProperty("android.taobao.atlas.strictStartup",
+                false);
+        String property = properties
+                .getProperty("org.osgi.framework.system.packages");
         if (property != null) {
             StringTokenizer stringTokenizer = new StringTokenizer(property, ",");
             int countTokens = stringTokenizer.countTokens();
             for (int i = 0; i < countTokens; i++) {
-                BundleClassLoader.FRAMEWORK_PACKAGES.add(stringTokenizer.nextToken().trim());
+                BundleClassLoader.FRAMEWORK_PACKAGES.add(stringTokenizer
+                        .nextToken().trim());
             }
         }
-        properties.put(Constants.FRAMEWORK_EXECUTIONENVIRONMENT, System.getProperty("java.specification.name") + "/" + System.getProperty("java.specification.version"));
+        properties.put(
+                Constants.FRAMEWORK_EXECUTIONENVIRONMENT,
+                System.getProperty("java.specification.name") + "/"
+                        + System.getProperty("java.specification.version"));
         Properties properties2 = properties;
         String str = Constants.FRAMEWORK_OS_NAME;
         Object property2 = System.getProperty("os.name");
@@ -751,7 +830,11 @@ public final class Framework {
             property2 = "en";
         }
         properties2.put(str, property2);
-        STORAGE_LOCATION = properties.getProperty("android.taobao.atlas.storage", properties.getProperty("org.osgi.framework.dir", BASEDIR + File.separatorChar + "storage")) + File.separatorChar;
+        STORAGE_LOCATION = properties.getProperty(
+                "android.taobao.atlas.storage",
+                properties.getProperty("org.osgi.framework.dir", BASEDIR
+                        + File.separatorChar + "storage"))
+                + File.separatorChar;
         launch();
         notifyFrameworkListeners(0, systemBundle, null);
     }
@@ -796,7 +879,8 @@ public final class Framework {
     }
 
     private static void storeProfile() {
-        BundleImpl[] bundleImplArr = (BundleImpl[]) getBundles().toArray(new BundleImpl[bundles.size()]);
+        BundleImpl[] bundleImplArr = (BundleImpl[]) getBundles().toArray(
+                new BundleImpl[bundles.size()]);
         for (BundleImpl updateMetadata : bundleImplArr) {
             updateMetadata.updateMetadata();
         }
@@ -810,12 +894,14 @@ public final class Framework {
             file = new File(STORAGE_LOCATION, "meta");
             try {
                 if (!AtlasFileLock.getInstance().LockExclusive(file)) {
-                    log.error("Failed to get fileLock for " + file.getAbsolutePath());
+                    log.error("Failed to get fileLock for "
+                            + file.getAbsolutePath());
                     AtlasFileLock.getInstance().unLock(file);
                 } else if (file.length() > 0) {
                     AtlasFileLock.getInstance().unLock(file);
                 } else {
-                    DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(file));
+                    DataOutputStream dataOutputStream = new DataOutputStream(
+                            new FileOutputStream(file));
                     dataOutputStream.writeInt(startlevel);
                     String join = StringUtils.join(writeAheads.toArray(), ",");
                     if (join == null) {
@@ -846,7 +932,7 @@ public final class Framework {
             e = th2;
             file = null;
             AtlasFileLock.getInstance().unLock(file);
-            
+
         }
     }
 
@@ -855,9 +941,11 @@ public final class Framework {
             System.out.println("Restoring profile");
             File file = new File(STORAGE_LOCATION, "meta");
             if (file.exists()) {
-                DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file));
+                DataInputStream dataInputStream = new DataInputStream(
+                        new FileInputStream(file));
                 int readInt = dataInputStream.readInt();
-                String[] split = StringUtils.split(dataInputStream.readUTF(), ",");
+                String[] split = StringUtils.split(dataInputStream.readUTF(),
+                        ",");
                 if (split != null) {
                     writeAheads.addAll(Arrays.asList(split));
                 }
@@ -877,9 +965,12 @@ public final class Framework {
                 });
                 int i = 0;
                 while (i < listFiles.length) {
-                    if (listFiles[i].isDirectory() && new File(listFiles[i], "meta").exists()) {
+                    if (listFiles[i].isDirectory()
+                            && new File(listFiles[i], "meta").exists()) {
                         try {
-                            System.out.println("RESTORED BUNDLE " + new BundleImpl(listFiles[i], new BundleContextImpl()).location);
+                            System.out.println("RESTORED BUNDLE "
+                                    + new BundleImpl(listFiles[i],
+                                            new BundleContextImpl()).location);
                         } catch (Exception e) {
                             log.error(e.getMessage(), e.getCause());
                         }
@@ -908,17 +999,26 @@ public final class Framework {
                                 if (listFiles != null) {
                                     for (File file4 : listFiles) {
                                         if (file4.isDirectory()) {
-                                            File file5 = new File(file2, file4.getName());
+                                            File file5 = new File(file2,
+                                                    file4.getName());
                                             if (file5.exists()) {
-                                                File[] listFiles2 = file4.listFiles(new FilenameFilter() {
-                                                    public boolean accept(File file, String str) {
-                                                        return str.startsWith(BundleArchive.REVISION_DIRECTORY);
-                                                    }
-                                                });
+                                                File[] listFiles2 = file4
+                                                        .listFiles(new FilenameFilter() {
+                                                            public boolean accept(
+                                                                    File file,
+                                                                    String str) {
+                                                                return str
+                                                                        .startsWith(BundleArchive.REVISION_DIRECTORY);
+                                                            }
+                                                        });
                                                 if (listFiles2 != null) {
                                                     for (File file6 : listFiles2) {
-                                                        if (new File(file6, "meta").exists()) {
-                                                            file6.renameTo(new File(file5, file6.getName()));
+                                                        if (new File(file6,
+                                                                "meta")
+                                                                .exists()) {
+                                                            file6.renameTo(new File(
+                                                                    file5,
+                                                                    file6.getName()));
                                                         }
                                                     }
                                                 }
@@ -960,16 +1060,21 @@ public final class Framework {
 
     static BundleImpl installNewBundle(String str) throws BundleException {
         try {
-            String str2 = str.indexOf(":") > -1 ? str : BUNDLE_LOCATION + File.separatorChar + str;
-            return installNewBundle(str2, new URL(str2).openConnection().getInputStream());
+            String str2 = str.indexOf(":") > -1 ? str : BUNDLE_LOCATION
+                    + File.separatorChar + str;
+            return installNewBundle(str2, new URL(str2).openConnection()
+                    .getInputStream());
         } catch (Throwable e) {
             throw new BundleException("Cannot retrieve bundle from " + str, e);
         }
     }
 
-    static void installOrUpdate(String[] strArr, File[] fileArr) throws BundleException {
-        if (strArr == null || fileArr == null || strArr.length != fileArr.length) {
-            throw new IllegalArgumentException("locations and files must not be null and must be same length");
+    static void installOrUpdate(String[] strArr, File[] fileArr)
+            throws BundleException {
+        if (strArr == null || fileArr == null
+                || strArr.length != fileArr.length) {
+            throw new IllegalArgumentException(
+                    "locations and files must not be null and must be same length");
         }
         String valueOf = String.valueOf(System.currentTimeMillis());
         File file = new File(new File(STORAGE_LOCATION, "wal"), valueOf);
@@ -983,7 +1088,9 @@ public final class Framework {
                     if (bundle != null) {
                         bundle.update(fileArr[i]);
                     } else {
-                        BundleImpl bundleImpl = new BundleImpl(new File(file, strArr[i]), strArr[i], new BundleContextImpl(), null, fileArr[i], false);
+                        BundleImpl bundleImpl = new BundleImpl(new File(file,
+                                strArr[i]), strArr[i], new BundleContextImpl(),
+                                null, fileArr[i], false);
                     }
                     BundleLock.WriteUnLock(strArr[i]);
                 } catch (Throwable th) {
@@ -998,7 +1105,9 @@ public final class Framework {
 
     static void unregisterService(ServiceReference serviceReference) {
         services.remove(serviceReference);
-        removeValue(classes_services, (String[]) serviceReference.getProperty(Constants.OBJECTCLASS), serviceReference);
+        removeValue(classes_services,
+                (String[]) serviceReference.getProperty(Constants.OBJECTCLASS),
+                serviceReference);
         BundleImpl bundleImpl = (BundleImpl) serviceReference.getBundle();
         bundleImpl.registeredServices.remove(serviceReference);
         if (bundleImpl.registeredServices.isEmpty()) {
@@ -1014,12 +1123,14 @@ public final class Framework {
         int i2 = 0;
         if (!syncBundleListeners.isEmpty() || !bundleListeners.isEmpty()) {
             BundleEvent bundleEvent = new BundleEvent(i, bundle);
-            BundleListener[] bundleListenerArr = (BundleListener[]) syncBundleListeners.toArray(new BundleListener[syncBundleListeners.size()]);
+            BundleListener[] bundleListenerArr = (BundleListener[]) syncBundleListeners
+                    .toArray(new BundleListener[syncBundleListeners.size()]);
             for (BundleListener bundleChanged : bundleListenerArr) {
                 bundleChanged.bundleChanged(bundleEvent);
             }
             if (!bundleListeners.isEmpty()) {
-                bundleListenerArr = (BundleListener[]) bundleListeners.toArray(new BundleListener[bundleListeners.size()]);
+                bundleListenerArr = (BundleListener[]) bundleListeners
+                        .toArray(new BundleListener[bundleListeners.size()]);
                 while (i2 < bundleListenerArr.length) {
                     bundleListenerArr[i2].bundleChanged(bundleEvent);
                     i2++;
@@ -1047,7 +1158,8 @@ public final class Framework {
     static void notifyFrameworkListeners(int i, Bundle bundle, Throwable th) {
         if (!frameworkListeners.isEmpty()) {
             FrameworkEvent frameworkEvent = new FrameworkEvent(i, bundle, th);
-            FrameworkListener[] frameworkListenerArr = (FrameworkListener[]) frameworkListeners.toArray(new FrameworkListener[frameworkListeners.size()]);
+            FrameworkListener[] frameworkListenerArr = (FrameworkListener[]) frameworkListeners
+                    .toArray(new FrameworkListener[frameworkListeners.size()]);
             for (FrameworkListener frameworkEvent2 : frameworkListenerArr) {
                 frameworkEvent2.frameworkEvent(frameworkEvent);
             }
@@ -1057,11 +1169,15 @@ public final class Framework {
     static void notifyServiceListeners(int i, ServiceReference serviceReference) {
         if (!serviceListeners.isEmpty()) {
             ServiceEvent serviceEvent = new ServiceEvent(i, serviceReference);
-            ServiceListenerEntry[] serviceListenerEntryArr = (ServiceListenerEntry[]) serviceListeners.toArray(new ServiceListenerEntry[serviceListeners.size()]);
+            ServiceListenerEntry[] serviceListenerEntryArr = (ServiceListenerEntry[]) serviceListeners
+                    .toArray(new ServiceListenerEntry[serviceListeners.size()]);
             int i2 = 0;
             while (i2 < serviceListenerEntryArr.length) {
-                if (serviceListenerEntryArr[i2].filter == null || serviceListenerEntryArr[i2].filter.match(((ServiceReferenceImpl) serviceReference).properties)) {
-                    serviceListenerEntryArr[i2].listener.serviceChanged(serviceEvent);
+                if (serviceListenerEntryArr[i2].filter == null
+                        || serviceListenerEntryArr[i2].filter
+                                .match(((ServiceReferenceImpl) serviceReference).properties)) {
+                    serviceListenerEntryArr[i2].listener
+                            .serviceChanged(serviceEvent);
                 }
                 i2++;
             }
@@ -1071,7 +1187,8 @@ public final class Framework {
     static void clearBundleTrace(BundleImpl bundleImpl) {
         int i = 0;
         if (bundleImpl.registeredFrameworkListeners != null) {
-            frameworkListeners.removeAll(bundleImpl.registeredFrameworkListeners);
+            frameworkListeners
+                    .removeAll(bundleImpl.registeredFrameworkListeners);
             bundleImpl.registeredFrameworkListeners = null;
         }
         if (bundleImpl.registeredServiceListeners != null) {
@@ -1083,7 +1200,8 @@ public final class Framework {
             syncBundleListeners.removeAll(bundleImpl.registeredBundleListeners);
             bundleImpl.registeredBundleListeners = null;
         }
-        ServiceReference[] registeredServices = bundleImpl.getRegisteredServices();
+        ServiceReference[] registeredServices = bundleImpl
+                .getRegisteredServices();
         if (registeredServices != null) {
             for (int i2 = 0; i2 < registeredServices.length; i2++) {
                 unregisterService(registeredServices[i2]);
@@ -1121,10 +1239,13 @@ public final class Framework {
         }
     }
 
-    static void export(BundleClassLoader bundleClassLoader, String[] strArr, boolean z) {
+    static void export(BundleClassLoader bundleClassLoader, String[] strArr,
+            boolean z) {
         synchronized (exportedPackages) {
             if (DEBUG_PACKAGES && log.isDebugEnabled()) {
-                log.debug("Bundle " + bundleClassLoader.bundle + " registers " + (z ? "resolved" : "unresolved") + " packages " + Arrays.asList(strArr));
+                log.debug("Bundle " + bundleClassLoader.bundle + " registers "
+                        + (z ? "resolved" : "unresolved") + " packages "
+                        + Arrays.asList(strArr));
             }
             for (String str : strArr) {
                 Package packageR = new Package(str, bundleClassLoader, z);
@@ -1134,24 +1255,28 @@ public final class Framework {
                     if (DEBUG_PACKAGES && log.isDebugEnabled()) {
                         log.debug("REGISTERED PACKAGE " + packageR);
                     }
-                } else if (packageR2.importingBundles == null && packageR.updates(packageR2)) {
+                } else if (packageR2.importingBundles == null
+                        && packageR.updates(packageR2)) {
                     exportedPackages.remove(packageR2);
                     exportedPackages.put(packageR, packageR);
                     if (DEBUG_PACKAGES && log.isDebugEnabled()) {
-                        log.debug("REPLACED PACKAGE " + packageR2 + " WITH " + packageR);
+                        log.debug("REPLACED PACKAGE " + packageR2 + " WITH "
+                                + packageR);
                     }
                 }
             }
         }
     }
 
-    static BundleClassLoader getImport(BundleImpl bundleImpl, String str, boolean z, HashSet<BundleClassLoader> hashSet) {
+    static BundleClassLoader getImport(BundleImpl bundleImpl, String str,
+            boolean z, HashSet<BundleClassLoader> hashSet) {
         if (DEBUG_PACKAGES && log.isDebugEnabled()) {
             log.debug("Bundle " + bundleImpl + " requests package " + str);
         }
         synchronized (exportedPackages) {
             try {
-                Package packageR = (Package) exportedPackages.get(new Package(str, null, false));
+                Package packageR = (Package) exportedPackages.get(new Package(
+                        str, null, false));
                 if (packageR == null || !(packageR.resolved || z)) {
                     return null;
                 }
@@ -1159,7 +1284,8 @@ public final class Framework {
                 if (bundleClassLoader == bundleImpl.classloader) {
                     return bundleClassLoader;
                 }
-                if (!(!z || packageR.resolved || hashSet.contains(packageR.classloader))) {
+                if (!(!z || packageR.resolved || hashSet
+                        .contains(packageR.classloader))) {
                     hashSet.add(bundleImpl.classloader);
                     packageR.classloader.resolveBundle(true, hashSet);
                 }
@@ -1170,7 +1296,9 @@ public final class Framework {
                     packageR.importingBundles.add(bundleImpl);
                 }
                 if (DEBUG_PACKAGES && log.isDebugEnabled()) {
-                    log.debug("REQUESTED PACKAGE " + str + ", RETURNED DELEGATION TO " + bundleClassLoader.bundle);
+                    log.debug("REQUESTED PACKAGE " + str
+                            + ", RETURNED DELEGATION TO "
+                            + bundleClassLoader.bundle);
                 }
                 return bundleClassLoader;
             } catch (Exception e) {
@@ -1179,8 +1307,9 @@ public final class Framework {
             } catch (Throwable th) {
             }
         }
-		return null;
+        return null;
     }
+
     public static boolean isFrameworkStartupShutdown() {
         return frameworkStartupShutdown;
     }
@@ -1189,7 +1318,8 @@ public final class Framework {
         return classNotFoundCallback;
     }
 
-    public static void setClassNotFoundCallback(ClassNotFoundInterceptorCallback classNotFoundInterceptorCallback) {
+    public static void setClassNotFoundCallback(
+            ClassNotFoundInterceptorCallback classNotFoundInterceptorCallback) {
         classNotFoundCallback = classNotFoundInterceptorCallback;
     }
 }

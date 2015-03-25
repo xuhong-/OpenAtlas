@@ -21,8 +21,6 @@ import org.osgi.framework.GetUserInfoRequest;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
-
-
 final class RFC1960Filter implements Filter {
     private static final int AND_OPERATOR = 1;
     private static final int APPROX = 2;
@@ -56,7 +54,8 @@ final class RFC1960Filter implements Filter {
                 Dictionary hashtable = new Hashtable();
                 String[] propertyKeys = serviceReference.getPropertyKeys();
                 for (int i = EQUALS; i < propertyKeys.length; i++) {
-                    hashtable.put(propertyKeys[i], serviceReference.getProperty(propertyKeys[i]));
+                    hashtable.put(propertyKeys[i],
+                            serviceReference.getProperty(propertyKeys[i]));
                 }
                 return match(hashtable);
             }
@@ -87,33 +86,41 @@ final class RFC1960Filter implements Filter {
             }
             try {
                 if (obj instanceof String) {
-                    return compareString(this.value, this.comparator, (String) obj);
+                    return compareString(this.value, this.comparator,
+                            (String) obj);
                 }
                 if (obj instanceof Number) {
-                    return compareNumber(this.value, this.comparator, (Number) obj);
+                    return compareNumber(this.value, this.comparator,
+                            (Number) obj);
                 }
                 if (obj instanceof String[]) {
                     String[] strArr = (String[]) obj;
                     if (strArr.length == 0) {
                         return false;
                     }
-                    String stripWhitespaces = this.comparator == 2 ? stripWhitespaces(this.value) : this.value;
+                    String stripWhitespaces = this.comparator == 2 ? stripWhitespaces(this.value)
+                            : this.value;
                     for (int i = 0; i < strArr.length; i++) {
-                        if (compareString(stripWhitespaces, this.comparator, strArr[i])) {
+                        if (compareString(stripWhitespaces, this.comparator,
+                                strArr[i])) {
                             return true;
                         }
                     }
                     return false;
                 } else if (obj instanceof Boolean) {
                     boolean z = true;
-                    if ((this.comparator == 0 || this.comparator == 2) && ((Boolean) obj).equals(Boolean.valueOf(this.value))) {
+                    if ((this.comparator == 0 || this.comparator == 2)
+                            && ((Boolean) obj).equals(Boolean
+                                    .valueOf(this.value))) {
                         int i2 = 1;
                     } else {
                         z = false;
                     }
                     return z;
                 } else if (obj instanceof Character) {
-                    return this.value.length() == 1 ? compareTyped(new Character(this.value.charAt(EQUALS)), this.comparator, (Character) obj) : false;
+                    return this.value.length() == 1 ? compareTyped(
+                            new Character(this.value.charAt(EQUALS)),
+                            this.comparator, (Character) obj) : false;
                 } else {
                     if (obj instanceof Vector) {
                         Vector vector = (Vector) obj;
@@ -121,16 +128,24 @@ final class RFC1960Filter implements Filter {
                         vector.copyInto(objArr);
                         return compareArray(this.value, this.comparator, objArr);
                     } else if (obj instanceof Object[]) {
-                        return compareArray(this.value, this.comparator, (Object[]) obj);
+                        return compareArray(this.value, this.comparator,
+                                (Object[]) obj);
                     } else {
                         if (!obj.getClass().isArray()) {
-                            return obj instanceof Comparable ? compareReflective(this.value, this.comparator, (Comparable) obj) : false;
+                            return obj instanceof Comparable ? compareReflective(
+                                    this.value, this.comparator,
+                                    (Comparable) obj) : false;
                         } else {
                             int i3 = 0;
                             while (i3 < Array.getLength(obj)) {
                                 Object obj3 = Array.get(obj, i3);
-                                if (!(obj3 instanceof Number) || !compareNumber(this.value, this.comparator, (Number) obj3)) {
-                                    if ((obj3 instanceof Comparable) && compareReflective(this.value, this.comparator, (Comparable) obj3)) {
+                                if (!(obj3 instanceof Number)
+                                        || !compareNumber(this.value,
+                                                this.comparator, (Number) obj3)) {
+                                    if ((obj3 instanceof Comparable)
+                                            && compareReflective(this.value,
+                                                    this.comparator,
+                                                    (Comparable) obj3)) {
                                     }
                                     i3++;
                                 }
@@ -153,15 +168,18 @@ final class RFC1960Filter implements Filter {
                 str2 = stripWhitespaces(str2).toLowerCase();
             }
             switch (i) {
-                case EQUALS:
-                case OR_OPERATOR:
-                    return stringCompare(str.toCharArray(), EQUALS, str2.toCharArray(), EQUALS) == 0;
-                case NOT_OPERATOR:
-                    return stringCompare(str.toCharArray(), EQUALS, str2.toCharArray(), EQUALS) <= 0;
-                case LESS:
-                    return stringCompare(str.toCharArray(), EQUALS, str2.toCharArray(), EQUALS) >= 0;
-                default:
-                    throw new IllegalStateException("Found illegal comparator.");
+            case EQUALS:
+            case OR_OPERATOR:
+                return stringCompare(str.toCharArray(), EQUALS,
+                        str2.toCharArray(), EQUALS) == 0;
+            case NOT_OPERATOR:
+                return stringCompare(str.toCharArray(), EQUALS,
+                        str2.toCharArray(), EQUALS) <= 0;
+            case LESS:
+                return stringCompare(str.toCharArray(), EQUALS,
+                        str2.toCharArray(), EQUALS) >= 0;
+            default:
+                throw new IllegalStateException("Found illegal comparator.");
             }
         }
 
@@ -170,56 +188,56 @@ final class RFC1960Filter implements Filter {
                 int intValue = ((Integer) number).intValue();
                 int parseInt = Integer.parseInt(str);
                 switch (i) {
-                    case NOT_OPERATOR:
-                        return intValue >= parseInt;
-                    case LESS:
-                        return intValue <= parseInt;
-                    default:
-                        return intValue == parseInt;
+                case NOT_OPERATOR:
+                    return intValue >= parseInt;
+                case LESS:
+                    return intValue <= parseInt;
+                default:
+                    return intValue == parseInt;
                 }
             } else if (number instanceof Long) {
                 long longValue = ((Long) number).longValue();
                 long parseLong = Long.parseLong(str);
                 switch (i) {
-                    case NOT_OPERATOR:
-                        return longValue >= parseLong;
-                    case LESS:
-                        return longValue <= parseLong;
-                    default:
-                        return longValue == parseLong;
+                case NOT_OPERATOR:
+                    return longValue >= parseLong;
+                case LESS:
+                    return longValue <= parseLong;
+                default:
+                    return longValue == parseLong;
                 }
             } else if (number instanceof Short) {
                 short shortValue = ((Short) number).shortValue();
                 short parseShort = Short.parseShort(str);
                 switch (i) {
-                    case NOT_OPERATOR:
-                        return shortValue >= parseShort;
-                    case LESS:
-                        return shortValue <= parseShort;
-                    default:
-                        return shortValue == parseShort;
+                case NOT_OPERATOR:
+                    return shortValue >= parseShort;
+                case LESS:
+                    return shortValue <= parseShort;
+                default:
+                    return shortValue == parseShort;
                 }
             } else if (number instanceof Double) {
                 double doubleValue = ((Double) number).doubleValue();
                 double parseDouble = Double.parseDouble(str);
                 switch (i) {
-                    case NOT_OPERATOR:
-                        return doubleValue >= parseDouble;
-                    case LESS:
-                        return doubleValue <= parseDouble;
-                    default:
-                        return doubleValue == parseDouble;
+                case NOT_OPERATOR:
+                    return doubleValue >= parseDouble;
+                case LESS:
+                    return doubleValue <= parseDouble;
+                default:
+                    return doubleValue == parseDouble;
                 }
             } else if (number instanceof Float) {
                 float floatValue = ((Float) number).floatValue();
                 float parseFloat = Float.parseFloat(str);
                 switch (i) {
-                    case NOT_OPERATOR:
-                        return floatValue >= parseFloat;
-                    case LESS:
-                        return floatValue <= parseFloat;
-                    default:
-                        return floatValue == parseFloat;
+                case NOT_OPERATOR:
+                    return floatValue >= parseFloat;
+                case LESS:
+                    return floatValue <= parseFloat;
+                default:
+                    return floatValue == parseFloat;
                 }
             } else {
                 if (number instanceof Byte) {
@@ -232,17 +250,18 @@ final class RFC1960Filter implements Filter {
             }
         }
 
-        private static boolean compareTyped(Object obj, int i, Comparable comparable) {
+        private static boolean compareTyped(Object obj, int i,
+                Comparable comparable) {
             switch (i) {
-                case EQUALS:
-                case OR_OPERATOR:
-                    return comparable.equals(obj);
-                case NOT_OPERATOR:
-                    return comparable.compareTo(obj) >= 0;
-                case LESS:
-                    return comparable.compareTo(obj) <= 0;
-                default:
-                    throw new IllegalStateException("Found illegal comparator.");
+            case EQUALS:
+            case OR_OPERATOR:
+                return comparable.equals(obj);
+            case NOT_OPERATOR:
+                return comparable.compareTo(obj) >= 0;
+            case LESS:
+                return comparable.compareTo(obj) <= 0;
+            default:
+                throw new IllegalStateException("Found illegal comparator.");
             }
         }
 
@@ -257,16 +276,21 @@ final class RFC1960Filter implements Filter {
                     if (compareNumber(str, i, (Number) obj)) {
                         return true;
                     }
-                } else if ((obj instanceof Comparable) && compareReflective(str, i, (Comparable) obj)) {
+                } else if ((obj instanceof Comparable)
+                        && compareReflective(str, i, (Comparable) obj)) {
                     return true;
                 }
             }
             return false;
         }
 
-        private static boolean compareReflective(String str, int i, Comparable comparable) {
+        private static boolean compareReflective(String str, int i,
+                Comparable comparable) {
             try {
-                return compareTyped(comparable.getClass().getConstructor(STRINGCLASS).newInstance(new Object[]{str}), i, comparable);
+                return compareTyped(
+                        comparable.getClass().getConstructor(STRINGCLASS)
+                                .newInstance(new Object[] { str }), i,
+                        comparable);
             } catch (Exception e) {
                 return false;
             }
@@ -276,7 +300,8 @@ final class RFC1960Filter implements Filter {
             return str.replace(' ', '\u0000');
         }
 
-        private static int stringCompare(char[] cArr, int i, char[] cArr2, int i2) {
+        private static int stringCompare(char[] cArr, int i, char[] cArr2,
+                int i2) {
             if (i == cArr.length) {
                 return 0;
             }
@@ -335,7 +360,8 @@ final class RFC1960Filter implements Filter {
         }
 
         public String toString() {
-            return "(" + this.id + OP[this.comparator] + (this.value == null ? "" : this.value) + ")";
+            return "(" + this.id + OP[this.comparator]
+                    + (this.value == null ? "" : this.value) + ")";
         }
 
         public boolean equals(Object obj) {
@@ -343,7 +369,9 @@ final class RFC1960Filter implements Filter {
                 return false;
             }
             RFC1960SimpleFilter rFC1960SimpleFilter = (RFC1960SimpleFilter) obj;
-            return this.comparator == rFC1960SimpleFilter.comparator && this.id.equals(rFC1960SimpleFilter.id) && this.value.equals(rFC1960SimpleFilter.value);
+            return this.comparator == rFC1960SimpleFilter.comparator
+                    && this.id.equals(rFC1960SimpleFilter.id)
+                    && this.value.equals(rFC1960SimpleFilter.value);
         }
 
         public int hashCode() {
@@ -352,8 +380,8 @@ final class RFC1960Filter implements Filter {
     }
 
     static {
-        OP = new String[]{"=", "=*", "~=", ">=", "<="};
-        STRINGCLASS = new Class[]{String.class};
+        OP = new String[] { "=", "=*", "~=", ">=", "<=" };
+        STRINGCLASS = new Class[] { String.class };
         NULL_FILTER = new Filter() {
             public boolean match(ServiceReference serviceReference) {
                 return true;
@@ -392,193 +420,215 @@ final class RFC1960Filter implements Filter {
                 String trim;
                 Object obj;
                 switch (toCharArray[i4]) {
-                    case 40:
-                        char c = toCharArray[i4 + 1];
+                case 40:
+                    char c = toCharArray[i4 + 1];
+                    i5 = i4;
+                    while (Character.isWhitespace(c)) {
+                        i4 = i5 + 1;
+                        c = toCharArray[i4 + 1];
                         i5 = i4;
-                        while (Character.isWhitespace(c)) {
-                            i4 = i5 + 1;
-                            c = toCharArray[i4 + 1];
-                            i5 = i4;
-                        }
-                        if (c == '&') {
-                            stack.push(new RFC1960Filter(1));
-                            i6 = i3;
-                            str3 = str2;
-                            i3 = i2;
-                            i7 = i;
-                        } else if (c == '|') {
-                            stack.push(new RFC1960Filter(2));
-                            i6 = i3;
-                            str3 = str2;
-                            i3 = i2;
-                            i7 = i;
-                        } else if (c == '!') {
-                            stack.push(new RFC1960Filter(3));
-                            i6 = i3;
-                            str3 = str2;
-                            i3 = i2;
-                            i7 = i;
-                        } else if (i == -1) {
-                            i6 = i3;
-                            str3 = str2;
-                            i3 = i2;
-                            i7 = i5;
-                        } else {
-                            throw new InvalidSyntaxException("Surplus left paranthesis at: " + str.substring(i5), str);
-                        }
-                    case Constants.LOGIN_HANDLER_KEY_PURCHASE:
-                        RFC1960Filter rFC1960Filter;
-                        if (i == -1) {
-                            rFC1960Filter = (RFC1960Filter) stack.pop();
-                            if (stack.isEmpty()) {
-                                return rFC1960Filter;
-                            }
-                            RFC1960Filter rFC1960Filter2 = (RFC1960Filter) stack.peek();
-                            if (rFC1960Filter2.operator != 3 || rFC1960Filter2.operands.isEmpty()) {
-                                rFC1960Filter2.operands.add(rFC1960Filter);
-                                if (i4 == length - 1) {
-                                    throw new InvalidSyntaxException("Missing right paranthesis at the end.", str);
-                                }
-                                i5 = i4;
-                                i6 = i3;
-                                str3 = str2;
-                                i3 = i2;
-                                i7 = i;
-                            } else {
-                                throw new InvalidSyntaxException("Unexpected literal: " + str.substring(i4), str);
-                            }
-                        } else if (i2 == 0) {
-                            throw new InvalidSyntaxException("Missing operator.", str);
-                        } else if (!stack.isEmpty()) {
-                        	  
-                            rFC1960Filter = (RFC1960Filter) stack.peek();
-                            String substring  = str.substring(i2 + 1, i4);
-                            if (substring.equals(GetUserInfoRequest.version) && i3 == 0) {
-                                i3 = PRESENT;
-                                substring = null;
-                            }
-                            rFC1960Filter.operands.add(new RFC1960SimpleFilter(null,i3, substring));
-                            Object obj2 = null;
-                            Object obj3 = -1;
-                            int i8 = i4;
-                            Object obj4 = null;
-                            i6 = -1;
-                            i5 = i8;
-                        } else if (i4 == length - 1) {
-                            String substring = str.substring(i2 + 1, length - 1);
-                            if (substring.equals(GetUserInfoRequest.version) && i3 == 0) {
-                                i3 = PRESENT;
-                                substring = null;
-                            } else {
-                                substring = substring;
-                            }
-                            return new RFC1960SimpleFilter(null,i3, substring);
-                        } else {
-                            throw new InvalidSyntaxException("Unexpected literal: " + str.substring(i4), str);
-                        }
-                    case 60:
-                        if (i2 == 0 && toCharArray[i4 + 1] == '=') {
-                            trim = str.substring(i + 1, i4).trim();
-                            obj = LESS;
-                            i5 = i4 + 1;
-                            str3 = trim;
-                            i7 = i;
-                            i3 = i5;
-                        }
-                        throw new InvalidSyntaxException("Unexpected character " + toCharArray[i4 + 1], str);
-                    case Constants.LOGIN_HANDLER_KEY_TF_PUBACCOUNT_ADDFOLLOW:
-                        i3 = i4;
-                        i7 = i;
-                        obj = null;
-                        i5 = i4;
-                        str3 = str.substring(i + 1, i4).trim();
-                        break;
-                    case Constants.LOGIN_HANDLER_KEY_TC_SCAN_PAY:
-                        if (i2 == 0 && toCharArray[i4 + 1] == '=') {
-                            trim = str.substring(i + 1, i4).trim();
-                            obj = NOT_OPERATOR;
-                            i5 = i4 + 1;
-                            str3 = trim;
-                            i7 = i;
-                            i3 = i5;
-                        }
-                        throw new InvalidSyntaxException("Unexpected character " + toCharArray[i4 + 1], str);
-                    case Constants.ITEM_DELETE_DAY30:
-                        if (i2 == 0 && toCharArray[i4 + 1] == '=') {
-                            trim = str.substring(i + 1, i4).trim();
-                            obj = OR_OPERATOR;
-                            i5 = i4 + 1;
-                            str3 = trim;
-                            i7 = i;
-                            i3 = i5;
-                        }
-                        throw new InvalidSyntaxException("Unexpected character " + toCharArray[i4 + 1], str);
-                    default:
-                        i5 = i4;
+                    }
+                    if (c == '&') {
+                        stack.push(new RFC1960Filter(1));
                         i6 = i3;
                         str3 = str2;
                         i3 = i2;
                         i7 = i;
-                        break;
+                    } else if (c == '|') {
+                        stack.push(new RFC1960Filter(2));
+                        i6 = i3;
+                        str3 = str2;
+                        i3 = i2;
+                        i7 = i;
+                    } else if (c == '!') {
+                        stack.push(new RFC1960Filter(3));
+                        i6 = i3;
+                        str3 = str2;
+                        i3 = i2;
+                        i7 = i;
+                    } else if (i == -1) {
+                        i6 = i3;
+                        str3 = str2;
+                        i3 = i2;
+                        i7 = i5;
+                    } else {
+                        throw new InvalidSyntaxException(
+                                "Surplus left paranthesis at: "
+                                        + str.substring(i5), str);
+                    }
+                case Constants.LOGIN_HANDLER_KEY_PURCHASE:
+                    RFC1960Filter rFC1960Filter;
+                    if (i == -1) {
+                        rFC1960Filter = (RFC1960Filter) stack.pop();
+                        if (stack.isEmpty()) {
+                            return rFC1960Filter;
+                        }
+                        RFC1960Filter rFC1960Filter2 = (RFC1960Filter) stack
+                                .peek();
+                        if (rFC1960Filter2.operator != 3
+                                || rFC1960Filter2.operands.isEmpty()) {
+                            rFC1960Filter2.operands.add(rFC1960Filter);
+                            if (i4 == length - 1) {
+                                throw new InvalidSyntaxException(
+                                        "Missing right paranthesis at the end.",
+                                        str);
+                            }
+                            i5 = i4;
+                            i6 = i3;
+                            str3 = str2;
+                            i3 = i2;
+                            i7 = i;
+                        } else {
+                            throw new InvalidSyntaxException(
+                                    "Unexpected literal: " + str.substring(i4),
+                                    str);
+                        }
+                    } else if (i2 == 0) {
+                        throw new InvalidSyntaxException("Missing operator.",
+                                str);
+                    } else if (!stack.isEmpty()) {
+
+                        rFC1960Filter = (RFC1960Filter) stack.peek();
+                        String substring = str.substring(i2 + 1, i4);
+                        if (substring.equals(GetUserInfoRequest.version)
+                                && i3 == 0) {
+                            i3 = PRESENT;
+                            substring = null;
+                        }
+                        rFC1960Filter.operands.add(new RFC1960SimpleFilter(
+                                null, i3, substring));
+                        Object obj2 = null;
+                        Object obj3 = -1;
+                        int i8 = i4;
+                        Object obj4 = null;
+                        i6 = -1;
+                        i5 = i8;
+                    } else if (i4 == length - 1) {
+                        String substring = str.substring(i2 + 1, length - 1);
+                        if (substring.equals(GetUserInfoRequest.version)
+                                && i3 == 0) {
+                            i3 = PRESENT;
+                            substring = null;
+                        } else {
+                            substring = substring;
+                        }
+                        return new RFC1960SimpleFilter(null, i3, substring);
+                    } else {
+                        throw new InvalidSyntaxException("Unexpected literal: "
+                                + str.substring(i4), str);
+                    }
+                case 60:
+                    if (i2 == 0 && toCharArray[i4 + 1] == '=') {
+                        trim = str.substring(i + 1, i4).trim();
+                        obj = LESS;
+                        i5 = i4 + 1;
+                        str3 = trim;
+                        i7 = i;
+                        i3 = i5;
+                    }
+                    throw new InvalidSyntaxException("Unexpected character "
+                            + toCharArray[i4 + 1], str);
+                case Constants.LOGIN_HANDLER_KEY_TF_PUBACCOUNT_ADDFOLLOW:
+                    i3 = i4;
+                    i7 = i;
+                    obj = null;
+                    i5 = i4;
+                    str3 = str.substring(i + 1, i4).trim();
+                    break;
+                case Constants.LOGIN_HANDLER_KEY_TC_SCAN_PAY:
+                    if (i2 == 0 && toCharArray[i4 + 1] == '=') {
+                        trim = str.substring(i + 1, i4).trim();
+                        obj = NOT_OPERATOR;
+                        i5 = i4 + 1;
+                        str3 = trim;
+                        i7 = i;
+                        i3 = i5;
+                    }
+                    throw new InvalidSyntaxException("Unexpected character "
+                            + toCharArray[i4 + 1], str);
+                case Constants.ITEM_DELETE_DAY30:
+                    if (i2 == 0 && toCharArray[i4 + 1] == '=') {
+                        trim = str.substring(i + 1, i4).trim();
+                        obj = OR_OPERATOR;
+                        i5 = i4 + 1;
+                        str3 = trim;
+                        i7 = i;
+                        i3 = i5;
+                    }
+                    throw new InvalidSyntaxException("Unexpected character "
+                            + toCharArray[i4 + 1], str);
+                default:
+                    i5 = i4;
+                    i6 = i3;
+                    str3 = str2;
+                    i3 = i2;
+                    i7 = i;
+                    break;
                 }
                 i2 = i3;
                 i = i7;
                 str2 = str3;
-              //  i3 = i6;
+                // i3 = i6;
                 i4 = i5 + 1;
             }
             return (RFC1960Filter) stack.pop();
         } catch (EmptyStackException e) {
-            throw new InvalidSyntaxException("Filter expression not well-formed.", str);
+            throw new InvalidSyntaxException(
+                    "Filter expression not well-formed.", str);
         }
     }
 
-//    public boolean match(ServiceReference serviceReference) {
-//        try {
-//            return match(((ServiceReferenceImpl) serviceReference).properties);
-//        } catch (Exception e) {
-//            Dictionary hashtable = new Hashtable();
-//            String[] propertyKeys = serviceReference.getPropertyKeys();
-//            for (int i = EQUALS; i < propertyKeys.length; i++) {
-//                hashtable.put(propertyKeys[i], serviceReference.getProperty(propertyKeys[i]));
-//            }
-//            return match(hashtable);
-//        }
-//    }
+    // public boolean match(ServiceReference serviceReference) {
+    // try {
+    // return match(((ServiceReferenceImpl) serviceReference).properties);
+    // } catch (Exception e) {
+    // Dictionary hashtable = new Hashtable();
+    // String[] propertyKeys = serviceReference.getPropertyKeys();
+    // for (int i = EQUALS; i < propertyKeys.length; i++) {
+    // hashtable.put(propertyKeys[i],
+    // serviceReference.getProperty(propertyKeys[i]));
+    // }
+    // return match(hashtable);
+    // }
+    // }
 
-//    public boolean match(Dictionary dictionary) {
-//        Filter[] filterArr;
-//        int i;
-//        if (this.operator == 1) {
-//            filterArr = (Filter[]) this.operands.toArray(new Filter[this.operands.size()]);
-//            for (i = 0; i < filterArr.length; i++) {
-//                if (!filterArr[i].match(dictionary)) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        } else if (this.operator == 2) {
-//            filterArr = (Filter[]) this.operands.toArray(new Filter[this.operands.size()]);
-//            for (i = 0; i < filterArr.length; i++) {
-//                if (filterArr[i].match(dictionary)) {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        } else if (this.operator == 3) {
-//            return !((Filter) this.operands.get(EQUALS)).match(dictionary);
-//        } else {
-//            throw new IllegalStateException("PARSER ERROR");
-//        }
-//    }
+    // public boolean match(Dictionary dictionary) {
+    // Filter[] filterArr;
+    // int i;
+    // if (this.operator == 1) {
+    // filterArr = (Filter[]) this.operands.toArray(new
+    // Filter[this.operands.size()]);
+    // for (i = 0; i < filterArr.length; i++) {
+    // if (!filterArr[i].match(dictionary)) {
+    // return false;
+    // }
+    // }
+    // return true;
+    // } else if (this.operator == 2) {
+    // filterArr = (Filter[]) this.operands.toArray(new
+    // Filter[this.operands.size()]);
+    // for (i = 0; i < filterArr.length; i++) {
+    // if (filterArr[i].match(dictionary)) {
+    // return true;
+    // }
+    // }
+    // return false;
+    // } else if (this.operator == 3) {
+    // return !((Filter) this.operands.get(EQUALS)).match(dictionary);
+    // } else {
+    // throw new IllegalStateException("PARSER ERROR");
+    // }
+    // }
 
     public String toString() {
         int i = EQUALS;
         if (this.operator == 3) {
             return "(!" + this.operands.get(EQUALS) + ")";
         }
-        StringBuffer stringBuffer = new StringBuffer(this.operator == 1 ? "(&" : "(|");
-        Filter[] filterArr = (Filter[]) this.operands.toArray(new Filter[this.operands.size()]);
+        StringBuffer stringBuffer = new StringBuffer(this.operator == 1 ? "(&"
+                : "(|");
+        Filter[] filterArr = (Filter[]) this.operands
+                .toArray(new Filter[this.operands.size()]);
         while (i < filterArr.length) {
             stringBuffer.append(filterArr[i]);
             i++;
@@ -595,8 +645,10 @@ final class RFC1960Filter implements Filter {
         if (this.operands.size() != rFC1960Filter.operands.size()) {
             return false;
         }
-        Filter[] filterArr = (Filter[]) this.operands.toArray(new Filter[this.operands.size()]);
-        Filter[] filterArr2 = (Filter[]) rFC1960Filter.operands.toArray(new Filter[this.operands.size()]);
+        Filter[] filterArr = (Filter[]) this.operands
+                .toArray(new Filter[this.operands.size()]);
+        Filter[] filterArr2 = (Filter[]) rFC1960Filter.operands
+                .toArray(new Filter[this.operands.size()]);
         for (int i = 0; i < filterArr.length; i++) {
             if (!filterArr[i].equals(filterArr2[i])) {
                 return false;
@@ -609,26 +661,28 @@ final class RFC1960Filter implements Filter {
         return toString().hashCode();
     }
 
-	@Override
-	public boolean match(ServiceReference reference) {
+    @Override
+    public boolean match(ServiceReference reference) {
         try {
             return match(((ServiceReferenceImpl) reference).properties);
         } catch (Exception e) {
             Dictionary hashtable = new Hashtable();
             String[] propertyKeys = reference.getPropertyKeys();
             for (int i = EQUALS; i < propertyKeys.length; i++) {
-                hashtable.put(propertyKeys[i], reference.getProperty(propertyKeys[i]));
+                hashtable.put(propertyKeys[i],
+                        reference.getProperty(propertyKeys[i]));
             }
             return match(hashtable);
         }
     }
 
-	@Override
-	public boolean match(Dictionary dictionary) {
+    @Override
+    public boolean match(Dictionary dictionary) {
         Filter[] filterArr;
         int i;
         if (this.operator == 1) {
-            filterArr = (Filter[]) this.operands.toArray(new Filter[this.operands.size()]);
+            filterArr = (Filter[]) this.operands
+                    .toArray(new Filter[this.operands.size()]);
             for (i = 0; i < filterArr.length; i++) {
                 if (!filterArr[i].match(dictionary)) {
                     return false;
@@ -636,7 +690,8 @@ final class RFC1960Filter implements Filter {
             }
             return true;
         } else if (this.operator == 2) {
-            filterArr = (Filter[]) this.operands.toArray(new Filter[this.operands.size()]);
+            filterArr = (Filter[]) this.operands
+                    .toArray(new Filter[this.operands.size()]);
             for (i = 0; i < filterArr.length; i++) {
                 if (filterArr[i].match(dictionary)) {
                     return true;
@@ -649,7 +704,5 @@ final class RFC1960Filter implements Filter {
             throw new IllegalStateException("PARSER ERROR");
         }
     }
-
-	
 
 }

@@ -32,7 +32,6 @@ import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
-
 public final class BundleImpl implements Bundle {
     static final Logger log;
     Archive archive;
@@ -41,7 +40,7 @@ public final class BundleImpl implements Bundle {
     private final BundleContextImpl context;
     int currentStartlevel;
     ProtectionDomain domain;
-    Hashtable<String, String> headers=new Hashtable<String, String>();
+    Hashtable<String, String> headers = new Hashtable<String, String>();
     final String location;
     boolean persistently;
     List<BundleListener> registeredBundleListeners;
@@ -55,7 +54,9 @@ public final class BundleImpl implements Bundle {
         log = LoggerFactory.getInstance("BundleImpl");
     }
 
-    BundleImpl(File file, String str, BundleContextImpl bundleContextImpl, InputStream inputStream, File file2, boolean z) throws BundleException {
+    BundleImpl(File file, String str, BundleContextImpl bundleContextImpl,
+            InputStream inputStream, File file2, boolean z)
+            throws BundleException {
         this.persistently = false;
         this.domain = null;
         this.registeredServices = null;
@@ -78,11 +79,11 @@ public final class BundleImpl implements Bundle {
             }
         } else if (file2 != null) {
             try {
-				this.archive = new BundleArchive(str, file, file2);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                this.archive = new BundleArchive(str, file, file2);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         this.state = 2;
         Framework.notifyBundleListeners(1, this);
@@ -92,7 +93,8 @@ public final class BundleImpl implements Bundle {
             resolveBundle(false);
         }
         if (Framework.DEBUG_BUNDLES && log.isInfoEnabled()) {
-            log.info("Framework: Bundle " + toString() + " created. " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
+            log.info("Framework: Bundle " + toString() + " created. "
+                    + (System.currentTimeMillis() - currentTimeMillis) + " ms");
         }
     }
 
@@ -107,7 +109,8 @@ public final class BundleImpl implements Bundle {
         long currentTimeMillis = System.currentTimeMillis();
         File file2 = new File(file, "meta");
         if (AtlasFileLock.getInstance().LockExclusive(file2)) {
-            DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file2));
+            DataInputStream dataInputStream = new DataInputStream(
+                    new FileInputStream(file2));
             this.location = dataInputStream.readUTF();
             this.currentStartlevel = dataInputStream.readInt();
             this.state = 2;
@@ -122,12 +125,15 @@ public final class BundleImpl implements Bundle {
                 Framework.bundles.put(this.location, this);
                 resolveBundle(false);
                 if (Framework.DEBUG_BUNDLES && log.isInfoEnabled()) {
-                    log.info("Framework: Bundle " + toString() + " loaded. " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
+                    log.info("Framework: Bundle " + toString() + " loaded. "
+                            + (System.currentTimeMillis() - currentTimeMillis)
+                            + " ms");
                     return;
                 }
                 return;
             } catch (Exception e) {
-                throw new BundleException("Could not load bundle " + this.location, e.getCause());
+                throw new BundleException("Could not load bundle "
+                        + this.location, e.getCause());
             }
         }
         throw new BundleException("FileLock failed " + file2.getAbsolutePath());
@@ -170,11 +176,14 @@ public final class BundleImpl implements Bundle {
 
     public ServiceReference[] getRegisteredServices() {
         if (this.state == 1) {
-            throw new IllegalStateException("Bundle " + toString() + "has been unregistered.");
+            throw new IllegalStateException("Bundle " + toString()
+                    + "has been unregistered.");
         } else if (this.registeredServices == null) {
             return null;
         } else {
-            return (ServiceReference[]) this.registeredServices.toArray(new ServiceReference[this.registeredServices.size()]);
+            return (ServiceReference[]) this.registeredServices
+                    .toArray(new ServiceReference[this.registeredServices
+                            .size()]);
         }
     }
 
@@ -182,15 +191,18 @@ public final class BundleImpl implements Bundle {
         if (this.state != 1) {
             return this.classloader.getResource(str);
         }
-        throw new IllegalStateException("Bundle " + toString() + " has been uninstalled");
+        throw new IllegalStateException("Bundle " + toString()
+                + " has been uninstalled");
     }
 
     public ServiceReference[] getServicesInUse() {
         if (this.state == 1) {
-            throw new IllegalStateException("Bundle " + toString() + "has been unregistered.");
+            throw new IllegalStateException("Bundle " + toString()
+                    + "has been unregistered.");
         }
         ArrayList arrayList = new ArrayList();
-        ServiceReferenceImpl[] serviceReferenceImplArr = (ServiceReferenceImpl[]) Framework.services.toArray(new ServiceReferenceImpl[Framework.services.size()]);
+        ServiceReferenceImpl[] serviceReferenceImplArr = (ServiceReferenceImpl[]) Framework.services
+                .toArray(new ServiceReferenceImpl[Framework.services.size()]);
         int i = 0;
         while (i < serviceReferenceImplArr.length) {
             synchronized (serviceReferenceImplArr[i].useCounters) {
@@ -200,7 +212,8 @@ public final class BundleImpl implements Bundle {
             }
             i++;
         }
-        return (ServiceReference[]) arrayList.toArray(new ServiceReference[arrayList.size()]);
+        return (ServiceReference[]) arrayList
+                .toArray(new ServiceReference[arrayList.size()]);
     }
 
     public int getState() {
@@ -211,7 +224,8 @@ public final class BundleImpl implements Bundle {
         if (this.state != 1) {
             return true;
         }
-        throw new IllegalStateException("Bundle " + toString() + "has been unregistered.");
+        throw new IllegalStateException("Bundle " + toString()
+                + "has been unregistered.");
     }
 
     public synchronized void start() throws BundleException {
@@ -223,27 +237,32 @@ public final class BundleImpl implements Bundle {
     }
 
     public synchronized void startBundle() throws BundleException {
-    	state=0;//TODO
+        state = 0;// TODO
         if (this.state == 1) {
-            throw new IllegalStateException("Cannot start uninstalled bundle " + toString());
+            throw new IllegalStateException("Cannot start uninstalled bundle "
+                    + toString());
         } else if (this.state != 32) {
             if (this.state == 2) {
                 resolveBundle(true);
             }
             this.state = 8;
-            try {this.classloader.activatorClassName="com.taobao.scan.SimpleBundle";
-//            	Bundle-Activator="com.taobao.scan.SimpleBundle"
-//            	Bundle-Activity="com.taobao.scan.MainActivity"
+            try {
+                this.classloader.activatorClassName = "com.taobao.scan.SimpleBundle";
+                // Bundle-Activator="com.taobao.scan.SimpleBundle"
+                // Bundle-Activity="com.taobao.scan.MainActivity"
                 this.context.isValid = true;
-                if (!(this.classloader.activatorClassName == null || StringUtils.isBlank(this.classloader.activatorClassName))) {
-                    Class loadClass = this.classloader.loadClass(this.classloader.activatorClassName);
+                if (!(this.classloader.activatorClassName == null || StringUtils
+                        .isBlank(this.classloader.activatorClassName))) {
+                    Class loadClass = this.classloader
+                            .loadClass(this.classloader.activatorClassName);
                     if (loadClass == null) {
-                        throw new ClassNotFoundException(this.classloader.activatorClassName);
+                        throw new ClassNotFoundException(
+                                this.classloader.activatorClassName);
                     }
-                    this.classloader.activator = (BundleActivator) loadClass.newInstance();
+                    this.classloader.activator = (BundleActivator) loadClass
+                            .newInstance();
                     this.classloader.activator.start(this.context);
-                    
-                    
+
                 }
                 this.state = 32;
                 Framework.notifyBundleListeners(2, this);
@@ -271,7 +290,8 @@ public final class BundleImpl implements Bundle {
 
     public synchronized void stopBundle() throws BundleException {
         if (this.state == 1) {
-            throw new IllegalStateException("Cannot stop uninstalled bundle " + toString());
+            throw new IllegalStateException("Cannot stop uninstalled bundle "
+                    + toString());
         } else if (this.state == 32) {
             this.state = 16;
             try {
@@ -298,7 +318,8 @@ public final class BundleImpl implements Bundle {
 
     public synchronized void uninstall() throws BundleException {
         if (this.state == 1) {
-            throw new IllegalStateException("Bundle " + toString() + " is already uninstalled.");
+            throw new IllegalStateException("Bundle " + toString()
+                    + " is already uninstalled.");
         }
         if (this.state == 32) {
             try {
@@ -323,7 +344,8 @@ public final class BundleImpl implements Bundle {
             this.context.isValid = false;
             this.context.bundle = null;
         } else {
-            throw new BundleException("FileLock failed " + file.getAbsolutePath());
+            throw new BundleException("FileLock failed "
+                    + file.getAbsolutePath());
         }
     }
 
@@ -338,35 +360,43 @@ public final class BundleImpl implements Bundle {
             }
             update(new URL(str2).openConnection().getInputStream());
         } catch (Throwable e) {
-            throw new BundleException("Could not update " + toString() + " from " + str, e);
+            throw new BundleException("Could not update " + toString()
+                    + " from " + str, e);
         }
     }
 
-    public synchronized void update(InputStream inputStream) throws BundleException {
+    public synchronized void update(InputStream inputStream)
+            throws BundleException {
         if (this.state == 1) {
-            throw new IllegalStateException("Cannot update uninstalled bundle " + toString());
+            throw new IllegalStateException("Cannot update uninstalled bundle "
+                    + toString());
         }
         try {
-            this.archive.newRevision(this.location, this.bundleDir, inputStream);
+            this.archive
+                    .newRevision(this.location, this.bundleDir, inputStream);
         } catch (Throwable e) {
-            throw new BundleException("Could not update bundle " + toString(), e);
+            throw new BundleException("Could not update bundle " + toString(),
+                    e);
         }
     }
 
     public synchronized void update(File file) throws BundleException {
         if (this.state == 1) {
-            throw new IllegalStateException("Cannot update uninstalled bundle " + toString());
+            throw new IllegalStateException("Cannot update uninstalled bundle "
+                    + toString());
         }
         try {
             this.archive.newRevision(this.location, this.bundleDir, file);
         } catch (Throwable e) {
-            throw new BundleException("Could not update bundle " + toString(), e);
+            throw new BundleException("Could not update bundle " + toString(),
+                    e);
         }
     }
 
     public synchronized void refresh() throws BundleException {
         if (this.state == 1) {
-            throw new IllegalStateException("Cannot refresh uninstalled bundle " + toString());
+            throw new IllegalStateException(
+                    "Cannot refresh uninstalled bundle " + toString());
         }
         Object obj;
         if (this.state == 32) {
@@ -384,8 +414,10 @@ public final class BundleImpl implements Bundle {
                 Object obj2 = null;
                 while (i < strArr.length) {
                     Object obj3;
-                    Package packageR = (Package) Framework.exportedPackages.get(new Package(strArr[i], null, false));
-                    if (packageR.importingBundles == null || packageR.classloader != this.classloader) {
+                    Package packageR = (Package) Framework.exportedPackages
+                            .get(new Package(strArr[i], null, false));
+                    if (packageR.importingBundles == null
+                            || packageR.classloader != this.classloader) {
                         obj3 = obj2;
                     } else {
                         packageR.removalPending = true;
@@ -416,7 +448,8 @@ public final class BundleImpl implements Bundle {
         } catch (BundleException e) {
             throw e;
         } catch (Throwable e2) {
-            throw new BundleException("Could not refresh bundle " + toString(), e2);
+            throw new BundleException("Could not refresh bundle " + toString(),
+                    e2);
         }
     }
 
@@ -442,7 +475,8 @@ public final class BundleImpl implements Bundle {
             }
             if (AtlasFileLock.getInstance().LockExclusive(file)) {
                 OutputStream fileOutputStream = new FileOutputStream(file);
-                DataOutputStream dataOutputStream2 = new DataOutputStream(fileOutputStream);
+                DataOutputStream dataOutputStream2 = new DataOutputStream(
+                        fileOutputStream);
                 try {
                     dataOutputStream2.writeUTF(this.location);
                     dataOutputStream2.writeInt(this.currentStartlevel);
@@ -464,7 +498,9 @@ public final class BundleImpl implements Bundle {
                     e = e3;
                     dataOutputStream = dataOutputStream2;
                     try {
-                        log.error("Could not save meta data " + file.getAbsolutePath(), e);
+                        log.error(
+                                "Could not save meta data "
+                                        + file.getAbsolutePath(), e);
                         AtlasFileLock.getInstance().unLock(file);
                         if (dataOutputStream != null) {
                             try {
@@ -484,7 +520,7 @@ public final class BundleImpl implements Bundle {
                                 e4.printStackTrace();
                             }
                         }
-                     
+
                     }
                 } catch (Throwable th2) {
                     e = th2;
@@ -493,7 +529,7 @@ public final class BundleImpl implements Bundle {
                     if (dataOutputStream != null) {
                         dataOutputStream.close();
                     }
-                  
+
                 }
             }
             log.error("Failed to get file lock for " + file.getAbsolutePath());
@@ -511,11 +547,11 @@ public final class BundleImpl implements Bundle {
             AtlasFileLock.getInstance().unLock(file);
             if (dataOutputStream != null) {
                 try {
-					dataOutputStream.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                    dataOutputStream.close();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         }
     }

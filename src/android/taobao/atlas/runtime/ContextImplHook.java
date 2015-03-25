@@ -57,7 +57,8 @@ public class ContextImplHook extends ContextWrapper {
             packageName = intent.getComponent().getPackageName();
             obj = intent.getComponent().getClassName();
         } else {
-            ResolveInfo resolveActivity = getBaseContext().getPackageManager().resolveActivity(intent, 0);
+            ResolveInfo resolveActivity = getBaseContext().getPackageManager()
+                    .resolveActivity(intent, 0);
             if (resolveActivity == null || resolveActivity.activityInfo == null) {
                 packageName = null;
             } else {
@@ -85,25 +86,29 @@ public class ContextImplHook extends ContextWrapper {
             } catch (ClassNotFoundException e2) {
                 log.error("Can't find class " + obj);
                 if (Framework.getClassNotFoundCallback() != null) {
-                    if (intent.getComponent() == null && !TextUtils.isEmpty(obj)) {
+                    if (intent.getComponent() == null
+                            && !TextUtils.isEmpty(obj)) {
                         intent.setClassName(this, obj);
                     }
                     if (intent.getComponent() != null) {
-                        Framework.getClassNotFoundCallback().returnIntent(intent);
+                        Framework.getClassNotFoundCallback().returnIntent(
+                                intent);
                     }
                 }
             }
         }
     }
 
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+    public boolean bindService(Intent intent,
+            ServiceConnection serviceConnection, int i) {
         String packageName;
         String str = null;
         if (intent.getComponent() != null) {
             packageName = intent.getComponent().getPackageName();
             str = intent.getComponent().getClassName();
         } else {
-            ResolveInfo resolveService = getBaseContext().getPackageManager().resolveService(intent, 0);
+            ResolveInfo resolveService = getBaseContext().getPackageManager()
+                    .resolveService(intent, 0);
             if (resolveService == null || resolveService.serviceInfo == null) {
                 packageName = null;
             } else {
@@ -116,12 +121,14 @@ public class ContextImplHook extends ContextWrapper {
         }
         packageName = DelegateComponent.locateComponent(str);
         if (packageName != null) {
-            BundleImpl bundleImpl = (BundleImpl) Framework.getBundle(packageName);
+            BundleImpl bundleImpl = (BundleImpl) Framework
+                    .getBundle(packageName);
             if (bundleImpl != null) {
                 try {
                     bundleImpl.startBundle();
                 } catch (BundleException e) {
-                    log.error(e.getMessage() + " Caused by: ", e.getNestedException());
+                    log.error(e.getMessage() + " Caused by: ",
+                            e.getNestedException());
                 }
             }
             return super.bindService(intent, serviceConnection, i);
@@ -150,7 +157,8 @@ public class ContextImplHook extends ContextWrapper {
             packageName = intent.getComponent().getPackageName();
             className = intent.getComponent().getClassName();
         } else {
-            ResolveInfo resolveService = getBaseContext().getPackageManager().resolveService(intent, 0);
+            ResolveInfo resolveService = getBaseContext().getPackageManager()
+                    .resolveService(intent, 0);
             if (resolveService == null || resolveService.serviceInfo == null) {
                 className = null;
                 packageName = null;
@@ -164,12 +172,14 @@ public class ContextImplHook extends ContextWrapper {
         }
         packageName = DelegateComponent.locateComponent(className);
         if (packageName != null) {
-            BundleImpl bundleImpl = (BundleImpl) Framework.getBundle(packageName);
+            BundleImpl bundleImpl = (BundleImpl) Framework
+                    .getBundle(packageName);
             if (bundleImpl != null) {
                 try {
                     bundleImpl.startBundle();
                 } catch (BundleException e) {
-                    log.error(e.getMessage() + " Caused by: ", e.getNestedException());
+                    log.error(e.getMessage() + " Caused by: ",
+                            e.getNestedException());
                 }
             }
             return super.startService(intent);

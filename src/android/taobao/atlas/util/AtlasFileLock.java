@@ -37,7 +37,9 @@ public class AtlasFileLock {
     static {
         int myPid = Process.myPid();
         if (RuntimeVariables.androidApplication.getApplicationContext() != null) {
-            for (RunningAppProcessInfo runningAppProcessInfo : ((ActivityManager) RuntimeVariables.androidApplication.getApplicationContext().getSystemService("activity")).getRunningAppProcesses()) {
+            for (RunningAppProcessInfo runningAppProcessInfo : ((ActivityManager) RuntimeVariables.androidApplication
+                    .getApplicationContext().getSystemService("activity"))
+                    .getRunningAppProcesses()) {
                 if (runningAppProcessInfo.pid == myPid) {
                     processName = runningAppProcessInfo.processName;
                 }
@@ -56,13 +58,15 @@ public class AtlasFileLock {
         Integer valueOf;
         Integer.valueOf(0);
         if (this.mRefCountMap.containsKey(str)) {
-            FileLockCount fileLockCount = (FileLockCount) this.mRefCountMap.get(str);
+            FileLockCount fileLockCount = (FileLockCount) this.mRefCountMap
+                    .get(str);
             int i = fileLockCount.mRefCount;
             fileLockCount.mRefCount = i + 1;
             valueOf = Integer.valueOf(i);
         } else {
             valueOf = Integer.valueOf(1);
-            this.mRefCountMap.put(str, new FileLockCount(fileLock, valueOf.intValue()));
+            this.mRefCountMap.put(str,
+                    new FileLockCount(fileLock, valueOf.intValue()));
         }
         return valueOf.intValue();
     }
@@ -70,7 +74,8 @@ public class AtlasFileLock {
     private int RefCntDec(String str) {
         Integer valueOf = Integer.valueOf(0);
         if (this.mRefCountMap.containsKey(str)) {
-            FileLockCount fileLockCount = (FileLockCount) this.mRefCountMap.get(str);
+            FileLockCount fileLockCount = (FileLockCount) this.mRefCountMap
+                    .get(str);
             int i = fileLockCount.mRefCount - 1;
             fileLockCount.mRefCount = i;
             valueOf = Integer.valueOf(i);
@@ -86,7 +91,8 @@ public class AtlasFileLock {
             return false;
         }
         try {
-            FileChannel channel = new RandomAccessFile(file.getAbsolutePath(), "rw").getChannel();
+            FileChannel channel = new RandomAccessFile(file.getAbsolutePath(),
+                    "rw").getChannel();
             if (channel == null) {
                 return false;
             }
@@ -99,19 +105,25 @@ public class AtlasFileLock {
             Log.i(TAG, processName + " FileLock " + file + " Suc! ");
             return true;
         } catch (Exception e) {
-            Log.e(TAG, processName + " FileLock " + file + " FAIL! " + e.getMessage());
+            Log.e(TAG,
+                    processName + " FileLock " + file + " FAIL! "
+                            + e.getMessage());
             return false;
         }
     }
 
     public void unLock(File file) {
-        if (file == null || this.mRefCountMap.containsKey(file.getAbsolutePath())) {
-            FileLock fileLock = ((FileLockCount) this.mRefCountMap.get(file.getAbsolutePath())).mFileLock;
+        if (file == null
+                || this.mRefCountMap.containsKey(file.getAbsolutePath())) {
+            FileLock fileLock = ((FileLockCount) this.mRefCountMap.get(file
+                    .getAbsolutePath())).mFileLock;
             if (fileLock != null && fileLock.isValid()) {
                 try {
                     if (RefCntDec(file.getAbsolutePath()) <= 0) {
                         fileLock.release();
-                        Log.i(TAG, processName + " FileLock " + file.getAbsolutePath() + " SUC! ");
+                        Log.i(TAG,
+                                processName + " FileLock "
+                                        + file.getAbsolutePath() + " SUC! ");
                     }
                 } catch (IOException e) {
                 }

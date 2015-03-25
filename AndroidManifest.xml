@@ -31,8 +31,8 @@
         
 
                 <data
-                    android:host="scancode.m.taobao.com"
-                    android:path="/container"
+                     android:host="scancode.m.taobao.com"
+                     android:path="/container" 
                     android:scheme="http" />
             </intent-filter>
 

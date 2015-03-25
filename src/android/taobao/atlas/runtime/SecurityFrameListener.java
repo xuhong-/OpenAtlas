@@ -26,7 +26,8 @@ public class SecurityFrameListener implements FrameworkListener {
         final String PUBLIC_KEY;
 
         private SecurityTask() {
-            this.PUBLIC_KEY = Framework.getProperty("android.taobao.atlas.publickey");
+            this.PUBLIC_KEY = Framework
+                    .getProperty("android.taobao.atlas.publickey");
         }
 
         protected Boolean doInBackground(String... strArr) {
@@ -40,13 +41,18 @@ public class SecurityFrameListener implements FrameworkListener {
             List<Bundle> bundles = Atlas.getInstance().getBundles();
             if (bundles != null) {
                 for (Bundle bundle : bundles) {
-                    if (StringUtils.contains(ApkUtils.getApkPublicKey(Atlas.getInstance().getBundleFile(bundle.getLocation()).getAbsolutePath()), this.PUBLIC_KEY)) {
+                    if (StringUtils.contains(
+                            ApkUtils.getApkPublicKey(Atlas.getInstance()
+                                    .getBundleFile(bundle.getLocation())
+                                    .getAbsolutePath()), this.PUBLIC_KEY)) {
                         try {
                             Thread.sleep(500);
                         } catch (InterruptedException e2) {
                         }
                     } else {
-                        Log.e(SecurityFrameListener.TAG, "Security check failed. " + bundle.getLocation());
+                        Log.e(SecurityFrameListener.TAG,
+                                "Security check failed. "
+                                        + bundle.getLocation());
                         return Boolean.valueOf(false);
                     }
                 }
@@ -56,8 +62,12 @@ public class SecurityFrameListener implements FrameworkListener {
 
         protected void onPostExecute(Boolean bool) {
             if (bool != null && !bool.booleanValue()) {
-                Toast.makeText(RuntimeVariables.androidApplication, "\u68c0\u6d4b\u5230\u5b89\u88c5\u6587\u4ef6\u88ab\u635f\u574f\uff0c\u8bf7\u5378\u8f7d\u540e\u91cd\u65b0\u5b89\u88c5\uff01", 1).show();
-                SecurityFrameListener.this.shutdownProcessHandler.sendEmptyMessageDelayed(0,5000);
+                Toast.makeText(
+                        RuntimeVariables.androidApplication,
+                        "\u68c0\u6d4b\u5230\u5b89\u88c5\u6587\u4ef6\u88ab\u635f\u574f\uff0c\u8bf7\u5378\u8f7d\u540e\u91cd\u65b0\u5b89\u88c5\uff01",
+                        1).show();
+                SecurityFrameListener.this.shutdownProcessHandler
+                        .sendEmptyMessageDelayed(0, 5000);
             }
         }
     }
@@ -74,13 +84,14 @@ public class SecurityFrameListener implements FrameworkListener {
 
     public void frameworkEvent(FrameworkEvent frameworkEvent) {
         switch (frameworkEvent.getType()) {
-            case 1 /*1*/:
-                if (VERSION.SDK_INT >= 11) {
-                    new SecurityTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new String[0]);
-                } else {
-                    new SecurityTask().execute(new String[0]);
-                }
-            default:
+        case 1 /* 1 */:
+            if (VERSION.SDK_INT >= 11) {
+                new SecurityTask().executeOnExecutor(
+                        AsyncTask.THREAD_POOL_EXECUTOR, new String[0]);
+            } else {
+                new SecurityTask().execute(new String[0]);
+            }
+        default:
         }
     }
 }

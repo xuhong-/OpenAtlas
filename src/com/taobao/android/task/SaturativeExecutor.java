@@ -52,7 +52,8 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
         }
     }
 
-    protected static class SaturationAwareBlockingQueue<T> extends LinkedBlockingQueue<T> {
+    protected static class SaturationAwareBlockingQueue<T> extends
+            LinkedBlockingQueue<T> {
         private static final long serialVersionUID = 1;
         private SaturativeExecutor mExecutor;
 
@@ -72,7 +73,8 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
         }
 
         public boolean offer(T t) {
-            return this.mExecutor.isReallyUnsaturated() ? DEBUG : super.offer(t);
+            return this.mExecutor.isReallyUnsaturated() ? DEBUG : super
+                    .offer(t);
         }
 
         public void put(T t) {
@@ -94,30 +96,35 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
         super.execute(new CountedTask(runnable));
     }
 
-    public static final boolean installAsDefaultAsyncTaskExecutor(ThreadPoolExecutor threadPoolExecutor) {
+    public static final boolean installAsDefaultAsyncTaskExecutor(
+            ThreadPoolExecutor threadPoolExecutor) {
         if (VERSION.SDK_INT >= 11) {
             try {
-                Field declaredField = AsyncTask.class.getDeclaredField("THREAD_POOL_EXECUTOR");
+                Field declaredField = AsyncTask.class
+                        .getDeclaredField("THREAD_POOL_EXECUTOR");
                 declaredField.setAccessible(true);
                 declaredField.set(null, threadPoolExecutor);
             } catch (Exception e) {
             }
         }
         try {
-            Method method = AsyncTask.class.getMethod("setDefaultExecutor", new Class[]{Executor.class});
+            Method method = AsyncTask.class.getMethod("setDefaultExecutor",
+                    new Class[] { Executor.class });
             method.setAccessible(true);
-            method.invoke(null, new Object[]{threadPoolExecutor});
+            method.invoke(null, new Object[] { threadPoolExecutor });
             return true;
         } catch (Exception e2) {
-        	 Field declaredField;
+            Field declaredField;
             try {
-                declaredField = AsyncTask.class.getDeclaredField("sDefaultExecutor");
+                declaredField = AsyncTask.class
+                        .getDeclaredField("sDefaultExecutor");
                 declaredField.setAccessible(true);
                 declaredField.set(null, threadPoolExecutor);
                 return true;
             } catch (Exception e3) {
                 try {
-                    declaredField = AsyncTask.class.getDeclaredField("sExecutor");
+                    declaredField = AsyncTask.class
+                            .getDeclaredField("sExecutor");
                     declaredField.setAccessible(true);
                     declaredField.set(null, threadPoolExecutor);
                     return true;
@@ -133,11 +140,13 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
     }
 
     public SaturativeExecutor(int i) {
-        super(i, 128, 1, TimeUnit.SECONDS,  new SaturationAwareBlockingQueue(1024), sThreadFactory, new CallerRunsPolicy());
+        super(i, 128, 1, TimeUnit.SECONDS, new SaturationAwareBlockingQueue(
+                1024), sThreadFactory, new CallerRunsPolicy());
         TimeUnit timeUnit = TimeUnit.SECONDS;
-//        BlockingQueue saturationAwareBlockingQueue = new SaturationAwareBlockingQueue(1024);
-//        mQueue = saturationAwareBlockingQueue;
-        mQueue=(SaturationAwareBlockingQueue<Runnable>) getQueue();
+        // BlockingQueue saturationAwareBlockingQueue = new
+        // SaturationAwareBlockingQueue(1024);
+        // mQueue = saturationAwareBlockingQueue;
+        mQueue = (SaturationAwareBlockingQueue<Runnable>) getQueue();
         ((SaturationAwareBlockingQueue) getQueue()).setExecutor(this);
     }
 
@@ -192,7 +201,8 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
 
     private static int determineBestMinPoolSize() {
         int countCpuCores = countCpuCores();
-        return countCpuCores > 0 ? countCpuCores : Runtime.getRuntime().availableProcessors() * 2;
+        return countCpuCores > 0 ? countCpuCores : Runtime.getRuntime()
+                .availableProcessors() * 2;
     }
 
     private static int countCpuCores() {
@@ -202,6 +212,5 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
             return 0;
         }
     }
-
 
 }

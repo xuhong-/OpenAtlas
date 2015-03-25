@@ -35,7 +35,8 @@ public class Hack {
             }
 
             public String toString() {
-                return getCause() != null ? getClass().getName() + ": " + getCause() : super.toString();
+                return getCause() != null ? getClass().getName() + ": "
+                        + getCause() : super.toString();
             }
 
             public Class<?> getHackedClass() {
@@ -67,23 +68,28 @@ public class Hack {
     public static class HackedClass<C> {
         protected Class<C> mClass;
 
-        public HackedField<C, Object> staticField(String str) throws HackAssertionException {
+        public HackedField<C, Object> staticField(String str)
+                throws HackAssertionException {
             return new HackedField(this.mClass, str, 8);
         }
 
-        public HackedField<C, Object> field(String str) throws HackAssertionException {
+        public HackedField<C, Object> field(String str)
+                throws HackAssertionException {
             return new HackedField(this.mClass, str, 0);
         }
 
-        public HackedMethod staticMethod(String str, Class<?>... clsArr) throws HackAssertionException {
+        public HackedMethod staticMethod(String str, Class<?>... clsArr)
+                throws HackAssertionException {
             return new HackedMethod(this.mClass, str, clsArr, 8);
         }
 
-        public HackedMethod method(String str, Class<?>... clsArr) throws HackAssertionException {
+        public HackedMethod method(String str, Class<?>... clsArr)
+                throws HackAssertionException {
             return new HackedMethod(this.mClass, str, clsArr, 0);
         }
 
-        public HackedConstructor constructor(Class<?>... clsArr) throws HackAssertionException {
+        public HackedConstructor constructor(Class<?>... clsArr)
+                throws HackAssertionException {
             return new HackedConstructor(this.mClass, clsArr);
         }
 
@@ -99,19 +105,22 @@ public class Hack {
     public static class HackedConstructor {
         protected Constructor<?> mConstructor;
 
-        HackedConstructor(Class<?> cls, Class<?>[] clsArr) throws HackAssertionException {
+        HackedConstructor(Class<?> cls, Class<?>[] clsArr)
+                throws HackAssertionException {
             if (cls != null) {
                 try {
                     this.mConstructor = cls.getDeclaredConstructor(clsArr);
                 } catch (Exception e) {
-                    HackAssertionException hackAssertionException = new HackAssertionException(e);
+                    HackAssertionException hackAssertionException = new HackAssertionException(
+                            e);
                     hackAssertionException.setHackedClass(cls);
                     Hack.fail(hackAssertionException);
                 }
             }
         }
 
-        public Object getInstance(Object... objArr) throws IllegalArgumentException {
+        public Object getInstance(Object... objArr)
+                throws IllegalArgumentException {
             Object obj = null;
             this.mConstructor.setAccessible(true);
             try {
@@ -126,21 +135,28 @@ public class Hack {
     public static class HackedField<C, T> {
         private final Field mField;
 
-        public <T2> android.taobao.atlas.hack.Hack.HackedField<C, T2> ofGenericType(Class<?> cls) throws HackAssertionException {
-            if (!(this.mField == null || cls.isAssignableFrom(this.mField.getType()))) {
-                Hack.fail(new HackAssertionException(new ClassCastException(this.mField + " is not of type " + cls)));
+        public <T2> android.taobao.atlas.hack.Hack.HackedField<C, T2> ofGenericType(
+                Class<?> cls) throws HackAssertionException {
+            if (!(this.mField == null || cls.isAssignableFrom(this.mField
+                    .getType()))) {
+                Hack.fail(new HackAssertionException(new ClassCastException(
+                        this.mField + " is not of type " + cls)));
             }
             return (HackedField<C, T2>) this;
         }
 
-        public <T2> android.taobao.atlas.hack.Hack.HackedField<C, T2> ofType(Class<T2> cls) throws HackAssertionException {
-            if (!(this.mField == null || cls.isAssignableFrom(this.mField.getType()))) {
-                Hack.fail(new HackAssertionException(new ClassCastException(this.mField + " is not of type " + cls)));
+        public <T2> android.taobao.atlas.hack.Hack.HackedField<C, T2> ofType(
+                Class<T2> cls) throws HackAssertionException {
+            if (!(this.mField == null || cls.isAssignableFrom(this.mField
+                    .getType()))) {
+                Hack.fail(new HackAssertionException(new ClassCastException(
+                        this.mField + " is not of type " + cls)));
             }
             return (HackedField<C, T2>) this;
         }
 
-        public android.taobao.atlas.hack.Hack.HackedField<C, T> ofType(String str) throws HackAssertionException {
+        public android.taobao.atlas.hack.Hack.HackedField<C, T> ofType(
+                String str) throws HackAssertionException {
             android.taobao.atlas.hack.Hack.HackedField<C, T> ofType = null;
             try {
                 ofType = (HackedField<C, T>) ofType(Class.forName(str));
@@ -165,7 +181,8 @@ public class Hack {
             } catch (Throwable e) {
                 e.printStackTrace();
                 if (obj instanceof DelegateClassLoader) {
-                    throw new RuntimeException("set DelegateClassLoader fail", e);
+                    throw new RuntimeException("set DelegateClassLoader fail",
+                            e);
                 }
             }
         }
@@ -175,10 +192,13 @@ public class Hack {
             if (obj == null) {
                 throw new IllegalStateException("Cannot hijack null");
             }
-            set(c, Interception.proxy(obj, (InterceptionHandler) interceptionHandler, obj.getClass().getInterfaces()));
+            set(c, Interception.proxy(obj,
+                    (InterceptionHandler) interceptionHandler, obj.getClass()
+                            .getInterfaces()));
         }
 
-        HackedField(Class<C> cls, String str, int i) throws HackAssertionException {
+        HackedField(Class<C> cls, String str, int i)
+                throws HackAssertionException {
             Field field = null;
             if (cls == null) {
                 this.mField = null;
@@ -187,11 +207,13 @@ public class Hack {
             try {
                 field = cls.getDeclaredField(str);
                 if (i > 0 && (field.getModifiers() & i) != i) {
-                    Hack.fail(new HackAssertionException(field + " does not match modifiers: " + i));
+                    Hack.fail(new HackAssertionException(field
+                            + " does not match modifiers: " + i));
                 }
                 field.setAccessible(true);
             } catch (Exception e) {
-                HackAssertionException hackAssertionException = new HackAssertionException(e);
+                HackAssertionException hackAssertionException = new HackAssertionException(
+                        e);
                 hackAssertionException.setHackedClass(cls);
                 hackAssertionException.setHackedFieldName(str);
                 Hack.fail(hackAssertionException);
@@ -208,7 +230,8 @@ public class Hack {
     public static class HackedMethod {
         protected final Method mMethod;
 
-        public Object invoke(Object obj, Object... objArr) throws IllegalArgumentException, InvocationTargetException {
+        public Object invoke(Object obj, Object... objArr)
+                throws IllegalArgumentException, InvocationTargetException {
             Object obj2 = null;
             try {
                 obj2 = this.mMethod.invoke(obj, objArr);
@@ -218,7 +241,8 @@ public class Hack {
             return obj2;
         }
 
-        HackedMethod(Class<?> cls, String str, Class<?>[] clsArr, int i) throws HackAssertionException {
+        HackedMethod(Class<?> cls, String str, Class<?>[] clsArr, int i)
+                throws HackAssertionException {
             Method method = null;
             if (cls == null) {
                 this.mMethod = null;
@@ -227,11 +251,13 @@ public class Hack {
             try {
                 method = cls.getDeclaredMethod(str, clsArr);
                 if (i > 0 && (method.getModifiers() & i) != i) {
-                    Hack.fail(new HackAssertionException(method + " does not match modifiers: " + i));
+                    Hack.fail(new HackAssertionException(method
+                            + " does not match modifiers: " + i));
                 }
                 method.setAccessible(true);
             } catch (Exception e) {
-                HackAssertionException hackAssertionException = new HackAssertionException(e);
+                HackAssertionException hackAssertionException = new HackAssertionException(
+                        e);
                 hackAssertionException.setHackedClass(cls);
                 hackAssertionException.setHackedMethodName(str);
                 Hack.fail(hackAssertionException);
@@ -249,7 +275,8 @@ public class Hack {
         return new HackedClass(cls);
     }
 
-    public static <T> HackedClass<T> into(String str) throws HackAssertionException {
+    public static <T> HackedClass<T> into(String str)
+            throws HackAssertionException {
         try {
             return new HackedClass(Class.forName(str));
         } catch (Exception e) {
@@ -258,13 +285,16 @@ public class Hack {
         }
     }
 
-    private static void fail(HackAssertionException hackAssertionException) throws HackAssertionException {
-        if (sFailureHandler == null || !sFailureHandler.onAssertionFailure(hackAssertionException)) {
+    private static void fail(HackAssertionException hackAssertionException)
+            throws HackAssertionException {
+        if (sFailureHandler == null
+                || !sFailureHandler.onAssertionFailure(hackAssertionException)) {
             throw hackAssertionException;
         }
     }
 
-    public static void setAssertionFailureHandler(AssertionFailureHandler assertionFailureHandler) {
+    public static void setAssertionFailureHandler(
+            AssertionFailureHandler assertionFailureHandler) {
         sFailureHandler = assertionFailureHandler;
     }
 

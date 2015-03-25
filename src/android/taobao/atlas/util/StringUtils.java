@@ -1,12 +1,12 @@
 package android.taobao.atlas.util;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class StringUtils {
     public static final String EMPTY = "";
     public static String[] EMPTY_STRING_ARRAY = new String[0];
+
     public static boolean isEmpty(String str) {
         if (str == null || str.length() == 0) {
             return true;
@@ -155,7 +155,8 @@ public class StringUtils {
         } else if (i <= 64) {
             i2 = i;
         }
-        StringBuilder stringBuilder = new StringBuilder((i2 * length2) + str.length());
+        StringBuilder stringBuilder = new StringBuilder((i2 * length2)
+                + str.length());
         i2 = 0;
         while (indexOf != -1) {
             stringBuilder.append(str.substring(i2, indexOf)).append(str3);
@@ -171,7 +172,8 @@ public class StringUtils {
     }
 
     public static String getPackageNameFromEntryName(String str) {
-        return str.substring(str.indexOf("libcom_") + "lib".length(), str.indexOf(".so")).replace("_", ".");
+        return str.substring(str.indexOf("libcom_") + "lib".length(),
+                str.indexOf(".so")).replace("_", ".");
     }
 
     public static boolean endsWith(String str, String str2) {
@@ -187,7 +189,8 @@ public class StringUtils {
         } else if (str2.length() > str.length()) {
             return false;
         } else {
-            return str.regionMatches(z, str.length() - str2.length(), str2, 0, str2.length());
+            return str.regionMatches(z, str.length() - str2.length(), str2, 0,
+                    str2.length());
         }
     }
 
@@ -195,7 +198,8 @@ public class StringUtils {
         return splitWorker(str, str2, -1, false);
     }
 
-    private static String[] splitWorker(String str, String separatorChars, int max, boolean preserveAllTokens) {
+    private static String[] splitWorker(String str, String separatorChars,
+            int max, boolean preserveAllTokens) {
         // Performance tuned for 2.0 (JDK1.4)
         // Direct code is quicker than StringTokenizer.
         // Also, StringTokenizer uses isSpace() not isWhitespace()
@@ -304,7 +308,8 @@ public class StringUtils {
         } else {
             i4 = objArr[i].toString().length();
         }
-        StringBuilder stringBuilder = new StringBuilder((i4 + str.length()) * i3);
+        StringBuilder stringBuilder = new StringBuilder((i4 + str.length())
+                * i3);
         for (i4 = i; i4 < i2; i4++) {
             if (i4 > i) {
                 stringBuilder.append(str);

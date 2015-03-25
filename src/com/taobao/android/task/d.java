@@ -12,7 +12,8 @@ final class d implements ThreadFactory {
     }
 
     public Thread newThread(Runnable runnable) {
-        Thread thread = new Thread(runnable, "SaturativeThread #" + this.a.getAndIncrement());
+        Thread thread = new Thread(runnable, "SaturativeThread #"
+                + this.a.getAndIncrement());
         SaturativeExecutor.collectThread(thread);
         return thread;
     }

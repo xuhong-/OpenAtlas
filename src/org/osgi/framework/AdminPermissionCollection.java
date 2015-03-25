@@ -15,9 +15,11 @@ final class AdminPermissionCollection extends PermissionCollection {
 
     public void add(Permission permission) {
         if (!(permission instanceof AdminPermission)) {
-            throw new IllegalArgumentException("invalid permission: " + permission);
+            throw new IllegalArgumentException("invalid permission: "
+                    + permission);
         } else if (isReadOnly()) {
-            throw new SecurityException("attempt to add a Permission to a readonly PermissionCollection");
+            throw new SecurityException(
+                    "attempt to add a Permission to a readonly PermissionCollection");
         } else {
             this.hasElement = true;
         }

@@ -14,14 +14,18 @@ public class DelegateClassLoader extends ClassLoader {
     }
 
     protected Class<?> findClass(String str) throws ClassNotFoundException {
-        Class<?> loadFromInstalledBundles = ClassLoadFromBundle.loadFromInstalledBundles(str);
+        Class<?> loadFromInstalledBundles = ClassLoadFromBundle
+                .loadFromInstalledBundles(str);
         if (loadFromInstalledBundles == null) {
-            loadFromInstalledBundles = ClassLoadFromBundle.loadFromUninstalledBundles(str);
+            loadFromInstalledBundles = ClassLoadFromBundle
+                    .loadFromUninstalledBundles(str);
         }
         if (loadFromInstalledBundles != null) {
             return loadFromInstalledBundles;
         }
-        throw new ClassNotFoundException("Can't find class " + str + printExceptionInfo() + " " + ClassLoadFromBundle.getClassNotFoundReason(str));
+        throw new ClassNotFoundException("Can't find class " + str
+                + printExceptionInfo() + " "
+                + ClassLoadFromBundle.getClassNotFoundReason(str));
     }
 
     private String printExceptionInfo() {

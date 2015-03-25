@@ -34,26 +34,30 @@ final class ServiceReferenceImpl implements ServiceReference {
             if (ServiceReferenceImpl.this.service != null) {
                 return ServiceReferenceImpl.this;
             }
-            throw new IllegalStateException("Service has already been uninstalled");
+            throw new IllegalStateException(
+                    "Service has already been uninstalled");
         }
 
         public void setProperties(Dictionary<String, ?> dictionary) {
             if (ServiceReferenceImpl.this.service == null) {
-                throw new IllegalStateException("Service has already been uninstalled");
+                throw new IllegalStateException(
+                        "Service has already been uninstalled");
             }
-            HashMap hashMap = new HashMap(ServiceReferenceImpl.this.properties.size());
+            HashMap hashMap = new HashMap(
+                    ServiceReferenceImpl.this.properties.size());
             Enumeration keys = ServiceReferenceImpl.this.properties.keys();
             while (keys.hasMoreElements()) {
                 String str = (String) keys.nextElement();
                 String toLowerCase = str.toLowerCase(Locale.US);
                 if (hashMap.containsKey(toLowerCase)) {
-                    throw new IllegalArgumentException("Properties contain the same key in different case variants");
+                    throw new IllegalArgumentException(
+                            "Properties contain the same key in different case variants");
                 }
                 hashMap.put(toLowerCase, str);
             }
             keys = dictionary.keys();
             while (keys.hasMoreElements()) {
-              String  str = (String) keys.nextElement();
+                String str = (String) keys.nextElement();
                 Object obj = dictionary.get(str);
                 String toLowerCase2 = str.toLowerCase(Locale.US);
                 if (!ServiceReferenceImpl.forbidden.contains(toLowerCase2)) {
@@ -62,7 +66,8 @@ final class ServiceReferenceImpl implements ServiceReference {
                         if (obj2.equals(str)) {
                             ServiceReferenceImpl.this.properties.remove(obj2);
                         } else {
-                            throw new IllegalArgumentException("Properties already exists in a different case variant");
+                            throw new IllegalArgumentException(
+                                    "Properties already exists in a different case variant");
                         }
                     }
                     ServiceReferenceImpl.this.properties.put(str, obj);
@@ -73,7 +78,8 @@ final class ServiceReferenceImpl implements ServiceReference {
 
         public void unregister() {
             if (ServiceReferenceImpl.this.service == null) {
-                throw new IllegalStateException("Service has already been uninstalled");
+                throw new IllegalStateException(
+                        "Service has already been uninstalled");
             }
             Framework.unregisterService(ServiceReferenceImpl.this);
             ServiceReferenceImpl.this.service = null;
@@ -87,7 +93,8 @@ final class ServiceReferenceImpl implements ServiceReference {
         forbidden.add(Constants.OBJECTCLASS.toLowerCase(Locale.US));
     }
 
-    ServiceReferenceImpl(Bundle bundle, Object obj, Dictionary<String, ?> dictionary, String[] strArr) {
+    ServiceReferenceImpl(Bundle bundle, Object obj,
+            Dictionary<String, ?> dictionary, String[] strArr) {
         this.useCounters = new HashMap(0);
         this.cachedServices = null;
         if (obj instanceof ServiceFactory) {
@@ -98,7 +105,8 @@ final class ServiceReferenceImpl implements ServiceReference {
         }
         this.bundle = bundle;
         this.service = obj;
-        this.properties = dictionary == null ? new Hashtable() : new Hashtable(dictionary.size());
+        this.properties = dictionary == null ? new Hashtable() : new Hashtable(
+                dictionary.size());
         if (dictionary != null) {
             Enumeration keys = dictionary.keys();
             while (keys.hasMoreElements()) {
@@ -112,8 +120,10 @@ final class ServiceReferenceImpl implements ServiceReference {
         long j = nextServiceID + 1;
         nextServiceID = j;
         dictionary2.put(str2, Long.valueOf(j));
-        Integer num = dictionary == null ? null : (Integer) dictionary.get(Constants.SERVICE_RANKING);
-        this.properties.put(Constants.SERVICE_RANKING, Integer.valueOf(num == null ? 0 : num.intValue()));
+        Integer num = dictionary == null ? null : (Integer) dictionary
+                .get(Constants.SERVICE_RANKING);
+        this.properties.put(Constants.SERVICE_RANKING,
+                Integer.valueOf(num == null ? 0 : num.intValue()));
         this.registration = new ServiceRegistrationImpl();
     }
 
@@ -121,13 +131,18 @@ final class ServiceReferenceImpl implements ServiceReference {
         int i = 0;
         while (i < strArr.length) {
             try {
-                if (Class.forName(strArr[i], false, obj.getClass().getClassLoader()).isInstance(obj)) {
+                if (Class.forName(strArr[i], false,
+                        obj.getClass().getClassLoader()).isInstance(obj)) {
                     i++;
                 } else {
-                    throw new IllegalArgumentException("Service " + obj.getClass().getName() + " does not implement the interface " + strArr[i]);
+                    throw new IllegalArgumentException("Service "
+                            + obj.getClass().getName()
+                            + " does not implement the interface " + strArr[i]);
                 }
             } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException("Interface " + strArr[i] + " implemented by service " + obj.getClass().getName() + " cannot be located: " + e.getMessage());
+                throw new IllegalArgumentException("Interface " + strArr[i]
+                        + " implemented by service " + obj.getClass().getName()
+                        + " cannot be located: " + e.getMessage());
             }
         }
     }
@@ -187,7 +202,8 @@ final class ServiceReferenceImpl implements ServiceReference {
             if (this.useCounters.isEmpty()) {
                 bundleArr = null;
             } else {
-                bundleArr = (Bundle[]) this.useCounters.keySet().toArray(new Bundle[this.useCounters.size()]);
+                bundleArr = (Bundle[]) this.useCounters.keySet().toArray(
+                        new Bundle[this.useCounters.size()]);
             }
         }
         return bundleArr;
@@ -205,7 +221,7 @@ final class ServiceReferenceImpl implements ServiceReference {
             } else {
                 valueOf = Integer.valueOf(num.intValue() + 1);
             }
-            this.useCounters.put(bundle, (Integer)valueOf);
+            this.useCounters.put(bundle, (Integer) valueOf);
             if (this.isServiceFactory) {
                 if (this.cachedServices == null) {
                     this.cachedServices = new HashMap();
@@ -215,8 +231,11 @@ final class ServiceReferenceImpl implements ServiceReference {
                     return valueOf;
                 }
                 try {
-                    Object service = ((ServiceFactory) this.service).getService(bundle, this.registration);
-                    checkService(service, (String[]) this.properties.get(Constants.OBJECTCLASS));
+                    Object service = ((ServiceFactory) this.service)
+                            .getService(bundle, this.registration);
+                    checkService(service,
+                            (String[]) this.properties
+                                    .get(Constants.OBJECTCLASS));
                     this.cachedServices.put(bundle, service);
                     return service;
                 } catch (Throwable e) {
@@ -240,12 +259,14 @@ final class ServiceReferenceImpl implements ServiceReference {
             } else if (num.intValue() == 1) {
                 this.useCounters.remove(bundle);
                 if (this.isServiceFactory) {
-                    ((ServiceFactory) this.service).ungetService(bundle, this.registration, this.cachedServices.get(bundle));
+                    ((ServiceFactory) this.service).ungetService(bundle,
+                            this.registration, this.cachedServices.get(bundle));
                     this.cachedServices.remove(bundle);
                 }
                 return false;
             } else {
-                this.useCounters.put(bundle, Integer.valueOf(num.intValue() - 1));
+                this.useCounters.put(bundle,
+                        Integer.valueOf(num.intValue() - 1));
                 return true;
             }
         }

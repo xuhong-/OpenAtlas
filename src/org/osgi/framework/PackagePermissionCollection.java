@@ -5,7 +5,6 @@ import java.security.PermissionCollection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-
 final class PackagePermissionCollection extends PermissionCollection {
     private static final long serialVersionUID = -3350758995234427603L;
     private boolean all_allowed;
@@ -18,18 +17,22 @@ final class PackagePermissionCollection extends PermissionCollection {
 
     public void add(Permission permission) {
         if (!(permission instanceof PackagePermission)) {
-            throw new IllegalArgumentException("invalid permission: " + permission);
+            throw new IllegalArgumentException("invalid permission: "
+                    + permission);
         } else if (isReadOnly()) {
-            throw new SecurityException("attempt to add a Permission to a readonly PermissionCollection");
+            throw new SecurityException(
+                    "attempt to add a Permission to a readonly PermissionCollection");
         } else {
             PackagePermission packagePermission = (PackagePermission) permission;
             String name = packagePermission.getName();
-            PackagePermission packagePermission2 = (PackagePermission) this.permissions.get(name);
+            PackagePermission packagePermission2 = (PackagePermission) this.permissions
+                    .get(name);
             if (packagePermission2 != null) {
                 int mask = packagePermission2.getMask();
                 int mask2 = packagePermission.getMask();
                 if (mask != mask2) {
-                    this.permissions.put(name, new PackagePermission(name, mask2 | mask));
+                    this.permissions.put(name, new PackagePermission(name,
+                            mask2 | mask));
                 }
             } else {
                 this.permissions.put(name, permission);
@@ -55,7 +58,8 @@ final class PackagePermissionCollection extends PermissionCollection {
         PackagePermission packagePermission2 = (PackagePermission) permission;
         int mask2 = packagePermission2.getMask();
         if (this.all_allowed) {
-            packagePermission = (PackagePermission) this.permissions.get(GetUserInfoRequest.version);
+            packagePermission = (PackagePermission) this.permissions
+                    .get(GetUserInfoRequest.version);
             if (packagePermission != null) {
                 mask = packagePermission.getMask() | 0;
                 if ((mask & mask2) == mask2) {
@@ -63,7 +67,8 @@ final class PackagePermissionCollection extends PermissionCollection {
                 }
                 i = mask;
                 name = packagePermission2.getName();
-                packagePermission = (PackagePermission) this.permissions.get(name);
+                packagePermission = (PackagePermission) this.permissions
+                        .get(name);
                 if (packagePermission != null) {
                     i |= packagePermission.getMask();
                     if ((i & mask2) == mask2) {
@@ -79,8 +84,10 @@ final class PackagePermissionCollection extends PermissionCollection {
                     if (lastIndexOf != -1) {
                         return false;
                     }
-                    str2 = str2.substring(0, lastIndexOf + 1) + GetUserInfoRequest.version;
-                    packagePermission = (PackagePermission) this.permissions.get(str2);
+                    str2 = str2.substring(0, lastIndexOf + 1)
+                            + GetUserInfoRequest.version;
+                    packagePermission = (PackagePermission) this.permissions
+                            .get(str2);
                     if (packagePermission != null) {
                         i2 |= packagePermission.getMask();
                         if ((i2 & mask2) == mask2) {
@@ -109,7 +116,8 @@ final class PackagePermissionCollection extends PermissionCollection {
             if (lastIndexOf != -1) {
                 return false;
             }
-            str2 = str2.substring(0, lastIndexOf + 1) + GetUserInfoRequest.version;
+            str2 = str2.substring(0, lastIndexOf + 1)
+                    + GetUserInfoRequest.version;
             packagePermission = (PackagePermission) this.permissions.get(str2);
             if (packagePermission != null) {
                 i2 |= packagePermission.getMask();

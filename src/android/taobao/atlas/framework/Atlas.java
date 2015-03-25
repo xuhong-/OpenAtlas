@@ -51,17 +51,21 @@ public class Atlas {
         return atlas;
     }
 
-    public void init(Application application, Properties properties) throws AssertionArrayException, Exception {
+    public void init(Application application, Properties properties)
+            throws AssertionArrayException, Exception {
         String packageName = application.getPackageName();
         AtlasHacks.defineAndVerify();
         ClassLoader classLoader = Atlas.class.getClassLoader();
-        DelegateClassLoader delegateClassLoader = new DelegateClassLoader(classLoader);
+        DelegateClassLoader delegateClassLoader = new DelegateClassLoader(
+                classLoader);
         Framework.systemClassLoader = classLoader;
         RuntimeVariables.delegateClassLoader = delegateClassLoader;
-        RuntimeVariables.setDelegateResources( application.getResources());
+        RuntimeVariables.setDelegateResources(application.getResources());
         RuntimeVariables.androidApplication = application;
         AndroidHack.injectClassLoader(packageName, delegateClassLoader);
-        AndroidHack.injectInstrumentationHook(new InstrumentationHook(AndroidHack.getInstrumentation(), application.getBaseContext()));
+        AndroidHack
+                .injectInstrumentationHook(new InstrumentationHook(AndroidHack
+                        .getInstrumentation(), application.getBaseContext()));
         injectApplication(application, packageName);
         this.bundleLifecycleHandler = new BundleLifecycleHandler();
         Framework.syncBundleListeners.add(this.bundleLifecycleHandler);
@@ -71,7 +75,8 @@ public class Atlas {
         Framework.initialize(properties);
     }
 
-    public void injectApplication(Application application, String str) throws Exception {
+    public void injectApplication(Application application, String str)
+            throws Exception {
         AtlasHacks.defineAndVerify();
         AndroidHack.injectApplication(str, application);
     }
@@ -88,7 +93,8 @@ public class Atlas {
         return Framework.getBundle(str);
     }
 
-    public Bundle installBundle(String str, InputStream inputStream) throws BundleException {
+    public Bundle installBundle(String str, InputStream inputStream)
+            throws BundleException {
         return Framework.installNewBundle(str, inputStream);
     }
 
@@ -96,13 +102,15 @@ public class Atlas {
         return Framework.installNewBundle(str, file);
     }
 
-    public void updateBundle(String str, InputStream inputStream) throws BundleException {
+    public void updateBundle(String str, InputStream inputStream)
+            throws BundleException {
         Bundle bundle = Framework.getBundle(str);
         if (bundle != null) {
             bundle.update(inputStream);
             return;
         }
-        throw new BundleException("Could not update bundle " + str + ", because could not find it");
+        throw new BundleException("Could not update bundle " + str
+                + ", because could not find it");
     }
 
     public void updateBundle(String str, File file) throws BundleException {
@@ -111,10 +119,12 @@ public class Atlas {
             bundle.update(file);
             return;
         }
-        throw new BundleException("Could not update bundle " + str + ", because could not find it");
+        throw new BundleException("Could not update bundle " + str
+                + ", because could not find it");
     }
 
-    public void installOrUpdate(String[] strArr, File[] fileArr) throws BundleException {
+    public void installOrUpdate(String[] strArr, File[] fileArr)
+            throws BundleException {
         Framework.installOrUpdate(strArr, fileArr);
     }
 
@@ -128,7 +138,8 @@ public class Atlas {
                     archiveFile.delete();
                 }
                 bundleImpl.getArchive().purge();
-                File revisionDir = bundleImpl.getArchive().getCurrentRevision().getRevisionDir();
+                File revisionDir = bundleImpl.getArchive().getCurrentRevision()
+                        .getRevisionDir();
                 bundle.uninstall();
                 if (revisionDir != null) {
                     Framework.deleteDirectory(revisionDir);
@@ -140,7 +151,8 @@ public class Atlas {
                 return;
             }
         }
-        throw new BundleException("Could not uninstall bundle " + str + ", because could not find it");
+        throw new BundleException("Could not uninstall bundle " + str
+                + ", because could not find it");
     }
 
     public List<Bundle> getBundles() {
@@ -148,7 +160,7 @@ public class Atlas {
     }
 
     public Resources getDelegateResources() {
-        return RuntimeVariables.getDelegateResources() ;
+        return RuntimeVariables.getDelegateResources();
     }
 
     public ClassLoader getDelegateClassLoader() {
@@ -179,7 +191,8 @@ public class Atlas {
         return null;
     }
 
-    public InputStream openAssetInputStream(String str, String str2) throws IOException {
+    public InputStream openAssetInputStream(String str, String str2)
+            throws IOException {
         Bundle bundle = Framework.getBundle(str);
         if (bundle != null) {
             return ((BundleImpl) bundle).archive.openAssetInputStream(str2);
@@ -187,7 +200,8 @@ public class Atlas {
         return null;
     }
 
-    public InputStream openNonAssetInputStream(String str, String str2) throws IOException {
+    public InputStream openNonAssetInputStream(String str, String str2)
+            throws IOException {
         Bundle bundle = Framework.getBundle(str);
         if (bundle != null) {
             return ((BundleImpl) bundle).archive.openNonAssetInputStream(str2);
@@ -219,19 +233,26 @@ public class Atlas {
         PackageLite packageLite = DelegateComponent.getPackage(str);
         if (packageLite != null && packageLite.disableComponents != null) {
             for (String str2 : packageLite.disableComponents) {
-                PackageManager packageManager = RuntimeVariables.androidApplication.getPackageManager();
-                ComponentName componentName = new ComponentName(RuntimeVariables.androidApplication.getPackageName(), str2);
+                PackageManager packageManager = RuntimeVariables.androidApplication
+                        .getPackageManager();
+                ComponentName componentName = new ComponentName(
+                        RuntimeVariables.androidApplication.getPackageName(),
+                        str2);
                 try {
-                    packageManager.setComponentEnabledSetting(componentName, 1, 1);
-                    log.debug("enableComponent: " + componentName.getClassName());
+                    packageManager.setComponentEnabledSetting(componentName, 1,
+                            1);
+                    log.debug("enableComponent: "
+                            + componentName.getClassName());
                 } catch (Exception e) {
-                    log.error("enableComponent error: " + componentName.getClassName() + e.getMessage());
+                    log.error("enableComponent error: "
+                            + componentName.getClassName() + e.getMessage());
                 }
             }
         }
     }
 
-    public void setClassNotFoundInterceptorCallback(ClassNotFoundInterceptorCallback classNotFoundInterceptorCallback) {
+    public void setClassNotFoundInterceptorCallback(
+            ClassNotFoundInterceptorCallback classNotFoundInterceptorCallback) {
         Framework.setClassNotFoundCallback(classNotFoundInterceptorCallback);
     }
 }

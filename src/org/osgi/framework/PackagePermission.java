@@ -60,29 +60,37 @@ public final class PackagePermission extends BasicPermission {
                 char c = toCharArray[length];
                 Object obj2;
                 int i3;
-                if (c != ' ' && c != '\r' && c != '\n' && c != '\f' && c != '\t') {
+                if (c != ' ' && c != '\r' && c != '\n' && c != '\f'
+                        && c != '\t') {
                     if (length >= 5) {
-                        if (toCharArray[length - 5] == 'i' || toCharArray[length - 5] == 'I') {
-                            if (toCharArray[length - 4] == 'm' || toCharArray[length - 4] == 'M') {
-                                if (toCharArray[length - 3] == 'p' || toCharArray[length - 3] == 'P') {
-                                    if (toCharArray[length - 2] == 'o' || toCharArray[length - 2] == 'O') {
-                                        if ((toCharArray[length - 1] == 'r' || toCharArray[length - 1] == 'R') && (toCharArray[length] == 't' || toCharArray[length] == 'T')) {
+                        if (toCharArray[length - 5] == 'i'
+                                || toCharArray[length - 5] == 'I') {
+                            if (toCharArray[length - 4] == 'm'
+                                    || toCharArray[length - 4] == 'M') {
+                                if (toCharArray[length - 3] == 'p'
+                                        || toCharArray[length - 3] == 'P') {
+                                    if (toCharArray[length - 2] == 'o'
+                                            || toCharArray[length - 2] == 'O') {
+                                        if ((toCharArray[length - 1] == 'r' || toCharArray[length - 1] == 'R')
+                                                && (toCharArray[length] == 't' || toCharArray[length] == 'T')) {
                                             i |= 2;
                                             i2 = length;
                                             obj2 = null;
                                             while (i2 >= 6 && obj2 == null) {
                                                 switch (toCharArray[i2 - 6]) {
-                                                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
-                                                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
-                                                    case OrderListBusiness.PAGE_SIZE:
-                                                    case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
-                                                    case Bundle.ACTIVE:
-                                                        break;
-                                                    case Constants.LOGIN_HANDLER_KEY__APPCENTER:
-                                                        obj2 = ACTION_EXPORT;
-                                                        break;
-                                                    default:
-                                                        throw new IllegalArgumentException("invalid permission: " + str);
+                                                case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
+                                                case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
+                                                case OrderListBusiness.PAGE_SIZE:
+                                                case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
+                                                case Bundle.ACTIVE:
+                                                    break;
+                                                case Constants.LOGIN_HANDLER_KEY__APPCENTER:
+                                                    obj2 = ACTION_EXPORT;
+                                                    break;
+                                                default:
+                                                    throw new IllegalArgumentException(
+                                                            "invalid permission: "
+                                                                    + str);
                                                 }
                                                 i2--;
                                             }
@@ -96,28 +104,36 @@ public final class PackagePermission extends BasicPermission {
                         }
                     }
                     if (length >= 5) {
-                        if (toCharArray[length - 5] != 'e' || toCharArray[length - 5] == 'E') {
-                            if (toCharArray[length - 4] != 'x' || toCharArray[length - 4] == 'X') {
-                                if (toCharArray[length - 3] != 'p' || toCharArray[length - 3] == 'P') {
-                                    if (toCharArray[length - 2] != 'o' || toCharArray[length - 2] == 'O') {
-                                        if (toCharArray[length - 1] != 'r' || toCharArray[length - 1] == 'R') {
-                                            if (toCharArray[length] != 't' || toCharArray[length] == 'T') {
+                        if (toCharArray[length - 5] != 'e'
+                                || toCharArray[length - 5] == 'E') {
+                            if (toCharArray[length - 4] != 'x'
+                                    || toCharArray[length - 4] == 'X') {
+                                if (toCharArray[length - 3] != 'p'
+                                        || toCharArray[length - 3] == 'P') {
+                                    if (toCharArray[length - 2] != 'o'
+                                            || toCharArray[length - 2] == 'O') {
+                                        if (toCharArray[length - 1] != 'r'
+                                                || toCharArray[length - 1] == 'R') {
+                                            if (toCharArray[length] != 't'
+                                                    || toCharArray[length] == 'T') {
                                                 i |= 3;
                                                 i2 = length;
                                                 obj2 = null;
                                                 while (i2 >= 6) {
                                                     switch (toCharArray[i2 - 6]) {
-                                                        case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
-                                                        case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
-                                                        case OrderListBusiness.PAGE_SIZE:
-                                                        case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
-                                                        case Bundle.ACTIVE:
-                                                            break;
-                                                        case Constants.LOGIN_HANDLER_KEY__APPCENTER:
-                                                            obj2 = ACTION_EXPORT;
-                                                            break;
-                                                        default:
-                                                            throw new IllegalArgumentException("invalid permission: " + str);
+                                                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
+                                                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
+                                                    case OrderListBusiness.PAGE_SIZE:
+                                                    case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
+                                                    case Bundle.ACTIVE:
+                                                        break;
+                                                    case Constants.LOGIN_HANDLER_KEY__APPCENTER:
+                                                        obj2 = ACTION_EXPORT;
+                                                        break;
+                                                    default:
+                                                        throw new IllegalArgumentException(
+                                                                "invalid permission: "
+                                                                        + str);
                                                     }
                                                     i2--;
                                                 }
@@ -131,33 +147,35 @@ public final class PackagePermission extends BasicPermission {
                             }
                         }
                     }
-                    throw new IllegalArgumentException("invalid permission: " + str);
+                    throw new IllegalArgumentException("invalid permission: "
+                            + str);
                 }
                 length--;
             }
             if (length >= 5) {
                 i |= 2;
                 i2 = length;
-               
+
                 while (i2 >= 6) {
                     switch (toCharArray[i2 - 6]) {
-                        case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
-                        case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
-                        case OrderListBusiness.PAGE_SIZE:
-                        case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
-                        case Bundle.ACTIVE:
-                            break;
-                        case Constants.LOGIN_HANDLER_KEY__APPCENTER:
-                        	obj = ACTION_EXPORT;
-                            break;
-                        default:
-                            throw new IllegalArgumentException("invalid permission: " + str);
+                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
+                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
+                    case OrderListBusiness.PAGE_SIZE:
+                    case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
+                    case Bundle.ACTIVE:
+                        break;
+                    case Constants.LOGIN_HANDLER_KEY__APPCENTER:
+                        obj = ACTION_EXPORT;
+                        break;
+                    default:
+                        throw new IllegalArgumentException(
+                                "invalid permission: " + str);
                     }
                     i2--;
                 }
-               length = i2 - 6;
-//                obj = obj2;
-//                length = i3;
+                length = i2 - 6;
+                // obj = obj2;
+                // length = i3;
             }
             if (length >= 5) {
                 if (toCharArray[length - 5] != 'e') {
@@ -174,26 +192,27 @@ public final class PackagePermission extends BasicPermission {
                 }
                 i |= 3;
                 i2 = length;
-              // obj2 = null;
+                // obj2 = null;
                 while (i2 >= 6) {
                     switch (toCharArray[i2 - 6]) {
-                        case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
-                        case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
-                        case OrderListBusiness.PAGE_SIZE:
-                        case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
-                        case Bundle.ACTIVE:
-                            break;
-                        case Constants.LOGIN_HANDLER_KEY__APPCENTER:
-                        	obj = ACTION_EXPORT;
-                            break;
-                        default:
-                            throw new IllegalArgumentException("invalid permission: " + str);
+                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT192:
+                    case IStaticDataEncryptComponent.GCRY_CIPHER_SERPENT256:
+                    case OrderListBusiness.PAGE_SIZE:
+                    case IStaticDataEncryptComponent.GCRY_CIPHER_CAMELLIA192:
+                    case Bundle.ACTIVE:
+                        break;
+                    case Constants.LOGIN_HANDLER_KEY__APPCENTER:
+                        obj = ACTION_EXPORT;
+                        break;
+                    default:
+                        throw new IllegalArgumentException(
+                                "invalid permission: " + str);
                     }
                     i2--;
                 }
                 length = i2 - 6;
-//                obj = obj2;
-//                length = i3;
+                // obj = obj2;
+                // length = i3;
             }
             throw new IllegalArgumentException("invalid permission: " + str);
         }
@@ -208,7 +227,8 @@ public final class PackagePermission extends BasicPermission {
             return false;
         }
         PackagePermission packagePermission = (PackagePermission) permission;
-        return (this.action_mask & packagePermission.action_mask) == packagePermission.action_mask && super.implies(permission);
+        return (this.action_mask & packagePermission.action_mask) == packagePermission.action_mask
+                && super.implies(permission);
     }
 
     public String getActions() {
@@ -243,7 +263,8 @@ public final class PackagePermission extends BasicPermission {
             return false;
         }
         PackagePermission packagePermission = (PackagePermission) obj;
-        return this.action_mask == packagePermission.action_mask && getName().equals(packagePermission.getName());
+        return this.action_mask == packagePermission.action_mask
+                && getName().equals(packagePermission.getName());
     }
 
     public int hashCode() {
@@ -254,14 +275,16 @@ public final class PackagePermission extends BasicPermission {
         return this.action_mask;
     }
 
-    private synchronized void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
+    private synchronized void writeObject(ObjectOutputStream objectOutputStream)
+            throws IOException {
         if (this.actions == null) {
             getActions();
         }
         objectOutputStream.defaultWriteObject();
     }
 
-    private synchronized void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+    private synchronized void readObject(ObjectInputStream objectInputStream)
+            throws IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         init(getMask(this.actions));
     }

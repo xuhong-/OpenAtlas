@@ -32,29 +32,44 @@ public class DelegateResources extends Resources {
     }
 
     public DelegateResources(AssetManager assetManager, Resources resources) {
-        super(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
+        super(assetManager, resources.getDisplayMetrics(), resources
+                .getConfiguration());
         this.resIdentifierMap = new ConcurrentHashMap();
     }
 
-    public static void newDelegateResources(Application application, Resources resources) throws Exception {
+    public static void newDelegateResources(Application application,
+            Resources resources) throws Exception {
         List<Bundle> bundles = Framework.getBundles();
         if (bundles != null && !bundles.isEmpty()) {
             Resources delegateResources;
             List<String> arrayList = new ArrayList();
             arrayList.add(application.getApplicationInfo().sourceDir);
             for (Bundle bundle : bundles) {
-                arrayList.add(((BundleImpl) bundle).getArchive().getArchiveFile().getAbsolutePath());
+                arrayList.add(((BundleImpl) bundle).getArchive()
+                        .getArchiveFile().getAbsolutePath());
             }
-            AssetManager assetManager = (AssetManager) AssetManager.class.newInstance();
+            AssetManager assetManager = (AssetManager) AssetManager.class
+                    .newInstance();
             for (String str : arrayList) {
                 AtlasHacks.AssetManager_addAssetPath.invoke(assetManager, str);
             }
-            if (resources == null || !resources.getClass().getName().equals("android.content.res.MiuiResources")) {
-                delegateResources = new DelegateResources(assetManager, resources);
+            if (resources == null
+                    || !resources.getClass().getName()
+                            .equals("android.content.res.MiuiResources")) {
+                delegateResources = new DelegateResources(assetManager,
+                        resources);
             } else {
-                Constructor declaredConstructor = Class.forName("android.content.res.MiuiResources").getDeclaredConstructor(new Class[]{AssetManager.class, DisplayMetrics.class, Configuration.class});
+                Constructor declaredConstructor = Class.forName(
+                        "android.content.res.MiuiResources")
+                        .getDeclaredConstructor(
+                                new Class[] { AssetManager.class,
+                                        DisplayMetrics.class,
+                                        Configuration.class });
                 declaredConstructor.setAccessible(true);
-                delegateResources = (Resources) declaredConstructor.newInstance(new Object[]{assetManager, resources.getDisplayMetrics(), resources.getConfiguration()});
+                delegateResources = (Resources) declaredConstructor
+                        .newInstance(new Object[] { assetManager,
+                                resources.getDisplayMetrics(),
+                                resources.getConfiguration() });
             }
             RuntimeVariables.setDelegateResources(delegateResources);
             AndroidHack.injectResources(application, delegateResources);
@@ -72,12 +87,14 @@ public class DelegateResources extends Resources {
             }
         }
     }
+
     @Override
     public XmlResourceParser getLayout(int id) throws NotFoundException {
-    	// TODO Auto-generated method stub
-    	return super.getLayout(id);
+        // TODO Auto-generated method stub
+        return super.getLayout(id);
     }
-@Override
+
+    @Override
     public int getIdentifier(String str, String str2, String str3) {
         int identifier = super.getIdentifier(str, str2, str3);
         if (identifier != 0) {
@@ -95,8 +112,10 @@ public class DelegateResources extends Resources {
             for (Bundle bundle : Framework.getBundles()) {
                 String location = bundle.getLocation();
                 String str4 = location + ":" + str;
-                if (!this.resIdentifierMap.isEmpty() && this.resIdentifierMap.containsKey(str4)) {
-                    int intValue = ((Integer) this.resIdentifierMap.get(str4)).intValue();
+                if (!this.resIdentifierMap.isEmpty()
+                        && this.resIdentifierMap.containsKey(str4)) {
+                    int intValue = ((Integer) this.resIdentifierMap.get(str4))
+                            .intValue();
                     if (intValue != 0) {
                         return intValue;
                     }
@@ -106,12 +125,16 @@ public class DelegateResources extends Resources {
                     ClassLoader classLoader = bundleImpl.getClassLoader();
                     if (classLoader != null) {
                         try {
-                            StringBuilder stringBuilder = new StringBuilder(location);
+                            StringBuilder stringBuilder = new StringBuilder(
+                                    location);
                             stringBuilder.append(".R$");
                             stringBuilder.append(str2);
-                            identifier = getFieldValueOfR(classLoader.loadClass(stringBuilder.toString()), str);
+                            identifier = getFieldValueOfR(
+                                    classLoader.loadClass(stringBuilder
+                                            .toString()), str);
                             if (identifier != 0) {
-                                this.resIdentifierMap.put(str4, Integer.valueOf(identifier));
+                                this.resIdentifierMap.put(str4,
+                                        Integer.valueOf(identifier));
                                 return identifier;
                             }
                         } catch (ClassNotFoundException e) {

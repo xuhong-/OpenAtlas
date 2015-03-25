@@ -23,7 +23,8 @@ public class BundleArchive implements Archive {
         if (list != null) {
             for (String str2 : list) {
                 if (str2.startsWith(REVISION_DIRECTORY)) {
-                    long parseLong = Long.parseLong(StringUtils.substringAfter(str2, "."));
+                    long parseLong = Long.parseLong(StringUtils.substringAfter(
+                            str2, "."));
                     if (parseLong > 0) {
                         this.revisions.put(Long.valueOf(parseLong), null);
                     }
@@ -31,19 +32,25 @@ public class BundleArchive implements Archive {
             }
         }
         if (this.revisions.isEmpty()) {
-            throw new IOException("No valid revisions in bundle archive directory: " + file);
+            throw new IOException(
+                    "No valid revisions in bundle archive directory: " + file);
         }
         this.bundleDir = file;
         long longValue = ((Long) this.revisions.lastKey()).longValue();
-        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(str, longValue, new File(file, "version." + String.valueOf(longValue)));
+        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
+                str, longValue, new File(file, "version."
+                        + String.valueOf(longValue)));
         this.revisions.put(Long.valueOf(longValue), bundleArchiveRevision);
         this.currentRevision = bundleArchiveRevision;
     }
 
-    public BundleArchive(String str, File file, InputStream inputStream) throws IOException {
+    public BundleArchive(String str, File file, InputStream inputStream)
+            throws IOException {
         this.revisions = new TreeMap();
         this.bundleDir = file;
-        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(str, 1, new File(file, "version." + String.valueOf(1)), inputStream);
+        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
+                str, 1, new File(file, "version." + String.valueOf(1)),
+                inputStream);
         this.revisions.put(Long.valueOf(1), bundleArchiveRevision);
         this.currentRevision = bundleArchiveRevision;
     }
@@ -51,21 +58,28 @@ public class BundleArchive implements Archive {
     public BundleArchive(String str, File file, File file2) throws IOException {
         this.revisions = new TreeMap();
         this.bundleDir = file;
-        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(str, 1, new File(file, "version." + String.valueOf(1)), file2);
+        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
+                str, 1, new File(file, "version." + String.valueOf(1)), file2);
         this.revisions.put(Long.valueOf(1), bundleArchiveRevision);
         this.currentRevision = bundleArchiveRevision;
     }
 
-    public BundleArchiveRevision newRevision(String str, File file, InputStream inputStream) throws IOException {
+    public BundleArchiveRevision newRevision(String str, File file,
+            InputStream inputStream) throws IOException {
         long longValue = 1 + ((Long) this.revisions.lastKey()).longValue();
-        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(str, longValue, new File(file, "version." + String.valueOf(longValue)), inputStream);
+        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
+                str, longValue, new File(file, "version."
+                        + String.valueOf(longValue)), inputStream);
         this.revisions.put(Long.valueOf(longValue), bundleArchiveRevision);
         return bundleArchiveRevision;
     }
 
-    public BundleArchiveRevision newRevision(String str, File file, File file2) throws IOException {
+    public BundleArchiveRevision newRevision(String str, File file, File file2)
+            throws IOException {
         long longValue = 1 + ((Long) this.revisions.lastKey()).longValue();
-        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(str, longValue, new File(file, "version." + String.valueOf(longValue)), file2);
+        BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
+                str, longValue, new File(file, "version."
+                        + String.valueOf(longValue)), file2);
         this.revisions.put(Long.valueOf(longValue), bundleArchiveRevision);
         return bundleArchiveRevision;
     }
@@ -102,7 +116,8 @@ public class BundleArchive implements Archive {
         return this.currentRevision.getManifest();
     }
 
-    public Class<?> findClass(String str, ClassLoader classLoader) throws ClassNotFoundException {
+    public Class<?> findClass(String str, ClassLoader classLoader)
+            throws ClassNotFoundException {
         return this.currentRevision.findClass(str, classLoader);
     }
 
@@ -120,7 +135,8 @@ public class BundleArchive implements Archive {
             for (Long longValue : this.revisions.keySet()) {
                 long longValue2 = longValue.longValue();
                 if (longValue2 != revisionNum) {
-                    File file = new File(this.bundleDir, "version." + String.valueOf(longValue2));
+                    File file = new File(this.bundleDir, "version."
+                            + String.valueOf(longValue2));
                     if (file.exists()) {
                         Framework.deleteDirectory(file);
                     }

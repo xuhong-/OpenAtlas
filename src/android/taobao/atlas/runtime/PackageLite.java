@@ -16,6 +16,7 @@ import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.taobao.atlas.util.StringUtils;
 import android.util.AttributeSet;
+
 //This Class can ref PackageParser
 public class PackageLite {
     private static final String XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AlipayAuthenticationService";
@@ -46,12 +47,16 @@ public class PackageLite {
         XmlResourceParser xmlResourceParser = null;
         XmlResourceParser openXmlResourceParser;
         try {
-            AssetManager assetManager = (AssetManager) AssetManager.class.newInstance();
-            int intValue = ((Integer) AtlasHacks.AssetManager_addAssetPath.invoke(assetManager, file.getAbsolutePath())).intValue();
+            AssetManager assetManager = (AssetManager) AssetManager.class
+                    .newInstance();
+            int intValue = ((Integer) AtlasHacks.AssetManager_addAssetPath
+                    .invoke(assetManager, file.getAbsolutePath())).intValue();
             if (intValue != 0) {
-                openXmlResourceParser = assetManager.openXmlResourceParser(intValue, "AndroidManifest.xml");
+                openXmlResourceParser = assetManager.openXmlResourceParser(
+                        intValue, "AndroidManifest.xml");
             } else {
-                openXmlResourceParser = assetManager.openXmlResourceParser(intValue, "AndroidManifest.xml");
+                openXmlResourceParser = assetManager.openXmlResourceParser(
+                        intValue, "AndroidManifest.xml");
             }
             if (openXmlResourceParser != null) {
                 try {
@@ -59,13 +64,15 @@ public class PackageLite {
                     if (parse == null) {
                         parse = new PackageLite();
                     }
-       
+
                     openXmlResourceParser.close();
                     return parse;
                 } catch (Exception e2) {
                     e = e2;
                     try {
-                        log.error("Exception while parse AndroidManifest.xml >>>", e);
+                        log.error(
+                                "Exception while parse AndroidManifest.xml >>>",
+                                e);
                         if (openXmlResourceParser != null) {
                             openXmlResourceParser.close();
                         }
@@ -91,15 +98,15 @@ public class PackageLite {
             if (xmlResourceParser != null) {
                 xmlResourceParser.close();
             }
-           
+
         }
-		return null;
+        return null;
     }
 
-    protected static android.taobao.atlas.runtime.PackageLite parse(android.content.res.XmlResourceParser arg10) throws java.lang.Exception {
+    protected static android.taobao.atlas.runtime.PackageLite parse(
+            android.content.res.XmlResourceParser arg10)
+            throws java.lang.Exception {
 
-        
-        
         int v2;
         PackageLite v0_1;
         int v0;
@@ -109,43 +116,41 @@ public class PackageLite {
         PackageLite v4 = new PackageLite();
         do {
             v0 = arg10.next();
-            if(v0 == v7) {
+            if (v0 == v7) {
                 break;
             }
-        }
-        while(v0 != 1);
+        } while (v0 != 1);
 
-        if(v0 != v7) {
+        if (v0 != v7) {
             PackageLite.log.error("No start tag found");
             v0_1 = v3;
-        }
-        else if(!arg10.getName().equals("manifest")) {
+        } else if (!arg10.getName().equals("manifest")) {
             PackageLite.log.error("No <manifest> tag");
             v0_1 = v3;
-        }
-        else {
-            v4.packageName = ((AttributeSet)arg10).getAttributeValue(null, "package");
-            if(v4.packageName != null && v4.packageName.length() != 0) {
+        } else {
+            v4.packageName = ((AttributeSet) arg10).getAttributeValue(null,
+                    "package");
+            if (v4.packageName != null && v4.packageName.length() != 0) {
                 v0 = 0;
                 v2 = 0;
-            }
-            else {
+            } else {
                 PackageLite.log.error("<manifest> does not specify package");
                 return v3;
             }
 
-            while(v0 < ((AttributeSet)arg10).getAttributeCount()) {
-                String v5 = ((AttributeSet)arg10).getAttributeName(v0);
-                if(v5.equals("versionCode")) {
-                    v4.versionCode = ((AttributeSet)arg10).getAttributeIntValue(v0, 0);
+            while (v0 < ((AttributeSet) arg10).getAttributeCount()) {
+                String v5 = ((AttributeSet) arg10).getAttributeName(v0);
+                if (v5.equals("versionCode")) {
+                    v4.versionCode = ((AttributeSet) arg10)
+                            .getAttributeIntValue(v0, 0);
                     ++v2;
-                }
-                else if(v5.equals("versionName")) {
-                    v4.versionName = ((AttributeSet)arg10).getAttributeValue(v0);
+                } else if (v5.equals("versionName")) {
+                    v4.versionName = ((AttributeSet) arg10)
+                            .getAttributeValue(v0);
                     ++v2;
                 }
 
-                if(v2 >= v7) {
+                if (v2 >= v7) {
                     break;
                 }
 
@@ -153,33 +158,33 @@ public class PackageLite {
             }
 
             v0 = arg10.getDepth() + 1;
-            while(true) {
+            while (true) {
                 int v1 = arg10.next();
                 System.out.println(arg10.getName());
-                if(v1 != XmlPullParser.END_DOCUMENT) {
-                    if(arg10.getName().equals("application")) {
-                        if(!PackageLite.parseApplication(v4, ((XmlPullParser)arg10), ((AttributeSet)
-                                arg10))) {
+                if (v1 != XmlPullParser.END_DOCUMENT) {
+                    if (arg10.getName().equals("application")) {
+                        if (!PackageLite
+                                .parseApplication(v4, ((XmlPullParser) arg10),
+                                        ((AttributeSet) arg10))) {
                             return v3;
                         }
 
                         return v4;
                     }
 
-                    if(v1 == v9 && arg10.getDepth() < v0) {
+                    if (v1 == v9 && arg10.getDepth() < v0) {
                         break;
                     }
 
-                    if(v1 == v9) {
+                    if (v1 == v9) {
                         continue;
                     }
 
-                    if(v1 == 4) {
+                    if (v1 == 4) {
                         continue;
                     }
 
-            
-                    PackageLite.skipCurrentTag(((XmlPullParser)arg10));
+                    PackageLite.skipCurrentTag(((XmlPullParser) arg10));
                     continue;
                 }
 
@@ -190,27 +195,30 @@ public class PackageLite {
         }
 
         return v0_1;
-    
-    
-    
-    
-    
+
     }
+
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static boolean parseApplication(PackageLite packageLite, XmlPullParser xmlPullParser, AttributeSet attributeSet) throws Exception {
+    private static boolean parseApplication(PackageLite packageLite,
+            XmlPullParser xmlPullParser, AttributeSet attributeSet)
+            throws Exception {
         int i;
         String str = packageLite.packageName;
         for (i = 0; i < attributeSet.getAttributeCount(); i++) {
             String attributeName = attributeSet.getAttributeName(i);
             if (attributeName.equals("name")) {
-                packageLite.applicationClassName = buildClassName(str, attributeSet.getAttributeValue(i));
+                packageLite.applicationClassName = buildClassName(str,
+                        attributeSet.getAttributeValue(i));
             } else if (attributeName.equals("icon")) {
-                packageLite.applicationIcon = attributeSet.getAttributeResourceValue(i, 0);
+                packageLite.applicationIcon = attributeSet
+                        .getAttributeResourceValue(i, 0);
             } else if (attributeName.equals("label")) {
-                packageLite.applicationLabel = attributeSet.getAttributeResourceValue(i, 0);
+                packageLite.applicationLabel = attributeSet
+                        .getAttributeResourceValue(i, 0);
             } else if (attributeName.equals("description")) {
-                packageLite.applicationDescription = attributeSet.getAttributeResourceValue(i, 0);
+                packageLite.applicationDescription = attributeSet
+                        .getAttributeResourceValue(i, 0);
             }
         }
         i = xmlPullParser.getDepth();
@@ -222,15 +230,20 @@ public class PackageLite {
                 } else if (next != 3 && next != 4) {
                     str = xmlPullParser.getName();
                     if (str.equals("meta-data")) {
-                        packageLite.metaData = parseMetaData(xmlPullParser, attributeSet, packageLite.metaData);
+                        packageLite.metaData = parseMetaData(xmlPullParser,
+                                attributeSet, packageLite.metaData);
                     } else if (str.equals("activity")) {
-                        parseComponentData(packageLite, xmlPullParser, attributeSet, false);
+                        parseComponentData(packageLite, xmlPullParser,
+                                attributeSet, false);
                     } else if (str.equals("receiver")) {
-                        parseComponentData(packageLite, xmlPullParser, attributeSet, true);
+                        parseComponentData(packageLite, xmlPullParser,
+                                attributeSet, true);
                     } else if (str.equals("service")) {
-                        parseComponentData(packageLite, xmlPullParser, attributeSet, true);
+                        parseComponentData(packageLite, xmlPullParser,
+                                attributeSet, true);
                     } else if (str.equals("provider")) {
-                        parseComponentData(packageLite, xmlPullParser, attributeSet, false);
+                        parseComponentData(packageLite, xmlPullParser,
+                                attributeSet, false);
                     } else {
                         skipCurrentTag(xmlPullParser);
                     }
@@ -242,7 +255,9 @@ public class PackageLite {
         return true;
     }
 
-    private static Bundle parseMetaData(XmlPullParser xmlPullParser, AttributeSet attributeSet, Bundle bundle) throws XmlPullParserException, IOException {
+    private static Bundle parseMetaData(XmlPullParser xmlPullParser,
+            AttributeSet attributeSet, Bundle bundle)
+            throws XmlPullParserException, IOException {
         int i = 0;
         if (bundle == null) {
             bundle = new Bundle();
@@ -293,7 +308,8 @@ public class PackageLite {
         }
     }
 
-    private static void skipCurrentTag(XmlPullParser xmlPullParser) throws XmlPullParserException, IOException {
+    private static void skipCurrentTag(XmlPullParser xmlPullParser)
+            throws XmlPullParserException, IOException {
         int depth = xmlPullParser.getDepth();
         while (true) {
             int next = xmlPullParser.next();
@@ -306,7 +322,9 @@ public class PackageLite {
         }
     }
 
-    private static void parseComponentData(PackageLite packageLite, XmlPullParser xmlPullParser, AttributeSet attributeSet, boolean z) throws XmlPullParserException {
+    private static void parseComponentData(PackageLite packageLite,
+            XmlPullParser xmlPullParser, AttributeSet attributeSet, boolean z)
+            throws XmlPullParserException {
         int i = 0;
         String str = packageLite.packageName;
         int i2 = 0;
@@ -317,7 +335,12 @@ public class PackageLite {
                     attributeValue = str.concat(str);
                 }
                 packageLite.components.add(attributeValue);
-                if (z && !(StringUtils.equals(attributeValue, XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE) && StringUtils.equals(attributeValue, XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE))) {
+                if (z
+                        && !(StringUtils
+                                .equals(attributeValue,
+                                        XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE) && StringUtils
+                                .equals(attributeValue,
+                                        XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE))) {
                     packageLite.disableComponents.add(attributeValue);
                 }
                 i2++;

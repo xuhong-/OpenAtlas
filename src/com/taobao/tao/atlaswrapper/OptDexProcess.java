@@ -37,19 +37,23 @@ public class OptDexProcess {
 
     public synchronized void processPackages() {
         if (!this.c) {
-            Log.e("OptDexProcess", "Bundle Installer not initialized yet, process abort!");
+            Log.e("OptDexProcess",
+                    "Bundle Installer not initialized yet, process abort!");
         } else if (this.d) {
-            Log.i("OptDexProcess", "Bundle install already executed, just return");
+            Log.i("OptDexProcess",
+                    "Bundle install already executed, just return");
         } else {
             long currentTimeMillis = System.currentTimeMillis();
             a();
-      //    ..  "Install bundles not delayed cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms";
+            // .. "Install bundles not delayed cost time = " +
+            // (System.currentTimeMillis() - currentTimeMillis) + " ms";
             k.saveAtlasInfoBySharedPreferences(this.b);
-            System.setProperty("BUNDLES_INSTALLED","true");
+            System.setProperty("BUNDLES_INSTALLED", "true");
             b();
             currentTimeMillis = System.currentTimeMillis();
             getInstance().c();
-         //   "Install delayed bundles cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms";
+            // "Install delayed bundles cost time = " +
+            // (System.currentTimeMillis() - currentTimeMillis) + " ms";
             this.d = true;
         }
     }
@@ -71,7 +75,8 @@ public class OptDexProcess {
     }
 
     private void b() {
-        this.b.sendBroadcast(new Intent("com.taobao.taobao.action.BUNDLES_INSTALLED"));
+        this.b.sendBroadcast(new Intent(
+                "com.taobao.taobao.action.BUNDLES_INSTALLED"));
     }
 
     private void c() {

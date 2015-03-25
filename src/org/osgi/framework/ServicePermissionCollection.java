@@ -17,18 +17,22 @@ final class ServicePermissionCollection extends PermissionCollection {
 
     public void add(Permission permission) {
         if (!(permission instanceof ServicePermission)) {
-            throw new IllegalArgumentException("invalid permission: " + permission);
+            throw new IllegalArgumentException("invalid permission: "
+                    + permission);
         } else if (isReadOnly()) {
-            throw new SecurityException("attempt to add a Permission to a readonly PermissionCollection");
+            throw new SecurityException(
+                    "attempt to add a Permission to a readonly PermissionCollection");
         } else {
             ServicePermission servicePermission = (ServicePermission) permission;
             String name = servicePermission.getName();
-            ServicePermission servicePermission2 = (ServicePermission) this.permissions.get(name);
+            ServicePermission servicePermission2 = (ServicePermission) this.permissions
+                    .get(name);
             if (servicePermission2 != null) {
                 int mask = servicePermission2.getMask();
                 int mask2 = servicePermission.getMask();
                 if (mask != mask2) {
-                    this.permissions.put(name, new ServicePermission(name, mask2 | mask));
+                    this.permissions.put(name, new ServicePermission(name,
+                            mask2 | mask));
                 }
             } else {
                 this.permissions.put(name, permission);
@@ -54,7 +58,8 @@ final class ServicePermissionCollection extends PermissionCollection {
         ServicePermission servicePermission2 = (ServicePermission) permission;
         int mask2 = servicePermission2.getMask();
         if (this.all_allowed) {
-            servicePermission = (ServicePermission) this.permissions.get(GetUserInfoRequest.version);
+            servicePermission = (ServicePermission) this.permissions
+                    .get(GetUserInfoRequest.version);
             if (servicePermission != null) {
                 mask = servicePermission.getMask() | 0;
                 if ((mask & mask2) == mask2) {
@@ -62,7 +67,8 @@ final class ServicePermissionCollection extends PermissionCollection {
                 }
                 i = mask;
                 name = servicePermission2.getName();
-                servicePermission = (ServicePermission) this.permissions.get(name);
+                servicePermission = (ServicePermission) this.permissions
+                        .get(name);
                 if (servicePermission != null) {
                     i |= servicePermission.getMask();
                     if ((i & mask2) == mask2) {
@@ -78,8 +84,10 @@ final class ServicePermissionCollection extends PermissionCollection {
                     if (lastIndexOf != -1) {
                         return false;
                     }
-                    str2 = str2.substring(0, lastIndexOf + 1) + GetUserInfoRequest.version;
-                    servicePermission = (ServicePermission) this.permissions.get(str2);
+                    str2 = str2.substring(0, lastIndexOf + 1)
+                            + GetUserInfoRequest.version;
+                    servicePermission = (ServicePermission) this.permissions
+                            .get(str2);
                     if (servicePermission != null) {
                         i2 |= servicePermission.getMask();
                         if ((i2 & mask2) == mask2) {
@@ -108,7 +116,8 @@ final class ServicePermissionCollection extends PermissionCollection {
             if (lastIndexOf != -1) {
                 return false;
             }
-            str2 = str2.substring(0, lastIndexOf + 1) + GetUserInfoRequest.version;
+            str2 = str2.substring(0, lastIndexOf + 1)
+                    + GetUserInfoRequest.version;
             servicePermission = (ServicePermission) this.permissions.get(str2);
             if (servicePermission != null) {
                 i2 |= servicePermission.getMask();

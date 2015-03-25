@@ -54,7 +54,9 @@ public class BundleInfoList {
                 List<String> arrayList = new ArrayList();
                 if (!(bundleInfo == null || bundleInfo.DependentBundles == null)) {
                     for (int i = 0; i < bundleInfo.DependentBundles.size(); i++) {
-                        if (!TextUtils.isEmpty((CharSequence) bundleInfo.DependentBundles.get(i))) {
+                        if (!TextUtils
+                                .isEmpty((CharSequence) bundleInfo.DependentBundles
+                                        .get(i))) {
                             arrayList.add(bundleInfo.DependentBundles.get(i));
                         }
                     }

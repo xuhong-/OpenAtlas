@@ -41,31 +41,21 @@ public class BaseActivity extends PanguActivity {
         this.isNaviActivity = false;
     }
 
-
     @TargetApi(14)
     protected void onCreate(Bundle bundle) {
-}
+    }
 
     protected String getUTClassName() {
         return getClass().getName();
     }
 
-
-
     public void disableFinishAnimationOnce() {
         this.disablefinishAnimation = true;
     }
 
-
-
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
     }
-
-
-
-
-
 
     public final Activity getActivity() {
         return this;
@@ -91,8 +81,6 @@ public class BaseActivity extends PanguActivity {
         return getApplicationContext().getDatabasePath(str);
     }
 
-
-
     public View getTopView() {
         return this.mPanelTopView;
     }
@@ -100,7 +88,5 @@ public class BaseActivity extends PanguActivity {
     protected boolean onPanelKeyDown(int i, KeyEvent keyEvent) {
         return false;
     }
-
-
 
 }

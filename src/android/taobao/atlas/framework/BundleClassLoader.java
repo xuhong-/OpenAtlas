@@ -51,7 +51,7 @@ public final class BundleClassLoader extends ClassLoader {
         private final InputStream input;
 
         class AnonymousClass_1 extends InputStream {
-            final /* synthetic */ InputStream val$stream;
+            final/* synthetic */InputStream val$stream;
 
             AnonymousClass_1(InputStream inputStream) {
                 this.val$stream = inputStream;
@@ -114,13 +114,15 @@ public final class BundleClassLoader extends ClassLoader {
         this.bundle = bundleImpl;
         this.archive = bundleImpl.archive;
         if (this.archive == null) {
-            throw new BundleException("Not a valid bundle: " + bundleImpl.location);
+            throw new BundleException("Not a valid bundle: "
+                    + bundleImpl.location);
         }
         try {
             processManifest(this.archive.getManifest());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new BundleException("Not a valid bundle: " + bundleImpl.location);
+            throw new BundleException("Not a valid bundle: "
+                    + bundleImpl.location);
         }
     }
 
@@ -135,21 +137,29 @@ public final class BundleClassLoader extends ClassLoader {
         } else {
             mainAttributes = new Attributes();
         }
-        checkEE(readProperty(mainAttributes, Constants.BUNDLE_REQUIREDEXECUTIONENVIRONMENT), splitString(System.getProperty(Constants.FRAMEWORK_EXECUTIONENVIRONMENT)));
+        checkEE(readProperty(mainAttributes,
+                Constants.BUNDLE_REQUIREDEXECUTIONENVIRONMENT),
+                splitString(System
+                        .getProperty(Constants.FRAMEWORK_EXECUTIONENVIRONMENT)));
         this.exports = readProperty(mainAttributes, Constants.EXPORT_PACKAGE);
         this.imports = readProperty(mainAttributes, Constants.IMPORT_PACKAGE);
-        this.dynamicImports = readProperty(mainAttributes, Constants.DYNAMICIMPORT_PACKAGE);
+        this.dynamicImports = readProperty(mainAttributes,
+                Constants.DYNAMICIMPORT_PACKAGE);
         this.requires = readProperty(mainAttributes, Constants.REQUIRE_BUNDLE);
-        this.activatorClassName = mainAttributes.getValue(Constants.BUNDLE_ACTIVATOR);
+        this.activatorClassName = mainAttributes
+                .getValue(Constants.BUNDLE_ACTIVATOR);
         Hashtable hashtable = new Hashtable(mainAttributes.size());
-        Object[] toArray = mainAttributes.keySet().toArray(new Object[mainAttributes.keySet().size()]);
+        Object[] toArray = mainAttributes.keySet().toArray(
+                new Object[mainAttributes.keySet().size()]);
         for (int i = 0; i < toArray.length; i++) {
-            hashtable.put(toArray[i].toString(), mainAttributes.get(toArray[i]).toString());
+            hashtable.put(toArray[i].toString(), mainAttributes.get(toArray[i])
+                    .toString());
         }
         this.bundle.headers = hashtable;
     }
 
-    private void checkEE(String[] strArr, String[] strArr2) throws BundleException {
+    private void checkEE(String[] strArr, String[] strArr2)
+            throws BundleException {
         if (strArr.length != 0) {
             Set hashSet = new HashSet(Arrays.asList(strArr2));
             int i = 0;
@@ -160,14 +170,17 @@ public final class BundleClassLoader extends ClassLoader {
                     return;
                 }
             }
-            throw new BundleException("Platform does not provide EEs " + Arrays.asList(strArr));
+            throw new BundleException("Platform does not provide EEs "
+                    + Arrays.asList(strArr));
         }
     }
 
-    boolean resolveBundle(boolean z, HashSet<BundleClassLoader> hashSet) throws BundleException {
+    boolean resolveBundle(boolean z, HashSet<BundleClassLoader> hashSet)
+            throws BundleException {
         int i;
         if (Framework.DEBUG_CLASSLOADING && log.isInfoEnabled()) {
-            log.info("BundleClassLoader: Resolving " + this.bundle + (z ? " (critical)" : " (not critical)"));
+            log.info("BundleClassLoader: Resolving " + this.bundle
+                    + (z ? " (critical)" : " (not critical)"));
         }
         HashSet hashSet2;
         if (this.exports.length > 0) {
@@ -185,22 +198,33 @@ public final class BundleClassLoader extends ClassLoader {
             }
             for (int i2 = 0; i2 < this.imports.length; i2++) {
                 String obj = Package.parsePackageString(this.imports[i2])[0];
-                if (!FRAMEWORK_PACKAGES.contains(obj) && this.importDelegations.get(obj) == null && (hashSet2 == null || !hashSet2.contains(obj))) {
-                    BundleClassLoader bundleClassLoader = Framework.getImport(this.bundle, this.imports[i2], z, hashSet);
+                if (!FRAMEWORK_PACKAGES.contains(obj)
+                        && this.importDelegations.get(obj) == null
+                        && (hashSet2 == null || !hashSet2.contains(obj))) {
+                    BundleClassLoader bundleClassLoader = Framework.getImport(
+                            this.bundle, this.imports[i2], z, hashSet);
                     if (bundleClassLoader != null) {
                         if (bundleClassLoader != this) {
                             this.importDelegations.put(obj, bundleClassLoader);
                         }
                     } else if (z) {
-                        throw new BundleException("Unsatisfied import " + this.imports[i2] + " for bundle " + this.bundle.toString(), new ClassNotFoundException("Unsatisfied import " + this.imports[i2]));
+                        throw new BundleException("Unsatisfied import "
+                                + this.imports[i2] + " for bundle "
+                                + this.bundle.toString(),
+                                new ClassNotFoundException(
+                                        "Unsatisfied import "
+                                                + this.imports[i2]));
                     } else {
                         if (this.exports.length > 0) {
                             Framework.export(this, this.exports, false);
                         }
-                        if (!Framework.DEBUG_CLASSLOADING || !log.isInfoEnabled()) {
+                        if (!Framework.DEBUG_CLASSLOADING
+                                || !log.isInfoEnabled()) {
                             return false;
                         }
-                        log.info("BundleClassLoader: Missing import " + this.imports[i2] + ". Resolving attempt terminated unsuccessfully.");
+                        log.info("BundleClassLoader: Missing import "
+                                + this.imports[i2]
+                                + ". Resolving attempt terminated unsuccessfully.");
                         return false;
                     }
                 }
@@ -211,9 +235,14 @@ public final class BundleClassLoader extends ClassLoader {
                 this.importDelegations = new HashMap(this.imports.length);
             }
             for (i = 0; i < this.exports.length; i++) {
-                BundleClassLoader bundleClassLoader2 = Framework.getImport(this.bundle, Package.parsePackageString(this.exports[i])[0], false, null);
+                BundleClassLoader bundleClassLoader2 = Framework.getImport(
+                        this.bundle,
+                        Package.parsePackageString(this.exports[i])[0], false,
+                        null);
                 if (!(bundleClassLoader2 == null || bundleClassLoader2 == this)) {
-                    this.importDelegations.put(Package.parsePackageString(this.exports[i])[0], bundleClassLoader2);
+                    this.importDelegations.put(
+                            Package.parsePackageString(this.exports[i])[0],
+                            bundleClassLoader2);
                 }
             }
         }
@@ -226,7 +255,8 @@ public final class BundleClassLoader extends ClassLoader {
     void cleanup(boolean z) {
         ArrayList arrayList = new ArrayList();
         for (String str : this.exports) {
-            Package packageR = (Package) Framework.exportedPackages.get(new Package(str, null, false));
+            Package packageR = (Package) Framework.exportedPackages
+                    .get(new Package(str, null, false));
             if (packageR != null) {
                 if (packageR.importingBundles == null) {
                     Framework.exportedPackages.remove(packageR);
@@ -239,15 +269,18 @@ public final class BundleClassLoader extends ClassLoader {
         }
         if (this.bundle != null) {
             if (z) {
-                this.bundle.staleExportedPackages = (Package[]) arrayList.toArray(new Package[arrayList.size()]);
+                this.bundle.staleExportedPackages = (Package[]) arrayList
+                        .toArray(new Package[arrayList.size()]);
             } else {
                 this.bundle.staleExportedPackages = null;
             }
         }
         if (this.importDelegations != null) {
-            String[] strArr = (String[]) this.importDelegations.keySet().toArray(new String[this.importDelegations.size()]);
+            String[] strArr = (String[]) this.importDelegations.keySet()
+                    .toArray(new String[this.importDelegations.size()]);
             for (String str2 : strArr) {
-                Package packageR2 = (Package) Framework.exportedPackages.get(new Package(str2, null, false));
+                Package packageR2 = (Package) Framework.exportedPackages
+                        .get(new Package(str2, null, false));
                 if (!(packageR2 == null || packageR2.importingBundles == null)) {
                     packageR2.importingBundles.remove(this.bundle);
                     if (packageR2.importingBundles.isEmpty()) {
@@ -283,10 +316,14 @@ public final class BundleClassLoader extends ClassLoader {
         if (this.dynamicImports.length > 0) {
             for (int i = 0; i < this.dynamicImports.length; i++) {
                 if (this.dynamicImports[i].indexOf("version") > -1) {
-                    Package[] packageArr = (Package[]) Framework.exportedPackages.keySet().toArray(new Package[Framework.exportedPackages.size()]);
+                    Package[] packageArr = (Package[]) Framework.exportedPackages
+                            .keySet().toArray(
+                                    new Package[Framework.exportedPackages
+                                            .size()]);
                     for (int i2 = 0; i2 < packageArr.length; i2++) {
                         if (packageArr[i2].matches(this.dynamicImports[i])) {
-                            Class<?> findDelegatedClass = findDelegatedClass(packageArr[i2].classloader, str);
+                            Class<?> findDelegatedClass = findDelegatedClass(
+                                    packageArr[i2].classloader, str);
                             if (findDelegatedClass != null) {
                                 return findDelegatedClass;
                             }
@@ -294,9 +331,11 @@ public final class BundleClassLoader extends ClassLoader {
                     }
                     continue;
                 } else {
-                    Package packageR = (Package) Framework.exportedPackages.get(new Package(packageOf(str), null, false));
+                    Package packageR = (Package) Framework.exportedPackages
+                            .get(new Package(packageOf(str), null, false));
                     if (packageR != null) {
-                        findOwnClass = findDelegatedClass(packageR.classloader, str);
+                        findOwnClass = findDelegatedClass(packageR.classloader,
+                                str);
                         if (findOwnClass != null) {
                             return findOwnClass;
                         }
@@ -307,7 +346,8 @@ public final class BundleClassLoader extends ClassLoader {
             }
         }
         if (this.importDelegations != null) {
-            BundleClassLoader bundleClassLoader = (BundleClassLoader) this.importDelegations.get(packageOf(str));
+            BundleClassLoader bundleClassLoader = (BundleClassLoader) this.importDelegations
+                    .get(packageOf(str));
             if (bundleClassLoader != null) {
                 findOwnClass = findDelegatedClass(bundleClassLoader, str);
                 if (findOwnClass != null) {
@@ -322,7 +362,8 @@ public final class BundleClassLoader extends ClassLoader {
             }
         } catch (Exception e) {
         }
-        throw new ClassNotFoundException("Can't find class " + str + " in BundleClassLoader: " + this.bundle.getLocation());
+        throw new ClassNotFoundException("Can't find class " + str
+                + " in BundleClassLoader: " + this.bundle.getLocation());
     }
 
     private Class<?> findOwnClass(String str) {
@@ -336,7 +377,8 @@ public final class BundleClassLoader extends ClassLoader {
         }
     }
 
-    private static Class<?> findDelegatedClass(BundleClassLoader bundleClassLoader, String str) {
+    private static Class<?> findDelegatedClass(
+            BundleClassLoader bundleClassLoader, String str) {
         Class<?> findLoadedClass;
         synchronized (bundleClassLoader) {
             findLoadedClass = bundleClassLoader.findLoadedClass(str);
@@ -354,7 +396,8 @@ public final class BundleClassLoader extends ClassLoader {
             return (URL) findOwnResources.get(0);
         }
         List findImportedResources = findImportedResources(stripTrailing, false);
-        return findImportedResources.size() > 0 ? (URL) findImportedResources.get(0) : null;
+        return findImportedResources.size() > 0 ? (URL) findImportedResources
+                .get(0) : null;
     }
 
     protected Enumeration<URL> findResources(String str) {
@@ -377,11 +420,14 @@ public final class BundleClassLoader extends ClassLoader {
         if (this.bundle.state == 2 || this.importDelegations == null) {
             return EMPTY_LIST;
         }
-        BundleClassLoader bundleClassLoader = (BundleClassLoader) this.importDelegations.get(packageOf(pseudoClassname(str)));
+        BundleClassLoader bundleClassLoader = (BundleClassLoader) this.importDelegations
+                .get(packageOf(pseudoClassname(str)));
         if (bundleClassLoader == null) {
             return EMPTY_LIST;
         }
-        return bundleClassLoader.originalExporter == null ? bundleClassLoader.findOwnResources(str, z) : bundleClassLoader.originalExporter.findOwnResources(str, z);
+        return bundleClassLoader.originalExporter == null ? bundleClassLoader
+                .findOwnResources(str, z) : bundleClassLoader.originalExporter
+                .findOwnResources(str, z);
     }
 
     protected String findLibrary(String str) {
@@ -399,7 +445,8 @@ public final class BundleClassLoader extends ClassLoader {
             return findLibrary.getAbsolutePath();
         }
         try {
-            return (String) AtlasHacks.ClassLoader_findLibrary.invoke(Framework.systemClassLoader, str);
+            return (String) AtlasHacks.ClassLoader_findLibrary.invoke(
+                    Framework.systemClassLoader, str);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -410,7 +457,8 @@ public final class BundleClassLoader extends ClassLoader {
         return "BundleClassLoader[Bundle" + this.bundle + "]";
     }
 
-    private static String[] readProperty(Attributes attributes, String str) throws BundleException {
+    private static String[] readProperty(Attributes attributes, String str)
+            throws BundleException {
         String value = attributes.getValue(str);
         if (value == null || !value.equals("")) {
             return splitString(value);
@@ -425,7 +473,7 @@ public final class BundleClassLoader extends ClassLoader {
         }
         StringTokenizer stringTokenizer = new StringTokenizer(str, ",");
         if (stringTokenizer.countTokens() == 0) {
-            return new String[]{str};
+            return new String[] { str };
         }
         String[] strArr = new String[stringTokenizer.countTokens()];
         while (i < strArr.length) {
@@ -436,7 +484,8 @@ public final class BundleClassLoader extends ClassLoader {
     }
 
     private static String stripTrailing(String str) {
-        return (str.startsWith("/") || str.startsWith("\\")) ? str.substring(1) : str;
+        return (str.startsWith("/") || str.startsWith("\\")) ? str.substring(1)
+                : str;
     }
 
     private static String packageOf(String str) {
@@ -445,6 +494,7 @@ public final class BundleClassLoader extends ClassLoader {
     }
 
     private static String pseudoClassname(String str) {
-        return stripTrailing(str).replace('.', '-').replace('/', '.').replace('\\', '.');
+        return stripTrailing(str).replace('.', '-').replace('/', '.')
+                .replace('\\', '.');
     }
 }

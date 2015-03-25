@@ -20,11 +20,11 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
 
     public void frameworkEvent(FrameworkEvent frameworkEvent) {
         switch (frameworkEvent.getType()) {
-            case 0 /*0*/:
-                starting();
-            case 1 /*1*/:
-                started();
-            default:
+        case 0 /* 0 */:
+            starting();
+        case 1 /* 1 */:
+            started();
+        default:
         }
     }
 
@@ -32,7 +32,12 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
         Bundle bundle;
         long currentTimeMillis = System.currentTimeMillis();
         try {
-            bundle = RuntimeVariables.androidApplication.getPackageManager().getApplicationInfo(RuntimeVariables.androidApplication.getPackageName(), 128).metaData;
+            bundle = RuntimeVariables.androidApplication
+                    .getPackageManager()
+                    .getApplicationInfo(
+                            RuntimeVariables.androidApplication
+                                    .getPackageName(),
+                            128).metaData;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             bundle = null;
@@ -45,29 +50,38 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
                 }
                 String[] split = StringUtils.split(string, ",");
                 if (split == null || split.length == 0) {
-                    split = new String[]{string};
+                    split = new String[] { string };
                 }
                 for (String str : split) {
                     try {
-                        Application newApplication = BundleLifecycleHandler.newApplication(str, Framework.getSystemClassLoader());
+                        Application newApplication = BundleLifecycleHandler
+                                .newApplication(str,
+                                        Framework.getSystemClassLoader());
                         newApplication.onCreate();
-                        DelegateComponent.apkApplications.put("system:" + str, newApplication);
+                        DelegateComponent.apkApplications.put("system:" + str,
+                                newApplication);
                     } catch (Throwable e2) {
                         log.error("Error to start application", e2);
                     }
                 }
             }
         }
-        log.info("starting() spend " + (System.currentTimeMillis() - currentTimeMillis) + " milliseconds");
+        log.info("starting() spend "
+                + (System.currentTimeMillis() - currentTimeMillis)
+                + " milliseconds");
     }
 
     private void started() {
         long currentTimeMillis = System.currentTimeMillis();
         try {
-            DelegateResources.newDelegateResources(RuntimeVariables.androidApplication, RuntimeVariables.getDelegateResources());
+            DelegateResources.newDelegateResources(
+                    RuntimeVariables.androidApplication,
+                    RuntimeVariables.getDelegateResources());
         } catch (Throwable e) {
             log.error("Failed to newDelegateResources", e);
         }
-        log.info("started() spend " + (System.currentTimeMillis() - currentTimeMillis) + " milliseconds");
+        log.info("started() spend "
+                + (System.currentTimeMillis() - currentTimeMillis)
+                + " milliseconds");
     }
 }

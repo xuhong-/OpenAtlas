@@ -32,7 +32,8 @@ public class ClassLoadFromBundle {
 
     public static String getClassNotFoundReason(String str) {
         for (int i = 0; i < classNotFoundReason.size(); i++) {
-            if ((classNotFoundReason.get(Integer.valueOf(i)) + "").contains(str + "")) {
+            if ((classNotFoundReason.get(Integer.valueOf(i)) + "").contains(str
+                    + "")) {
                 return classNotFoundReason.get(Integer.valueOf(i)) + "";
             }
         }
@@ -40,14 +41,17 @@ public class ClassLoadFromBundle {
     }
 
     private static void insertToReasonList(String str, String str2) {
-        classNotFoundReason.put(Integer.valueOf(reasonCnt), " Not found class " + str + " because " + str2);
+        classNotFoundReason.put(Integer.valueOf(reasonCnt), " Not found class "
+                + str + " because " + str2);
         int i = reasonCnt + 1;
         reasonCnt = i;
         reasonCnt = i % 10;
     }
 
     public static String getPackageNameFromEntryName(String str) {
-        return str.substring(str.indexOf("lib/armeabi/lib") + "lib/armeabi/lib".length(), str.indexOf(".so")).replace("_", ".");
+        return str.substring(
+                str.indexOf("lib/armeabi/lib") + "lib/armeabi/lib".length(),
+                str.indexOf(".so")).replace("_", ".");
     }
 
     public static synchronized void resolveInternalBundles() {
@@ -57,63 +61,85 @@ public class ClassLoadFromBundle {
                 String str2 = ".so";
                 List arrayList = new ArrayList();
                 try {
-                    Enumeration entries = new ZipFile(RuntimeVariables.androidApplication.getApplicationInfo().sourceDir).entries();
+                    Enumeration entries = new ZipFile(
+                            RuntimeVariables.androidApplication
+                                    .getApplicationInfo().sourceDir).entries();
                     while (entries.hasMoreElements()) {
-                        String name = ((ZipEntry) entries.nextElement()).getName();
+                        String name = ((ZipEntry) entries.nextElement())
+                                .getName();
                         if (name.startsWith(str) && name.endsWith(str2)) {
                             arrayList.add(getPackageNameFromEntryName(name));
                         }
                     }
                     sInternalBundles = arrayList;
                 } catch (Throwable e) {
-                    Log.e(TAG, "Exception while get bundles in assets or lib", e);
+                    Log.e(TAG, "Exception while get bundles in assets or lib",
+                            e);
                 }
             }
         }
     }
 
-    public static Class<?> loadFromUninstalledBundles(String str) throws ClassNotFoundException {
+    public static Class<?> loadFromUninstalledBundles(String str)
+            throws ClassNotFoundException {
         if (sInternalBundles == null) {
             resolveInternalBundles();
         }
         BundleInfoList instance = BundleInfoList.getInstance();
         String bundleForComponet = instance.getBundleForComponet(str);
         if (bundleForComponet == null) {
-           Log.e("me", "Failed to find the bundle in BundleInfoList for component " + str);
+            Log.e("me",
+                    "Failed to find the bundle in BundleInfoList for component "
+                            + str);
             insertToReasonList(str, "not found in BundleInfoList!");
             return null;
-        } else if (sInternalBundles != null && !sInternalBundles.contains(bundleForComponet)) {
+        } else if (sInternalBundles != null
+                && !sInternalBundles.contains(bundleForComponet)) {
             return null;
         } else {
             Bundle installBundle;
             List<String> linkedList = new LinkedList();
             if (instance.getDependencyForBundle(bundleForComponet) != null) {
-                linkedList.addAll(instance.getDependencyForBundle(bundleForComponet));
+                linkedList.addAll(instance
+                        .getDependencyForBundle(bundleForComponet));
             }
             linkedList.add(bundleForComponet);
             for (String str2 : linkedList) {
-                File file = new File(new File(Framework.getProperty("android.taobao.atlas.AppDirectory"), "lib"), "lib".concat(str2.replace(".", "_")).concat(".so"));
+                File file = new File(
+                        new File(
+                                Framework
+                                        .getProperty("android.taobao.atlas.AppDirectory"),
+                                "lib"), "lib".concat(str2.replace(".", "_"))
+                                .concat(".so"));
                 if (Atlas.getInstance().getBundle(str2) == null) {
                     try {
                         if (!file.exists()) {
                             return null;
                         }
-                        installBundle = Atlas.getInstance().installBundle(str2, file);
+                        installBundle = Atlas.getInstance().installBundle(str2,
+                                file);
                         if (installBundle != null) {
-                           Log.e("me",  "Succeed to install bundle " + str2);
-                        try {
-                            long currentTimeMillis = System.currentTimeMillis();
-                            ((BundleImpl) installBundle).optDexFile();
-                           Log.e("me",  "Succeed to dexopt bundle " + str2 + " cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
-                        } catch (Throwable e) {
-                            Log.e(TAG, "Error while dexopt >>>", e);
-                            insertToReasonList(str, "dexopt failed!");
-                            if (!(e instanceof DexLoadException)) {
-                                return null;
+                            Log.e("me", "Succeed to install bundle " + str2);
+                            try {
+                                long currentTimeMillis = System
+                                        .currentTimeMillis();
+                                ((BundleImpl) installBundle).optDexFile();
+                                Log.e("me",
+                                        "Succeed to dexopt bundle "
+                                                + str2
+                                                + " cost time = "
+                                                + (System.currentTimeMillis() - currentTimeMillis)
+                                                + " ms");
+                            } catch (Throwable e) {
+                                Log.e(TAG, "Error while dexopt >>>", e);
+                                insertToReasonList(str, "dexopt failed!");
+                                if (!(e instanceof DexLoadException)) {
+                                    return null;
+                                }
+                                throw ((RuntimeException) e);
                             }
-                            throw ((RuntimeException) e);
                         }
-                        }} catch (Throwable e2) {
+                    } catch (Throwable e2) {
                         Log.e(TAG, "Could not install bundle.", e2);
                         insertToReasonList(str, "bundle installation failed");
                         return null;
@@ -121,7 +147,8 @@ public class ClassLoadFromBundle {
                 }
             }
             installBundle = Atlas.getInstance().getBundle(bundleForComponet);
-            ClassLoader classLoader = ((BundleImpl) installBundle).getClassLoader();
+            ClassLoader classLoader = ((BundleImpl) installBundle)
+                    .getClassLoader();
             if (classLoader != null) {
                 try {
                     Class<?> loadClass = classLoader.loadClass(str);
@@ -131,11 +158,13 @@ public class ClassLoadFromBundle {
                 } catch (ClassNotFoundException e3) {
                 }
             }
-            throw new ClassNotFoundException("Can't find class " + str + " in BundleClassLoader: " + installBundle.getLocation());
+            throw new ClassNotFoundException("Can't find class " + str
+                    + " in BundleClassLoader: " + installBundle.getLocation());
         }
     }
 
-    static Class<?> loadFromInstalledBundles(String str) throws ClassNotFoundException {
+    static Class<?> loadFromInstalledBundles(String str)
+            throws ClassNotFoundException {
         BundleImpl bundleImpl;
         int i = 0;
         Class<?> cls = null;
@@ -143,7 +172,8 @@ public class ClassLoadFromBundle {
         if (!(bundles == null || bundles.isEmpty())) {
             for (Bundle bundle : bundles) {
                 bundleImpl = (BundleImpl) bundle;
-                PackageLite packageLite = DelegateComponent.getPackage(bundleImpl.getLocation());
+                PackageLite packageLite = DelegateComponent
+                        .getPackage(bundleImpl.getLocation());
                 if (packageLite != null && packageLite.components.contains(str)) {
                     bundleImpl.getArchive().optDexFile();
                     ClassLoader classLoader = bundleImpl.getClassLoader();
@@ -154,14 +184,37 @@ public class ClassLoadFromBundle {
                                 return cls;
                             }
                         } catch (ClassNotFoundException e) {
-                            throw new ClassNotFoundException("Can't find class " + str + " in BundleClassLoader: " + bundleImpl.getLocation() + " [" + (bundles == null ? 0 : bundles.size()) + "]" + "classloader is: " + (classLoader == null ? "null" : "not null") + " packageversion " + getPackageVersion() + " exception:" + e.getMessage());
+                            throw new ClassNotFoundException(
+                                    "Can't find class "
+                                            + str
+                                            + " in BundleClassLoader: "
+                                            + bundleImpl.getLocation()
+                                            + " ["
+                                            + (bundles == null ? 0
+                                                    : bundles.size())
+                                            + "]"
+                                            + "classloader is: "
+                                            + (classLoader == null ? "null"
+                                                    : "not null")
+                                            + " packageversion "
+                                            + getPackageVersion()
+                                            + " exception:" + e.getMessage());
                         }
                     }
-                    StringBuilder append = new StringBuilder().append("Can't find class ").append(str).append(" in BundleClassLoader: ").append(bundleImpl.getLocation()).append(" [");
+                    StringBuilder append = new StringBuilder()
+                            .append("Can't find class ").append(str)
+                            .append(" in BundleClassLoader: ")
+                            .append(bundleImpl.getLocation()).append(" [");
                     if (bundles != null) {
                         i = bundles.size();
                     }
-                    throw new ClassNotFoundException(append.append(i).append("]").append(classLoader == null ? "classloader is null" : "classloader not null").append(" packageversion ").append(getPackageVersion()).toString());
+                    throw new ClassNotFoundException(append
+                            .append(i)
+                            .append("]")
+                            .append(classLoader == null ? "classloader is null"
+                                    : "classloader not null")
+                            .append(" packageversion ")
+                            .append(getPackageVersion()).toString());
                 }
             }
         }
@@ -194,7 +247,12 @@ public class ClassLoadFromBundle {
     private static int getPackageVersion() {
         PackageInfo packageInfo;
         try {
-            packageInfo = RuntimeVariables.androidApplication.getPackageManager().getPackageInfo(RuntimeVariables.androidApplication.getPackageName(), 0);
+            packageInfo = RuntimeVariables.androidApplication
+                    .getPackageManager()
+                    .getPackageInfo(
+                            RuntimeVariables.androidApplication
+                                    .getPackageName(),
+                            0);
         } catch (Throwable e) {
             Log.e(TAG, "Error to get PackageInfo >>>", e);
             packageInfo = new PackageInfo();

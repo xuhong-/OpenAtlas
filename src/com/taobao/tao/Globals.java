@@ -40,10 +40,12 @@ public class Globals {
     private static Application getSystemApp() {
         try {
             Class cls = Class.forName("android.app.ActivityThread");
-            Method declaredMethod = cls.getDeclaredMethod("currentActivityThread", new Class[0]);
+            Method declaredMethod = cls.getDeclaredMethod(
+                    "currentActivityThread", new Class[0]);
             Field declaredField = cls.getDeclaredField("mInitialApplication");
             declaredField.setAccessible(true);
-            return (Application) declaredField.get(declaredMethod.invoke(null, new Object[0]));
+            return (Application) declaredField.get(declaredMethod.invoke(null,
+                    new Object[0]));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -52,7 +54,8 @@ public class Globals {
 
     public static String getVersionName() {
         try {
-            return getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0).versionName;
+            return getApplication().getPackageManager().getPackageInfo(
+                    getApplication().getPackageName(), 0).versionName;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             return "5.0.0";
@@ -66,16 +69,19 @@ public class Globals {
     public static int getVersionCode() {
         int i = 0;
         try {
-            return getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0).versionCode;
+            return getApplication().getPackageManager().getPackageInfo(
+                    getApplication().getPackageName(), 0).versionCode;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             return i;
         }
     }
+
     public static final String TRACE_TYPE_BUY = "3";
     public static final String TRACE_TYPE_CART = "2";
     public static final String TRACE_TYPE_FAV = "1";
     public static final String TRACE_TYPE_FAV_SHOP = "4";
+
     public static boolean isMiniPackage() {
         try {
             String string = getApplication().getString(R.string.isMiniPackage);

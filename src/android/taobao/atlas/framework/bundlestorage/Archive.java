@@ -10,7 +10,8 @@ import java.util.jar.Manifest;
 public interface Archive {
     void close();
 
-    Class<?> findClass(String str, ClassLoader classLoader) throws ClassNotFoundException;
+    Class<?> findClass(String str, ClassLoader classLoader)
+            throws ClassNotFoundException;
 
     File findLibrary(String str);
 
@@ -24,9 +25,11 @@ public interface Archive {
 
     boolean isDexOpted();
 
-    BundleArchiveRevision newRevision(String str, File file, File file2) throws IOException;
+    BundleArchiveRevision newRevision(String str, File file, File file2)
+            throws IOException;
 
-    BundleArchiveRevision newRevision(String str, File file, InputStream inputStream) throws IOException;
+    BundleArchiveRevision newRevision(String str, File file,
+            InputStream inputStream) throws IOException;
 
     InputStream openAssetInputStream(String str) throws IOException;
 

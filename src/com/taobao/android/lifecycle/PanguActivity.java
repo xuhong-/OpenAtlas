@@ -1,12 +1,10 @@
 package com.taobao.android.lifecycle;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 
 public class PanguActivity extends Activity {
     private final List<IndividualActivityLifecycleCallback> mIndividualActivityLifecycleCallbacks;
@@ -29,7 +27,7 @@ public class PanguActivity extends Activity {
         this.mIndividualActivityLifecycleCallbacks = new CopyOnWriteArrayList();
     }
 
-    protected void onCreate( Bundle bundle) {
+    protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         if (!this.mIndividualActivityLifecycleCallbacks.isEmpty()) {
             for (IndividualActivityLifecycleCallback individualActivityLifecycleCallback : this.mIndividualActivityLifecycleCallbacks) {
@@ -83,13 +81,16 @@ public class PanguActivity extends Activity {
         super.onDestroy();
     }
 
-    public void registerIndividualActivityLifecycleCallback(IndividualActivityLifecycleCallback individualActivityLifecycleCallback) {
-        this.mIndividualActivityLifecycleCallbacks.add(individualActivityLifecycleCallback);
+    public void registerIndividualActivityLifecycleCallback(
+            IndividualActivityLifecycleCallback individualActivityLifecycleCallback) {
+        this.mIndividualActivityLifecycleCallbacks
+                .add(individualActivityLifecycleCallback);
     }
 
-    public void unregisterIndividualActivityLifecycleCallback(IndividualActivityLifecycleCallback individualActivityLifecycleCallback) {
-        this.mIndividualActivityLifecycleCallbacks.remove(individualActivityLifecycleCallback);
+    public void unregisterIndividualActivityLifecycleCallback(
+            IndividualActivityLifecycleCallback individualActivityLifecycleCallback) {
+        this.mIndividualActivityLifecycleCallbacks
+                .remove(individualActivityLifecycleCallback);
     }
-
 
 }
