@@ -7,9 +7,12 @@ import android.text.TextUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.taobao.taobao.R;
+
 public class Globals {
     private static Application sApplication;
     private static ClassLoader sClassLoader;
+    private static String sInstalledVersionName;
 
     public static synchronized Application getApplication() {
         Application application;
@@ -36,9 +39,9 @@ public class Globals {
 
     private static Application getSystemApp() {
         try {
-            Class forName = Class.forName("android.app.ActivityThread");
-            Method declaredMethod = forName.getDeclaredMethod("currentActivityThread", new Class[0]);
-            Field declaredField = forName.getDeclaredField("mInitialApplication");
+            Class cls = Class.forName("android.app.ActivityThread");
+            Method declaredMethod = cls.getDeclaredMethod("currentActivityThread", new Class[0]);
+            Field declaredField = cls.getDeclaredField("mInitialApplication");
             declaredField.setAccessible(true);
             return (Application) declaredField.get(declaredMethod.invoke(null, new Object[0]));
         } catch (Exception e) {
@@ -48,49 +51,52 @@ public class Globals {
     }
 
     public static String getVersionName() {
-//        String version = TaoApplication.getVersion();
-//        if (getVersionCode() > a.getInstance().getMainVersionCode()) {
-//            return version;
-//        }
-//        String mainVersionName = a.getInstance().getMainVersionName();
-//        if (!StringUtil.isEmpty(mainVersionName) && !version.equalsIgnoreCase(mainVersionName)) {
-//            return version;
-//        }
-//        String baselineVersion = a.getInstance().getBaselineVersion();
-//        if (StringUtil.isEmpty(mainVersionName) || StringUtil.isEmpty(baselineVersion)) {
-//            return version;
-//        }
-//        String[] split = mainVersionName.split("\\.");
-//        if (split.length < 3) {
-//            return version;
-//        }
-//        split[2] = baselineVersion;
-        return "1.0";//TextUtils.join(".", split);
+        try {
+            return getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0).versionName;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+            return "5.0.0";
+        }
     }
 
-    public static String getBaselineVer() {
-//        if (getVersionCode() > a.getInstance().getMainVersionCode()) {
-//            return BaseRemoteBusiness.BASE_URL;
-//        }
-//        String version = TaoApplication.getVersion();
-//        String mainVersionName = a.getInstance().getMainVersionName();
-        return "1";//(StringUtil.isEmpty(mainVersionName) || version.equalsIgnoreCase(mainVersionName)) ? a.getInstance().getBaselineVersion() : BaseRemoteBusiness.BASE_URL;
+    public static String getInstalledVersionName() {
+        return sInstalledVersionName;
     }
 
-    private static int getVersionCode() {
+    public static int getVersionCode() {
+        int i = 0;
         try {
             return getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0).versionCode;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
-            return 0;
+            return i;
         }
     }
-
+    public static final String TRACE_TYPE_BUY = "3";
+    public static final String TRACE_TYPE_CART = "2";
+    public static final String TRACE_TYPE_FAV = "1";
+    public static final String TRACE_TYPE_FAV_SHOP = "4";
     public static boolean isMiniPackage() {
-return false;
+        try {
+            String string = getApplication().getString(R.string.isMiniPackage);
+            if (string == null) {
+                return false;
+            }
+            return TRACE_TYPE_FAV.equals(string.trim());
+        } catch (Throwable th) {
+            return false;
+        }
     }
 
     public static boolean isMiniPackage(Application application) {
-    	return false;
+        try {
+            String string = application.getString(R.string.isMiniPackage);
+            if (TextUtils.isEmpty(string)) {
+                return false;
+            }
+            return TRACE_TYPE_FAV.equals(string.trim());
+        } catch (Throwable th) {
+            return false;
         }
+    }
 }

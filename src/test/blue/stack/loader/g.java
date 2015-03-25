@@ -34,9 +34,9 @@ public class g implements ClassNotFoundInterceptorCallback {
         CharSequence dataString = intent.getDataString();
         if (className == null || !className.equals("com.taobao.tao.welcome.Welcome")) {
 //            if (Globals.isMiniPackage()) {
-//                a findBundleByActivity = d.instance().findBundleByActivity(className);
+//                a findBundleByActivity = BundlesInstaller.instance().findBundleByActivity(className);
 //                if (!(findBundleByActivity == null || Atlas.getInstance().getBundle(findBundleByActivity.getPkgName()) != null || GO_H5_BUNDLES_IF_NOT_EXISTS.contains(findBundleByActivity.getPkgName()))) {
-//                    new Handler(Looper.getMainLooper()).post(new h(this, intent, className, findBundleByActivity));
+//                    new Handler(Looper.getMainLooper()).post(new OptDexProcess(this, intent, className, findBundleByActivity));
 //                }
 //            }
 //            if (!TextUtils.isEmpty(dataString)) {

@@ -3,18 +3,19 @@ package test.blue.stack.loader;
 import org.osgi.framework.BundleException;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.taobao.atlas.R;
-import android.taobao.atlas.R.id;
-import android.taobao.atlas.R.layout;
-import android.taobao.atlas.R.menu;
+
+import com.taobao.taobao.R;
+
 import android.taobao.atlas.framework.Atlas;
 import android.taobao.atlas.framework.BundleImpl;
 import android.taobao.atlas.framework.Framework;
 import android.taobao.atlas.runtime.RuntimeVariables;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -58,7 +59,34 @@ public class LoaderTesstActivity extends Activity {
 	
 
 	}
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+Intent mIntent = new  Intent(Intent.ACTION_VIEW);
+mIntent.setPackage("com.taobao.taobao");
+mIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.scan.MainActivity"));
 
+//mComponent = {ComponentName@6742} "ComponentInfo{com.taobao.taobao/com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity}"
+//mClass = {String@6750} "com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity"
+//mPackage = {String@6751} "com.taobao.taobao"
+//shadow$_klass_ = {Class@700} "class android.content.ComponentName"
+//shadow$_monitor_ = -1442943439
+//mData = {Uri$StringUri@6743} "http://tb.cn/n/scancode"
+//mExtras = {Bundle@6744} "Bundle[{callback_action=null, referrer=http://m.taobao.com/index.htm}]"
+//mPackage = {String@6745} "com.taobao.taobao"
+
+//	try {
+//		mIntent = new Intent(this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
+//	} catch (ClassNotFoundException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+
+	mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	//mIntent.setClassName("com.taobao.scan", "com.taobao.scan.MainActivity");
+	startActivity(mIntent);
+	
+	return super.onTouchEvent(event);
+}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -78,15 +106,11 @@ public class LoaderTesstActivity extends Activity {
 				
 				
 				Intent mIntent = null;
-				try {
-					mIntent = new Intent(LoaderTesstActivity.this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				mIntent = new Intent("com.taobao.scan.MainActivity");
 	
 				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				RuntimeVariables.androidApplication.startActivity(mIntent);
+				mIntent.setClassName("com.taobao.scan", "com.taobao.scan.MainActivity");
+				App.instaceApp.startActivity(mIntent);
 				
 			}
 			return true;

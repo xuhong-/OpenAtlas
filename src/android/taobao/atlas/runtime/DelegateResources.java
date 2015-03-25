@@ -13,6 +13,7 @@ import android.app.Application;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.taobao.atlas.framework.BundleImpl;
 import android.taobao.atlas.framework.Framework;
 import android.taobao.atlas.hack.AndroidHack;
@@ -71,7 +72,12 @@ public class DelegateResources extends Resources {
             }
         }
     }
-
+    @Override
+    public XmlResourceParser getLayout(int id) throws NotFoundException {
+    	// TODO Auto-generated method stub
+    	return super.getLayout(id);
+    }
+@Override
     public int getIdentifier(String str, String str2, String str3) {
         int identifier = super.getIdentifier(str, str2, str3);
         if (identifier != 0) {

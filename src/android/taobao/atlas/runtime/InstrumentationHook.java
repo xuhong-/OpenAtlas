@@ -173,6 +173,7 @@ public class InstrumentationHook extends Instrumentation {
 
     private ActivityResult execStartActivityInternal(Context context, Intent intent, ExecStartActivityCallback execStartActivityCallback) {
         String packageName;
+        String tmpString=context.getPackageName();
         String className;
         if (intent.getComponent() != null) {
             packageName = intent.getComponent().getPackageName();
@@ -188,7 +189,7 @@ public class InstrumentationHook extends Instrumentation {
             }
         }
         if (!StringUtils.equals(context.getPackageName(), packageName)) {
-            return execStartActivityCallback.execStartActivity();
+          return execStartActivityCallback.execStartActivity();
         }
         if (DelegateComponent.locateComponent(className) != null) {
             return execStartActivityCallback.execStartActivity();

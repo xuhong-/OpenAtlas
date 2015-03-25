@@ -4,7 +4,7 @@ public class LoggerFactory {
     public static int logLevel;
 
     static {
-        logLevel = 3;
+        logLevel = 1;
     }
 
     public static Logger getInstance(String str) {
