@@ -1,7 +1,8 @@
-package test.blue.stack.loader;
+package com.taobao.tao.welcome;
 
 import org.osgi.framework.BundleException;
 
+import test.blue.stack.loader.App;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -20,7 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class LoaderTesstActivity extends Activity {
+public class Welcome extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class LoaderTesstActivity extends Activity {
 //
 //			Intent mIntent = null;
 //			try {
-//				mIntent = new Intent(LoaderTesstActivity.this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
+//				mIntent = new Intent(Welcome.this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
 //			} catch (ClassNotFoundException e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();

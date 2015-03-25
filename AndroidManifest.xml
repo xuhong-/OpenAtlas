@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="test.blue.stack.loader.LoaderTesstActivity"
+            android:name="com.taobao.tao.welcome.Welcome"
             android:label="@string/title_activity_loader_tesst" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

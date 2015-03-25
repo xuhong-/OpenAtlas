@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="test.blue.stack.loader.LoaderTesstActivity" >
+    tools:context="com.taobao.tao.welcome.Welcome" >
 
     <Button
        android:id="@+id/btn"
