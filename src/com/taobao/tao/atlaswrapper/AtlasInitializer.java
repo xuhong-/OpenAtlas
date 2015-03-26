@@ -7,6 +7,7 @@ import java.util.Properties;
 import test.blue.stack.loader.g;
 
 import com.taobao.android.task.Coordinator;
+import com.taobao.tao.ClassNotFoundInterceptor;
 import com.taobao.tao.Globals;
 
 import android.app.Application;
@@ -134,7 +135,7 @@ public class AtlasInitializer {
         }
         // "Atlas framework begin to start in process " + this.c + " " +
         // (System.currentTimeMillis() - Component) + " ms";
-      Atlas.getInstance().setClassNotFoundInterceptorCallback((ClassNotFoundInterceptorCallback) new SecurityFrameListener());
+      Atlas.getInstance().setClassNotFoundInterceptorCallback(new ClassNotFoundInterceptor());
         try {
             Atlas.getInstance().startup();
             Coordinator.postTask(new b(this, "AtlasStartup", a, instance));
