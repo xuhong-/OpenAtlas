@@ -37,8 +37,6 @@ public class AndroidHack {
         public boolean handleMessage(Message message) {
             try {
                 AndroidHack.ensureLoadedApk();
-                Log.e("me", "handleMessage" + (handler == null) + "|"
-                        + (message == null));
                 this.handler.handleMessage(message);
                 AndroidHack.ensureLoadedApk();
             } catch (Throwable th) {
