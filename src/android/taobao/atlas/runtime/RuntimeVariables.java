@@ -14,7 +14,7 @@ public class RuntimeVariables {
     }
 
     public static void setDelegateResources(Resources delegateResources) {
-        Thread.currentThread().dumpStack();
+ 
         Log.e("bunny", "setDelegateResources" + delegateResources.toString());
         RuntimeVariables.delegateResources = delegateResources;
     }
