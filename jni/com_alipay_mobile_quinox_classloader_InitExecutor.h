@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <stdio.h>
 #ifndef _Included_com_alipay_mobile_quinox_classloader_InitExecutor
 #define _Included_com_alipay_mobile_quinox_classloader_InitExecutor
 #ifdef __cplusplus

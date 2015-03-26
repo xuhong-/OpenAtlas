@@ -60,8 +60,8 @@ void dexopt(const char* apkPath,const char* dexPath,const char* args ){
 
 
 	  stat(apkPath, &statApkPath);
-	  int tmp=open(apkPath, 0, 0);
-	  if(tmp<0){
+	  int fdApk=open(apkPath, 0, 0);
+	  if(fdApk<0){
 
 		  __android_log_print(6, "DexInv", "DexInv cannot open '%s' for input\n", apkPath);
 		  return;
@@ -74,11 +74,11 @@ void dexopt(const char* apkPath,const char* dexPath,const char* args ){
 	  }
 
 
-	int  fd = open(dexPath, 66, 420);
+	int  fdDex = open(dexPath, 66, 420);
 
-	  if ( fd >= 0 )
+	  if ( fdDex >= 0 )
 	  {
-	    int  lockVal = flock(fd, 6);
+	    int  lockVal = flock(fdDex, 6);
 
 	    if(lockVal!=0){
 
@@ -87,15 +87,36 @@ void dexopt(const char* apkPath,const char* dexPath,const char* args ){
 
 	    	__android_log_print(6, "DexInv", "flock(%s) failed: %s\n", dexPath, error);
 
-	        flock(fd, 8);
-	        close(fd);
+	        flock(fdDex, 8);
+	        close(fdDex);
 	        return;
 	    }
 
 	    __android_log_print(3, "DexInv", "DexInv: --- BEGIN '%s' --- flags='%s'\n", apkPath, args);
+	    /*
+	     * Parse arguments.  We want:
+	     *   0. (name of dexopt command -- ignored)
+	     *   1. "--zip"
+	     *   2. zip fd (input, read-only)
+	     *   3. cache fd (output, read-write, locked with flock)
+	     *   4. filename of file being optimized (used for debug messages and
+	     *      for comparing against BOOTCLASSPATH -- does not need to be
+	     *      accessible or even exist)
+	     *
+	     * The BOOTCLASSPATH environment variable is assumed to hold the correct
+	     * boot class path.  If the filename provided appears in the boot class
+	     * path, the path will be truncated just before that entry (so that, if
+	     * you were to dexopt "core.jar", your bootclasspath would be empty).
+	     *
+	     * This does not try to normalize the boot class path name, so the
+	     * filename test won't catch you if you get creative.
+	     */
 
-
-	// execl(dest, dest, "--zip", s, v30, apkPath, args, 0);
+	    char fdZipBuf [16];
+	    char fdDexBuf [16];
+	      sprintf(fdZipBuf, "%d", fdApk);//
+	        sprintf(fdDexBuf, "%d", fdDex);
+	    execl(dest, dest, "--zip", fdZipBuf, fdDexBuf, apkPath, args, 0);
 
 
 
