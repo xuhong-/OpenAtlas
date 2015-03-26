@@ -40,6 +40,9 @@ public class InstrumentationHook extends Instrumentation {
     static final Logger log;
     private Context context;
     private Instrumentation mBase;
+    private HackedClass<Object> mInstrumentationInvoke;
+    private HackedMethod mExecStartActivity1;
+    private HackedMethod mExecStartActivity2;
 
     private static interface ExecStartActivityCallback {
         ActivityResult execStartActivity();
@@ -54,7 +57,7 @@ public class InstrumentationHook extends Instrumentation {
         final Context who;
 
         AnonymousClass_1(Context context, IBinder iBinder, IBinder iBinder2,
-                Activity activity, Intent intent, int i) {
+                         Activity activity, Intent intent, int i) {
             this.who = context;
             this.contextThread = iBinder;
             this.token = iBinder2;
@@ -64,25 +67,17 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
+            if (mExecStartActivity1 == null) {
+                throw new NullPointerException("could not hook Instrumentation!");
+            }
 
-            HackedClass<Object> instrumentationInvoke;
             try {
-                instrumentationInvoke = Hack
-                        .into("android.app.Instrumentation");
-                HackedMethod method = instrumentationInvoke.method(
-                        "execStartActivity", new Class[] { Context.class,
-                                IBinder.class, IBinder.class, Activity.class,
-                                Intent.class, int.class });
-               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread,
                         this.token, this.target, this.intent,
-                        this.requestCode);
-            } catch (HackAssertionException e) {
-                e.printStackTrace();
+                        this.requestCode, null);
             } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -107,7 +102,7 @@ public class InstrumentationHook extends Instrumentation {
         final Context who;
 
         AnonymousClass_2(Context context, IBinder iBinder, IBinder iBinder2,
-                Activity activity, Intent intent, int i, Bundle bundle) {
+                         Activity activity, Intent intent, int i, Bundle bundle) {
             this.who = context;
             this.contextThread = iBinder;
             this.token = iBinder2;
@@ -118,24 +113,16 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            HackedClass<Object> instrumentationInvoke;
+            if (mExecStartActivity1 == null) {
+                throw new NullPointerException("could not hook Instrumentation!");
+            }
             try {
-                instrumentationInvoke = Hack
-                        .into("android.app.Instrumentation");
-                HackedMethod method = instrumentationInvoke.method(
-                        "execStartActivity", new Class[] { Context.class,
-                                IBinder.class, IBinder.class, Activity.class,
-                                Intent.class, int.class, Bundle.class });
-               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread,
                         this.token, this.target, this.intent,
                         this.requestCode, this.options);
-            } catch (HackAssertionException e) {
-                e.printStackTrace();
             } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -159,7 +146,7 @@ public class InstrumentationHook extends Instrumentation {
         final Context who;
 
         AnonymousClass_3(Context context, IBinder iBinder, IBinder iBinder2,
-                Fragment fragment, Intent intent, int i) {
+                         Fragment fragment, Intent intent, int i) {
             this.who = context;
             this.contextThread = iBinder;
             this.token = iBinder2;
@@ -169,24 +156,16 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            HackedClass<Object> instrumentationInvoke;
+            if (mExecStartActivity2 == null) {
+                throw new NullPointerException("could not hook Instrumentation!");
+            }
             try {
-                instrumentationInvoke = Hack
-                        .into("android.app.Instrumentation");
-                HackedMethod method = instrumentationInvoke.method(
-                        "execStartActivity", new Class[] { Context.class,
-                                IBinder.class, IBinder.class, Fragment.class,
-                                Intent.class, int.class });
-               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                return (ActivityResult) mExecStartActivity2.invoke(mBase, this.who, this.contextThread,
                         this.token, this.target, this.intent,
-                        this.requestCode );
-            } catch (HackAssertionException e) {
-                e.printStackTrace();
+                        this.requestCode, null);
             } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -216,7 +195,7 @@ public class InstrumentationHook extends Instrumentation {
         final Context who;
 
         AnonymousClass_4(Context context, IBinder iBinder, IBinder iBinder2,
-                Fragment fragment, Intent intent, int i, Bundle bundle) {
+                         Fragment fragment, Intent intent, int i, Bundle bundle) {
             this.who = context;
             this.contextThread = iBinder;
             this.token = iBinder2;
@@ -227,24 +206,17 @@ public class InstrumentationHook extends Instrumentation {
         }
 
         public ActivityResult execStartActivity() {
-            HackedClass<Object> instrumentationInvoke;
+            if (mExecStartActivity2 == null) {
+                throw new NullPointerException("could not hook Instrumentation!");
+            }
+
             try {
-                instrumentationInvoke = Hack
-                        .into("android.app.Instrumentation");
-                HackedMethod method = instrumentationInvoke.method(
-                        "execStartActivity", new Class[] { Context.class,
-                                IBinder.class, IBinder.class, Fragment.class,
-                                Intent.class, int.class, Bundle.class });
-               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                return (ActivityResult) mExecStartActivity2.invoke(mBase, this.who, this.contextThread,
                         this.token, this.target, this.intent,
-                        this.requestCode , this.options);
-            } catch (HackAssertionException e) {
-                e.printStackTrace();
+                        this.requestCode, this.options);
             } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -266,10 +238,27 @@ public class InstrumentationHook extends Instrumentation {
     public InstrumentationHook(Instrumentation instrumentation, Context context) {
         this.context = context;
         this.mBase = instrumentation;
+
+        try {
+            mInstrumentationInvoke = Hack
+                    .into("android.app.Instrumentation");
+            mExecStartActivity1 = mInstrumentationInvoke.method(
+                    "execStartActivity", new Class[]{Context.class,
+                            IBinder.class, IBinder.class, Activity.class,
+                            Intent.class, int.class, Bundle.class});
+            mExecStartActivity1 = mInstrumentationInvoke.method(
+                    "execStartActivity", new Class[]{Context.class,
+                            IBinder.class, IBinder.class, Fragment.class,
+                            Intent.class, int.class, Bundle.class});
+        } catch (HackAssertionException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     public ActivityResult execStartActivity(Context context, IBinder iBinder,
-            IBinder iBinder2, Activity activity, Intent intent, int i) {
+                                            IBinder iBinder2, Activity activity, Intent intent, int i) {
         return execStartActivityInternal(this.context, intent,
                 new AnonymousClass_1(context, iBinder, iBinder2, activity,
                         intent, i));
@@ -277,8 +266,8 @@ public class InstrumentationHook extends Instrumentation {
 
     @TargetApi(16)
     public ActivityResult execStartActivity(Context context, IBinder iBinder,
-            IBinder iBinder2, Activity activity, Intent intent, int i,
-            Bundle bundle) {
+                                            IBinder iBinder2, Activity activity, Intent intent, int i,
+                                            Bundle bundle) {
         return execStartActivityInternal(this.context, intent,
                 new AnonymousClass_2(context, iBinder, iBinder2, activity,
                         intent, i, bundle));
@@ -286,7 +275,7 @@ public class InstrumentationHook extends Instrumentation {
 
     @TargetApi(14)
     public ActivityResult execStartActivity(Context context, IBinder iBinder,
-            IBinder iBinder2, Fragment fragment, Intent intent, int i) {
+                                            IBinder iBinder2, Fragment fragment, Intent intent, int i) {
         return execStartActivityInternal(this.context, intent,
                 new AnonymousClass_3(context, iBinder, iBinder2, fragment,
                         intent, i));
@@ -294,15 +283,15 @@ public class InstrumentationHook extends Instrumentation {
 
     @TargetApi(16)
     public ActivityResult execStartActivity(Context context, IBinder iBinder,
-            IBinder iBinder2, Fragment fragment, Intent intent, int i,
-            Bundle bundle) {
+                                            IBinder iBinder2, Fragment fragment, Intent intent, int i,
+                                            Bundle bundle) {
         return execStartActivityInternal(this.context, intent,
                 new AnonymousClass_4(context, iBinder, iBinder2, fragment,
                         intent, i, bundle));
     }
 
     private ActivityResult execStartActivityInternal(Context context,
-            Intent intent, ExecStartActivityCallback execStartActivityCallback) {
+                                                     Intent intent, ExecStartActivityCallback execStartActivityCallback) {
         String packageName;
         String tmpString = context.getPackageName();
         String className;
@@ -355,8 +344,8 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     public Activity newActivity(Class<?> cls, Context context, IBinder iBinder,
-            Application application, Intent intent, ActivityInfo activityInfo,
-            CharSequence charSequence, Activity activity, String str, Object obj)
+                                Application application, Intent intent, ActivityInfo activityInfo,
+                                CharSequence charSequence, Activity activity, String str, Object obj)
             throws InstantiationException, IllegalAccessException {
         Activity newActivity = this.mBase.newActivity(cls, context, iBinder,
                 application, intent, activityInfo, charSequence, activity, str,
@@ -371,7 +360,7 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     public Activity newActivity(ClassLoader classLoader, String str,
-            Intent intent) throws InstantiationException,
+                                Intent intent) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         Activity newActivity;
         String str2 = null;
@@ -418,7 +407,7 @@ public class InstrumentationHook extends Instrumentation {
                 activity.getPackageName())) {
             ContextImplHook contextImplHook = new ContextImplHook(
                     activity.getBaseContext(), activity.getClass()
-                            .getClassLoader());
+                    .getClassLoader());
             if (!(AtlasHacks.ContextThemeWrapper_mBase == null || AtlasHacks.ContextThemeWrapper_mBase
                     .getField() == null)) {
                 AtlasHacks.ContextThemeWrapper_mBase.set(activity,
@@ -545,12 +534,12 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     public ActivityMonitor addMonitor(IntentFilter intentFilter,
-            ActivityResult activityResult, boolean z) {
+                                      ActivityResult activityResult, boolean z) {
         return this.mBase.addMonitor(intentFilter, activityResult, z);
     }
 
     public ActivityMonitor addMonitor(String str,
-            ActivityResult activityResult, boolean z) {
+                                      ActivityResult activityResult, boolean z) {
         return this.mBase.addMonitor(str, activityResult, z);
     }
 
@@ -563,7 +552,7 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     public Activity waitForMonitorWithTimeout(ActivityMonitor activityMonitor,
-            long j) {
+                                              long j) {
         return this.mBase.waitForMonitorWithTimeout(activityMonitor, j);
     }
 
@@ -604,7 +593,7 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     public Application newApplication(ClassLoader classLoader, String str,
-            Context context) throws InstantiationException,
+                                      Context context) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         return this.mBase.newApplication(classLoader, str, context);
     }
@@ -618,7 +607,7 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     public void callActivityOnRestoreInstanceState(Activity activity,
-            Bundle bundle) {
+                                                   Bundle bundle) {
         this.mBase.callActivityOnRestoreInstanceState(activity, bundle);
     }
 
