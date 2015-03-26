@@ -133,4 +133,12 @@ try {
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	//libcom_taobao_scan.so
+  
+    }
 }

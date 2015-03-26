@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
@@ -247,7 +248,7 @@ public final class BundleImpl implements Bundle {
             }
             this.state = 8;
             try {
-                this.classloader.activatorClassName = "com.taobao.scan.SimpleBundle";
+             //   this.classloader.activatorClassName = "com.taobao.scan.SimpleBundle";
                 // Bundle-Activator="com.taobao.scan.SimpleBundle"
                 // Bundle-Activity="com.taobao.scan.MainActivity"
                 this.context.isValid = true;
@@ -265,7 +266,7 @@ public final class BundleImpl implements Bundle {
 
                 }
                 this.state = 32;
-                Framework.notifyBundleListeners(2, this);
+                Framework.notifyBundleListeners(BundleEvent.STARTED, this);
                 if (Framework.DEBUG_BUNDLES && log.isInfoEnabled()) {
                     log.info("Framework: Bundle " + toString() + " started.");
                 }
@@ -304,7 +305,7 @@ public final class BundleImpl implements Bundle {
                 this.classloader.activator = null;
                 Framework.clearBundleTrace(this);
                 this.state = 4;
-                Framework.notifyBundleListeners(4, this);
+                Framework.notifyBundleListeners(BundleEvent.STOPPED, this);
                 this.context.isValid = false;
             } catch (Throwable th) {
                 this.classloader.activator = null;
