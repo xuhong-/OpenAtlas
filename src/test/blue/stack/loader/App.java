@@ -92,7 +92,7 @@ public class App extends Application {
     // }
 
     // class bd implements Runnable {
-    // final /* synthetic */ AnonymousClass_1 a;
+    // final   AnonymousClass_1 a;
     //
     // bd(AnonymousClass_1 anonymousClass_1) {
     // this.a = anonymousClass_1;
@@ -100,16 +100,16 @@ public class App extends Application {
     //
     // public void run() {
     // Toast.makeText(RuntimeVariables.androidApplication,
-    // "\u68c0\u6d4b\u5230\u624b\u673a\u5b58\u50a8\u7a7a\u95f4\u4e0d\u8db3\uff0c\u4e3a\u4e0d\u5f71\u54cd\u60a8\u7684\u4f7f\u7528\u8bf7\u6e05\u7406\uff01",
+    // "检测到手机存储空间不足，为不影响您的使用请清理！",
     // 1).show();
     // }
     // }
     // class AnonymousClass_1 extends TaggedRunnable {
-    // final /* synthetic */ PackageInfo val$fpackageInfo;
+    // final   PackageInfo fpackageInfo;
     //
     // AnonymousClass_1(String str, PackageInfo packageInfo) {
     // super(str);
-    // this.val$fpackageInfo = packageInfo;
+    // this.fpackageInfo = packageInfo;
     //
     // }
     //
@@ -178,7 +178,7 @@ public class App extends Application {
     // System.out.println( "Install bundles in process " + App.this.processName
     // + " " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
     // concurrentHashMap = new ConcurrentHashMap();
-    // concurrentHashMap.put(this.val$fpackageInfo.versionName, "dexopt");
+    // concurrentHashMap.put(this.fpackageInfo.versionName, "dexopt");
     // App.this.saveAtlasInfoBySharedPreferences(concurrentHashMap);
     // System.setProperty("BUNDLES_INSTALLED", "true");
     // App.this.notifyBundleInstalled();
@@ -225,7 +225,7 @@ public class App extends Application {
     // System.out.println( "Install bundles in process " + App.this.processName
     // + " " + (System.currentTimeMillis() - currentTimeMillis) + " ms");;
     // concurrentHashMap = new ConcurrentHashMap();
-    // concurrentHashMap.put(this.val$fpackageInfo.versionName, "dexopt");
+    // concurrentHashMap.put(this.fpackageInfo.versionName, "dexopt");
     // App.this.saveAtlasInfoBySharedPreferences(concurrentHashMap);
     // System.setProperty("BUNDLES_INSTALLED", "true");
     // App.this.notifyBundleInstalled();
@@ -257,7 +257,7 @@ public class App extends Application {
     // System.err.println( "Install bundles in process " + App.this.processName
     // + " " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
     // concurrentHashMap = new ConcurrentHashMap();
-    // concurrentHashMap.put(this.val$fpackageInfo.versionName, "dexopt");
+    // concurrentHashMap.put(this.fpackageInfo.versionName, "dexopt");
     // App.this.saveAtlasInfoBySharedPreferences(concurrentHashMap);
     // System.setProperty("BUNDLES_INSTALLED", "true");
     // App.this.notifyBundleInstalled();
@@ -657,8 +657,8 @@ public class App extends Application {
     }
 
     class be extends TaggedRunnable {
-        final/* synthetic */PackageInfo a;
-        final/* synthetic */App b;
+        final PackageInfo a;
+        final App b;
 
         be(App taobaoApplication, String str, PackageInfo packageInfo) {
             super(str);

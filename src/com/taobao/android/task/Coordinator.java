@@ -79,7 +79,7 @@ public class Coordinator {
     static class axx extends AsyncTask<Void, Void, Void> {
         private final TaggedRunnable a;
 
-        protected/* synthetic */Void doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             return a((Void[]) params);
         }
 

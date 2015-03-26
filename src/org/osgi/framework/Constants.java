@@ -44,7 +44,7 @@ public interface Constants {
     public static final String AUCTION_TAG2 = "20546";
     public static final String AVAILABLE_ENV_ERR = "ENV_ERR";
     public static final String AVAILABLE_ERROR = "ERR";
-    public static final String BACKUPDATE = "\u7acb\u5373\u66f4\u65b0";
+    public static final String BACKUPDATE = "立即更新";
     public static final String BANNER_COUNT_PER = "bannercount";
     public static final String BANNER_KEY = "banner_key";
     public static final String BANNER_VALUE = "banner_value";
@@ -62,9 +62,9 @@ public interface Constants {
     public static final String COMMEND_ANDROID = "commend_android";
     public static final String COMMEND_TAG = "commend_tag";
     public static final String COMMEND_TMALL = "commend_tmall";
-    public static final String COMPLAINFAILED = "\u62b1\u6b49\uff0c\u60a8\u7684\u53cd\u9988\u53d1\u9001\u5931\u8d25\uff0c\u8bf7\u91cd\u65b0\u53d1\u9001\uff01";
-    public static final String COMPLAININVALIDSID = "\u62b1\u6b49\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55\uff01";
-    public static final String COMPLAINSUCCESS = "\u60a8\u7684\u53cd\u9988\u6211\u4eec\u5df2\u6536\u5230\uff0c\u611f\u8c22\u60a8\u5bf9\u6dd8\u5b9d\u7f51\u5ba2\u6237\u7aef\u7684\u5173\u6ce8\u548c\u652f\u6301\uff01";
+    public static final String COMPLAINFAILED = "抱歉，您的反馈发送失败，请重新发送！";
+    public static final String COMPLAININVALIDSID = "抱歉，请重新登录！";
+    public static final String COMPLAINSUCCESS = "您的反馈我们已收到，感谢您对淘宝网客户端的关注和支持！";
     public static final String COOLNAVIGATION_FLAG_SHARED = "coolnavigation_flag_shared";
     public static final String COOLNAVIGATION_SHARED = "coolnavigation_shared";
     public static final String COSHOP_SHARED = "coshop_shared";
@@ -81,7 +81,7 @@ public interface Constants {
     public static final int EVENT_ID_EFFECT_TRACK = 23500;
     public static final int EVENT_ID_VIEW_ITEM_LBS = 20001;
     public static final int EVENT_YYZ_EVENT = 2101;
-    public static final String EXITSHOWMESSAGE = "\u662f\u5426\u9000\u51fa\u6dd8\u5ba2\u6237\u7aef\uff1f";
+    public static final String EXITSHOWMESSAGE = "是否退出淘客户端？";
     public static int EventID_ATLAS_BLADE = 0;
     public static int EventID_ATLAS_DD_INSTALLERR = 0;
     public static int EventID_ATLAS_DD_LOADERR = 0;

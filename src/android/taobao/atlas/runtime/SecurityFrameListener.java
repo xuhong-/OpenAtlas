@@ -64,7 +64,7 @@ public class SecurityFrameListener implements FrameworkListener {
             if (bool != null && !bool.booleanValue()) {
                 Toast.makeText(
                         RuntimeVariables.androidApplication,
-                        "\u68c0\u6d4b\u5230\u5b89\u88c5\u6587\u4ef6\u88ab\u635f\u574f\uff0c\u8bf7\u5378\u8f7d\u540e\u91cd\u65b0\u5b89\u88c5\uff01",
+                        "检测到安装文件被损坏，请卸载后重新安装！",
                         1).show();
                 SecurityFrameListener.this.shutdownProcessHandler
                         .sendEmptyMessageDelayed(0, 5000);

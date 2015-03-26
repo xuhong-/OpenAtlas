@@ -46,21 +46,21 @@ public class InstrumentationHook extends Instrumentation {
     }
 
     class AnonymousClass_1 implements ExecStartActivityCallback {
-        final/* synthetic */IBinder val$contextThread;
-        final/* synthetic */Intent val$intent;
-        final/* synthetic */int val$requestCode;
-        final/* synthetic */Activity val$target;
-        final/* synthetic */IBinder val$token;
-        final/* synthetic */Context val$who;
+        final IBinder contextThread;
+        final Intent intent;
+        final int requestCode;
+        final Activity target;
+        final IBinder token;
+        final Context who;
 
         AnonymousClass_1(Context context, IBinder iBinder, IBinder iBinder2,
                 Activity activity, Intent intent, int i) {
-            this.val$who = context;
-            this.val$contextThread = iBinder;
-            this.val$token = iBinder2;
-            this.val$target = activity;
-            this.val$intent = intent;
-            this.val$requestCode = i;
+            this.who = context;
+            this.contextThread = iBinder;
+            this.token = iBinder2;
+            this.target = activity;
+            this.intent = intent;
+            this.requestCode = i;
         }
 
         public ActivityResult execStartActivity() {
@@ -73,9 +73,9 @@ public class InstrumentationHook extends Instrumentation {
                         "execStartActivity", new Class[] { Context.class,
                                 IBinder.class, IBinder.class, Activity.class,
                                 Intent.class, int.class });
-               return (ActivityResult)method.invoke(mBase, this.val$who, this.val$contextThread,
-                        this.val$token, this.val$target, this.val$intent,
-                        this.val$requestCode);
+               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                        this.token, this.target, this.intent,
+                        this.requestCode);
             } catch (HackAssertionException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {
@@ -87,34 +87,34 @@ public class InstrumentationHook extends Instrumentation {
             }
 
             return null;
-//            return InstrumentationInvoke.execStartActivity(mBase, this.val$who,
-//                    this.val$contextThread, this.val$token, this.val$target,
-//                    this.val$intent, this.val$requestCode);
+//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
+//                    this.contextThread, this.token, this.target,
+//                    this.intent, this.requestCode);
             // return
-            // InstrumentationHook.this.mBase.execStartActivity(this.val$who,
-            // this.val$contextThread, this.val$token, this.val$target,
-            // this.val$intent, this.val$requestCode);
+            // InstrumentationHook.this.mBase.execStartActivity(this.who,
+            // this.contextThread, this.token, this.target,
+            // this.intent, this.requestCode);
         }
     }
 
     class AnonymousClass_2 implements ExecStartActivityCallback {
-        final/* synthetic */IBinder val$contextThread;
-        final/* synthetic */Intent val$intent;
-        final/* synthetic */Bundle val$options;
-        final/* synthetic */int val$requestCode;
-        final/* synthetic */Activity val$target;
-        final/* synthetic */IBinder val$token;
-        final/* synthetic */Context val$who;
+        final IBinder contextThread;
+        final Intent intent;
+        final Bundle options;
+        final int requestCode;
+        final Activity target;
+        final IBinder token;
+        final Context who;
 
         AnonymousClass_2(Context context, IBinder iBinder, IBinder iBinder2,
                 Activity activity, Intent intent, int i, Bundle bundle) {
-            this.val$who = context;
-            this.val$contextThread = iBinder;
-            this.val$token = iBinder2;
-            this.val$target = activity;
-            this.val$intent = intent;
-            this.val$requestCode = i;
-            this.val$options = bundle;
+            this.who = context;
+            this.contextThread = iBinder;
+            this.token = iBinder2;
+            this.target = activity;
+            this.intent = intent;
+            this.requestCode = i;
+            this.options = bundle;
         }
 
         public ActivityResult execStartActivity() {
@@ -126,9 +126,9 @@ public class InstrumentationHook extends Instrumentation {
                         "execStartActivity", new Class[] { Context.class,
                                 IBinder.class, IBinder.class, Activity.class,
                                 Intent.class, int.class, Bundle.class });
-               return (ActivityResult)method.invoke(mBase, this.val$who, this.val$contextThread,
-                        this.val$token, this.val$target, this.val$intent,
-                        this.val$requestCode, this.val$options);
+               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                        this.token, this.target, this.intent,
+                        this.requestCode, this.options);
             } catch (HackAssertionException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {
@@ -140,32 +140,32 @@ public class InstrumentationHook extends Instrumentation {
             }
 
             return null;
-//            return InstrumentationInvoke.execStartActivity(mBase, this.val$who,
-//                    this.val$contextThread, this.val$token, this.val$target,
-//                    this.val$intent, this.val$requestCode, this.val$options);
+//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
+//                    this.contextThread, this.token, this.target,
+//                    this.intent, this.requestCode, this.options);
             // return
-            // InstrumentationHook.this.mBase.execStartActivity(this.val$who,
-            // this.val$contextThread, this.val$token, this.val$target,
-            // this.val$intent, this.val$requestCode, this.val$options);
+            // InstrumentationHook.this.mBase.execStartActivity(this.who,
+            // this.contextThread, this.token, this.target,
+            // this.intent, this.requestCode, this.options);
         }
     }
 
     class AnonymousClass_3 implements ExecStartActivityCallback {
-        final/* synthetic */IBinder val$contextThread;
-        final/* synthetic */Intent val$intent;
-        final/* synthetic */int val$requestCode;
-        final/* synthetic */Fragment val$target;
-        final/* synthetic */IBinder val$token;
-        final/* synthetic */Context val$who;
+        final IBinder contextThread;
+        final Intent intent;
+        final int requestCode;
+        final Fragment target;
+        final IBinder token;
+        final Context who;
 
         AnonymousClass_3(Context context, IBinder iBinder, IBinder iBinder2,
                 Fragment fragment, Intent intent, int i) {
-            this.val$who = context;
-            this.val$contextThread = iBinder;
-            this.val$token = iBinder2;
-            this.val$target = fragment;
-            this.val$intent = intent;
-            this.val$requestCode = i;
+            this.who = context;
+            this.contextThread = iBinder;
+            this.token = iBinder2;
+            this.target = fragment;
+            this.intent = intent;
+            this.requestCode = i;
         }
 
         public ActivityResult execStartActivity() {
@@ -177,9 +177,9 @@ public class InstrumentationHook extends Instrumentation {
                         "execStartActivity", new Class[] { Context.class,
                                 IBinder.class, IBinder.class, Fragment.class,
                                 Intent.class, int.class });
-               return (ActivityResult)method.invoke(mBase, this.val$who, this.val$contextThread,
-                        this.val$token, this.val$target, this.val$intent,
-                        this.val$requestCode );
+               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                        this.token, this.target, this.intent,
+                        this.requestCode );
             } catch (HackAssertionException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {
@@ -191,39 +191,39 @@ public class InstrumentationHook extends Instrumentation {
             }
 
             return null;
-//            return InstrumentationInvoke.execStartActivity(mBase, this.val$who,
-//                    this.val$contextThread, this.val$token, this.val$target,
-//                    this.val$intent, this.val$requestCode);
+//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
+//                    this.contextThread, this.token, this.target,
+//                    this.intent, this.requestCode);
             // return
-            // InstrumentationHook.this.mBase.execStartActivity(this.val$who,
-            // this.val$contextThread, this.val$token, this.val$target,
-            // this.val$intent, this.val$requestCode, this.val$options);
+            // InstrumentationHook.this.mBase.execStartActivity(this.who,
+            // this.contextThread, this.token, this.target,
+            // this.intent, this.requestCode, this.options);
 
             // return
-            // InstrumentationHook.this.mBase.execStartActivity(this.val$who,
-            // this.val$contextThread, this.val$token, this.val$target,
-            // this.val$intent, this.val$requestCode);
+            // InstrumentationHook.this.mBase.execStartActivity(this.who,
+            // this.contextThread, this.token, this.target,
+            // this.intent, this.requestCode);
         }
     }
 
     class AnonymousClass_4 implements ExecStartActivityCallback {
-        final/* synthetic */IBinder val$contextThread;
-        final/* synthetic */Intent val$intent;
-        final/* synthetic */Bundle val$options;
-        final/* synthetic */int val$requestCode;
-        final/* synthetic */Fragment val$target;
-        final/* synthetic */IBinder val$token;
-        final/* synthetic */Context val$who;
+        final IBinder contextThread;
+        final Intent intent;
+        final Bundle options;
+        final int requestCode;
+        final Fragment target;
+        final IBinder token;
+        final Context who;
 
         AnonymousClass_4(Context context, IBinder iBinder, IBinder iBinder2,
                 Fragment fragment, Intent intent, int i, Bundle bundle) {
-            this.val$who = context;
-            this.val$contextThread = iBinder;
-            this.val$token = iBinder2;
-            this.val$target = fragment;
-            this.val$intent = intent;
-            this.val$requestCode = i;
-            this.val$options = bundle;
+            this.who = context;
+            this.contextThread = iBinder;
+            this.token = iBinder2;
+            this.target = fragment;
+            this.intent = intent;
+            this.requestCode = i;
+            this.options = bundle;
         }
 
         public ActivityResult execStartActivity() {
@@ -235,9 +235,9 @@ public class InstrumentationHook extends Instrumentation {
                         "execStartActivity", new Class[] { Context.class,
                                 IBinder.class, IBinder.class, Fragment.class,
                                 Intent.class, int.class, Bundle.class });
-               return (ActivityResult)method.invoke(mBase, this.val$who, this.val$contextThread,
-                        this.val$token, this.val$target, this.val$intent,
-                        this.val$requestCode , this.val$options);
+               return (ActivityResult)method.invoke(mBase, this.who, this.contextThread,
+                        this.token, this.target, this.intent,
+                        this.requestCode , this.options);
             } catch (HackAssertionException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {
@@ -249,13 +249,13 @@ public class InstrumentationHook extends Instrumentation {
             }
 
             return null;
-//            return InstrumentationInvoke.execStartActivity(mBase, this.val$who,
-//                    this.val$contextThread, this.val$token, this.val$target,
-//                    this.val$intent, this.val$requestCode, this.val$options);
+//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
+//                    this.contextThread, this.token, this.target,
+//                    this.intent, this.requestCode, this.options);
             // return
-            // InstrumentationHook.this.mBase.execStartActivity(this.val$who,
-            // this.val$contextThread, this.val$token, this.val$target,
-            // this.val$intent, this.val$requestCode, this.val$options);
+            // InstrumentationHook.this.mBase.execStartActivity(this.who,
+            // this.contextThread, this.token, this.target,
+            // this.intent, this.requestCode, this.options);
         }
     }
 

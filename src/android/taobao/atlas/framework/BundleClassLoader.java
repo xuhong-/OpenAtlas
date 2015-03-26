@@ -51,18 +51,18 @@ public final class BundleClassLoader extends ClassLoader {
         private final InputStream input;
 
         class AnonymousClass_1 extends InputStream {
-            final/* synthetic */InputStream val$stream;
+            final InputStream stream;
 
             AnonymousClass_1(InputStream inputStream) {
-                this.val$stream = inputStream;
+                this.stream = inputStream;
             }
 
             public int read() throws IOException {
-                return this.val$stream.read();
+                return this.stream.read();
             }
 
             public int read(byte[] bArr) throws IOException {
-                return this.val$stream.read(bArr);
+                return this.stream.read(bArr);
             }
         }
 

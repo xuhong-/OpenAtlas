@@ -26,20 +26,20 @@ public class AndroidHack {
     private static Object _sActivityThread;
 
     static final class AnonymousClass_1 implements Callback {
-        final/* synthetic */Object val$activityThread;
-        final/* synthetic */Handler val$handler;
+        final Object activityThread;
+        final Handler handler;
 
         AnonymousClass_1(Handler handler, Object obj) {
-            this.val$handler = handler;
-            this.val$activityThread = obj;
+            this.handler = handler;
+            this.activityThread = obj;
         }
 
         public boolean handleMessage(Message message) {
             try {
                 AndroidHack.ensureLoadedApk();
-                Log.e("me", "handleMessage" + (val$handler == null) + "|"
+                Log.e("me", "handleMessage" + (handler == null) + "|"
                         + (message == null));
-                this.val$handler.handleMessage(message);
+                this.handler.handleMessage(message);
                 AndroidHack.ensureLoadedApk();
             } catch (Throwable th) {
                 Throwable th2 = th;
@@ -50,7 +50,7 @@ public class AndroidHack {
                     if (message.what != 113) {
                         Object loadedApk = AndroidHack.getLoadedApk(
                                 RuntimeVariables.androidApplication,
-                                this.val$activityThread,
+                                this.activityThread,
                                 RuntimeVariables.androidApplication
                                         .getPackageName());
                         if (loadedApk == null) {

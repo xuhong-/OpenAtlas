@@ -122,29 +122,29 @@ public final class Framework {
         int state;
 
         class AnonymousClass_1 extends Thread {
-            final/* synthetic */boolean val$restart;
+            final boolean restart;
 
             AnonymousClass_1(boolean z) {
-                this.val$restart = z;
+                this.restart = z;
             }
 
             public void run() {
-                Framework.shutdown(this.val$restart);
+                Framework.shutdown(this.restart);
             }
         }
 
         class AnonymousClass_2 extends Thread {
-            final/* synthetic */int val$targetLevel;
+            final int targetLevel;
 
             AnonymousClass_2(int i) {
-                this.val$targetLevel = i;
+                this.targetLevel = i;
             }
 
             public void run() {
                 List bundles = Framework.getBundles();
                 SystemBundle.this.setLevel(
                         (Bundle[]) bundles.toArray(new Bundle[bundles.size()]),
-                        this.val$targetLevel, false);
+                        this.targetLevel, false);
                 Framework.notifyFrameworkListeners(8, Framework.systemBundle,
                         null);
                 Framework.storeMetadata();
@@ -153,10 +153,10 @@ public final class Framework {
 
         // TODO this is a old version impl
         class AnonymousClass_3 extends Thread {
-            final/* synthetic */Bundle[] val$bundleArray;
+            final Bundle[] bundleArray;
 
             AnonymousClass_3(Bundle[] bundleArr) {
-                this.val$bundleArray = bundleArr;
+                this.bundleArray = bundleArr;
             }
 
             public void run() {
@@ -166,12 +166,12 @@ public final class Framework {
                         Bundle[] bundleArr;
                         int i;
                         BundleImpl bundleImpl;
-                        if (this.val$bundleArray == null) {
+                        if (this.bundleArray == null) {
                             bundles = Framework.getBundles();
                             bundleArr = (Bundle[]) bundles
                                     .toArray(new Bundle[bundles.size()]);
                         } else {
-                            bundleArr = this.val$bundleArray;
+                            bundleArr = this.bundleArray;
                         }
                         List arrayList = new ArrayList(bundleArr.length);
                         for (i = 0; i < bundleArr.length; i++) {

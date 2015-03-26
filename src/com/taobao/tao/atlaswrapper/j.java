@@ -28,17 +28,17 @@
 //
 //    /* compiled from: SecurityFrameListener.java */
 //    private class a extends AsyncTask<String, Void, Boolean> {
-//        final /* synthetic */ j a;
+//        final   j a;
 //
 //        private a(j jVar) {
 //            this.a = jVar;
 //        }
 //
-//        protected /* synthetic */ Object doInBackground(Object[] objArr) {
+//        protected   Object doInBackground(Object[] objArr) {
 //            return a((String[]) objArr);
 //        }
 //
-//        protected /* synthetic */ void onPostExecute(Object obj) {
+//        protected   void onPostExecute(Object obj) {
 //            a((Boolean) obj);
 //        }
 //
@@ -79,7 +79,7 @@
 //
 //        protected void a(Boolean bool) {
 //            if (bool != null && !bool.booleanValue()) {
-//                Toast.makeText(RuntimeVariables.androidApplication, "\u68c0\u6d4b\u5230\u5b89\u88c5\u6587\u4ef6\u88ab\u635f\u574f\uff0c\u8bf7\u5378\u8f7d\u540e\u91cd\u65b0\u5b89\u88c5\uff01", 1).show();
+//                Toast.makeText(RuntimeVariables.androidApplication, "检测到安装文件被损坏，请卸载后重新安装！", 1).show();
 //                this.a.a.sendEmptyMessageDelayed(0, AgooSettings.SCREEN_ON_CONNECT_TEST_INTERVAL);
 //            }
 //        }
