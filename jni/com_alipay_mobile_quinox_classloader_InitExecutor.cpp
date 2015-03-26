@@ -2,6 +2,12 @@
 #include "com_alipay_mobile_quinox_classloader_InitExecutor.h"
 #include <stdlib.h>
 #include <android/log.h>
+#include <sys/file.h>
+#include <errno.h>
+#define LOG_TAG "dexopt"
+
+#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 /* Header for class com_alipay_mobile_quinox_classloader_InitExecutor */
 char *dexoptBin = "/bin/dexopt";
 void dexopt(const char* apkPath,const char* dexPath,const char* args );
@@ -38,7 +44,7 @@ void dexopt(const char* apkPath,const char* dexPath,const char* args ){
 	  }
 	  else
 	  {
-	    _android_log_print(6, "DexInv", "ANDROID_ROOT not set, defaulting to /system");
+		  __android_log_print(6, "DexInv", "ANDROID_ROOT not set, defaulting to /system");
 	    sizeANDROID_ROOT = 7;
 	    ANDROID_ROOT = "/system";
 	  }
@@ -48,8 +54,60 @@ void dexopt(const char* apkPath,const char* dexPath,const char* args ){
 	 char * dest = (char *)malloc(sizedexoptBin + sizeANDROID_ROOT + 1);
 	  strcpy(dest, ANDROID_ROOT);
 	  strcat(dest, dexoptBin);
-	  char* bufApkPath=(char*)malloc(0x68u);
-	  memset(&bufApkPath, 0, 0x68u);
-	  stat(apkPath, (struct stat *)&bufApkPath);
+
+	  struct stat statApkPath;
+
+
+
+	  stat(apkPath, &statApkPath);
+	  int tmp=open(apkPath, 0, 0);
+	  if(tmp<0){
+
+		  __android_log_print(6, "DexInv", "DexInv cannot open '%s' for input\n", apkPath);
+		  return;
+	  }
+
+	  if ( access(dexPath, 0) != -1 )
+	  {
+		  __android_log_print(3, "DexInv", "Skip DexInv");
+	    return;
+	  }
+
+
+	int  fd = open(dexPath, 66, 420);
+
+	  if ( fd >= 0 )
+	  {
+	    int  lockVal = flock(fd, 6);
+
+	    if(lockVal!=0){
+
+
+	    	char *error=strerror(errno);
+
+	    	__android_log_print(6, "DexInv", "flock(%s) failed: %s\n", dexPath, error);
+
+	        flock(fd, 8);
+	        close(fd);
+	        return;
+	    }
+
+	    __android_log_print(3, "DexInv", "DexInv: --- BEGIN '%s' --- flags='%s'\n", apkPath, args);
+
+
+	// execl(dest, dest, "--zip", s, v30, apkPath, args, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+	  }
 }
 
