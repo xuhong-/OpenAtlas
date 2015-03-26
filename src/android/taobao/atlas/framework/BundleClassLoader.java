@@ -114,14 +114,14 @@ public final class BundleClassLoader extends ClassLoader {
         this.bundle = bundleImpl;
         this.archive = bundleImpl.archive;
         if (this.archive == null) {
-            throw new BundleException("Not a valid bundle: "
+            throw new BundleException("Not Component valid bundle: "
                     + bundleImpl.location);
         }
         try {
             processManifest(this.archive.getManifest());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new BundleException("Not a valid bundle: "
+            throw new BundleException("Not Component valid bundle: "
                     + bundleImpl.location);
         }
     }

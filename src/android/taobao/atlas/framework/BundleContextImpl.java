@@ -252,7 +252,7 @@ public class BundleContextImpl implements BundleContext {
             Dictionary<String, ?> dictionary) {
         checkValid();
         if (obj == null) {
-            throw new IllegalArgumentException("Cannot register a null service");
+            throw new IllegalArgumentException("Cannot register Component null service");
         }
         ServiceReferenceImpl serviceReferenceImpl = new ServiceReferenceImpl(
                 this.bundle, obj, dictionary, strArr);

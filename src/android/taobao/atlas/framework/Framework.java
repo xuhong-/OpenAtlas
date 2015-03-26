@@ -151,7 +151,7 @@ public final class Framework {
             }
         }
 
-        // TODO this is a old version impl
+        // TODO this is Component old version impl
         class AnonymousClass_3 extends Thread {
             final Bundle[] bundleArray;
 
@@ -382,7 +382,7 @@ public final class Framework {
                         + " has been uninstalled");
             } else if (i <= 0) {
                 throw new IllegalArgumentException("Start level " + i
-                        + " is not a valid level");
+                        + " is not Component valid level");
             } else {
                 bundleImpl.currentStartlevel = i;
                 bundleImpl.updateMetadata();
@@ -410,7 +410,7 @@ public final class Framework {
         public void setInitialBundleStartLevel(int i) {
             if (i <= 0) {
                 throw new IllegalArgumentException("Start level " + i
-                        + " is not a valid level");
+                        + " is not Component valid level");
             }
             Framework.initStartlevel = i;
         }
@@ -418,7 +418,7 @@ public final class Framework {
         public void setStartLevel(int i) {
             if (i <= 0) {
                 throw new IllegalArgumentException("Start level " + i
-                        + " is not a valid level");
+                        + " is not Component valid level");
             }
             new AnonymousClass_2(i).start();
         }

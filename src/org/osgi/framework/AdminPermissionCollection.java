@@ -19,7 +19,7 @@ final class AdminPermissionCollection extends PermissionCollection {
                     + permission);
         } else if (isReadOnly()) {
             throw new SecurityException(
-                    "attempt to add a Permission to a readonly PermissionCollection");
+                    "attempt to add Component Permission to Component readonly PermissionCollection");
         } else {
             this.hasElement = true;
         }

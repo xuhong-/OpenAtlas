@@ -21,7 +21,7 @@ final class PackagePermissionCollection extends PermissionCollection {
                     + permission);
         } else if (isReadOnly()) {
             throw new SecurityException(
-                    "attempt to add a Permission to a readonly PermissionCollection");
+                    "attempt to add Component Permission to Component readonly PermissionCollection");
         } else {
             PackagePermission packagePermission = (PackagePermission) permission;
             String name = packagePermission.getName();

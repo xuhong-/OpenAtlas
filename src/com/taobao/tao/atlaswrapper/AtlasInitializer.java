@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.taobao.atlas.framework.Atlas;
+import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -66,7 +67,7 @@ public class AtlasInitializer {
             declaredField.set(null, this.b);
             try {
                 Atlas.getInstance().init(this.b, properties);
-                // "Atlas framework inited " + (System.currentTimeMillis() - a)
+                // "Atlas framework inited " + (System.currentTimeMillis() - Component)
                 // + " ms";
                 try {
                     declaredField = Globals.class
@@ -88,21 +89,21 @@ public class AtlasInitializer {
                         // if (!(Versions.isDebug() || b() ||
                         // !ApkUtils.isRootSystem())) {
                         // properties.put("android.taobao.atlas.publickey",
-                        // j.PUBLIC_KEY);
-                        // Atlas.getInstance().addFrameworkListener(new j());
+                        // SecurityFrameListener.PUBLIC_KEY);
+                        // Atlas.getInstance().addFrameworkListener(new SecurityFrameListener());
                         // }
                         // if (this.i || this.d.a()) {
                         // properties.put("osgi.init", "true");
                         // }
                     }
                     // "Atlas framework starting in process " + this.c + " " +
-                    // (System.currentTimeMillis() - a) + " ms";
+                    // (System.currentTimeMillis() - Component) + " ms";
                     if (!Utils.searchFile(this.b.getFilesDir().getParentFile()
                             + "/lib", "libcom_taobao")) {
                         InstallSolutionConfig.install_when_oncreate = true;
                     }
                     // if (InstallSolutionConfig.install_when_findclass) {
-                    // a();
+                    // Component();
                     // }
                 } catch (Throwable e) {
                     Log.e("AtlasInitializer",
@@ -132,8 +133,8 @@ public class AtlasInitializer {
             instance.a(this.b);
         }
         // "Atlas framework begin to start in process " + this.c + " " +
-        // (System.currentTimeMillis() - a) + " ms";
-        // Atlas.getInstance().setClassNotFoundInterceptorCallback(new j());
+        // (System.currentTimeMillis() - Component) + " ms";
+      Atlas.getInstance().setClassNotFoundInterceptorCallback((ClassNotFoundInterceptorCallback) new SecurityFrameListener());
         try {
             Atlas.getInstance().startup();
             Coordinator.postTask(new b(this, "AtlasStartup", a, instance));
@@ -144,11 +145,11 @@ public class AtlasInitializer {
         }
     }
 
-    // private void a() {
+    // private void Component() {
     // BundleListing bundleListing = b.instance().getBundleListing();
     // if (bundleListing != null && bundleListing.getBundles() != null) {
     // LinkedList linkedList = new LinkedList();
-    // for (com.taobao.lightapk.BundleListing.a aVar :
+    // for (com.taobao.lightapk.BundleListing.Component aVar :
     // bundleListing.getBundles()) {
     // if (aVar != null) {
     // BundleInfo bundleInfo = new BundleInfo();
@@ -211,7 +212,7 @@ public class AtlasInitializer {
 
     void a(BundlesInstaller dVar, OptDexProcess hVar) {
         // "Atlas framework started in process " + this.c + " " +
-        // (System.currentTimeMillis() - a) + " ms";
+        // (System.currentTimeMillis() - Component) + " ms";
         if (this.b.getPackageName().equals(this.c) && (this.i || this.d.a())) {
             if (InstallSolutionConfig.install_when_oncreate) {
                 dVar.process();

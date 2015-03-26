@@ -63,12 +63,19 @@ public class Welcome extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         Intent mIntent = new Intent(Intent.ACTION_VIEW);
         mIntent.setPackage("com.taobao.taobao");
-        mIntent.setComponent(new ComponentName("com.taobao.taobao",
-                "com.taobao.scan.MainActivity"));
+//        mIntent.setComponent(new ComponentName("com.taobao.taobao",
+//                "com.taobao.scan.MainActivity"));
 
+try {
+	Class<?> cls=RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity");
+	mIntent.setClass(this, cls);
+} catch (ClassNotFoundException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+ 
         // mComponent = {ComponentName@6742}
         // "ComponentInfo{com.taobao.taobao/com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity}"
         // mClass = {String@6750}
@@ -107,7 +114,7 @@ public class Welcome extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify Component parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
 

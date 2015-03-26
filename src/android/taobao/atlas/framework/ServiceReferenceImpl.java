@@ -67,7 +67,7 @@ final class ServiceReferenceImpl implements ServiceReference {
                             ServiceReferenceImpl.this.properties.remove(obj2);
                         } else {
                             throw new IllegalArgumentException(
-                                    "Properties already exists in a different case variant");
+                                    "Properties already exists in Component different case variant");
                         }
                     }
                     ServiceReferenceImpl.this.properties.put(str, obj);

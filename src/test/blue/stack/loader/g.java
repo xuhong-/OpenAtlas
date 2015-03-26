@@ -35,7 +35,7 @@ public class g implements ClassNotFoundInterceptorCallback {
         if (className == null
                 || !className.equals("com.taobao.tao.welcome.Welcome")) {
             // if (Globals.isMiniPackage()) {
-            // a findBundleByActivity =
+            // Component findBundleByActivity =
             // BundlesInstaller.instance().findBundleByActivity(className);
             // if (!(findBundleByActivity == null ||
             // Atlas.getInstance().getBundle(findBundleByActivity.getPkgName())

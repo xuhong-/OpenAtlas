@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.osgi.framework.BundleException;
 
-import blue.stack.android.InstrumentationInvoke;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;

@@ -92,7 +92,7 @@ public class App extends Application {
     // }
 
     // class bd implements Runnable {
-    // final   AnonymousClass_1 a;
+    // final   AnonymousClass_1 Component;
     //
     // bd(AnonymousClass_1 anonymousClass_1) {
     // this.a = anonymousClass_1;
