@@ -97,7 +97,7 @@ public class AtlasInitializer {
                     }
                     // "Atlas framework starting in process " + this.c + " " +
                     // (System.currentTimeMillis() - a) + " ms";
-                    if (!k.searchFile(this.b.getFilesDir().getParentFile()
+                    if (!Utils.searchFile(this.b.getFilesDir().getParentFile()
                             + "/lib", "libcom_taobao")) {
                         InstallSolutionConfig.install_when_oncreate = true;
                     }

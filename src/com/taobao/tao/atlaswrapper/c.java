@@ -54,9 +54,9 @@ class c {
         while (it.hasNext()) {
             String str2 = (String) it.next();
             // "processLibsBundle filePath " + str2;
-            if (str2.contains(k.getFileNameFromEntryName(str).substring(3))) {
+            if (str2.contains(Utils.getFileNameFromEntryName(str).substring(3))) {
                 File file = new File(str2);
-                String replace = k.getBaseFileName(file.getName()).replace("_",
+                String replace = Utils.getBaseFileName(file.getName()).replace("_",
                         ".");
                 if (Atlas.getInstance().getBundle(replace) == null) {
                     try {

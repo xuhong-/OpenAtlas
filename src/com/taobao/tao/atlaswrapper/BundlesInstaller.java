@@ -42,7 +42,7 @@ public class BundlesInstaller {
         this.c = gVar;
         this.a = cVar;
         g = z;
-        this.d = k.getPackageInfo(application);
+        this.d = Utils.getPackageInfo(application);
         this.e = true;
     }
 
@@ -149,7 +149,7 @@ public class BundlesInstaller {
 
     private void a(ZipFile zipFile, List<String> list, Application application) {
         int i = 0;
-        for (String replace : k.a) {
+        for (String replace : Utils.a) {
             String replace2 = a(list, replace.replace(".", "_"));
             if (replace2 != null && replace2.length() > 0) {
                 a(zipFile, replace2, application);
@@ -160,7 +160,7 @@ public class BundlesInstaller {
             a(zipFile, a, application);
         }
         if (g) {
-            String[] strArr = k.b;
+            String[] strArr = Utils.b;
             int length = strArr.length;
             while (i < length) {
                 Bundle bundle = Atlas.getInstance().getBundle(strArr[i]);
@@ -193,8 +193,8 @@ public class BundlesInstaller {
     private boolean a(ZipFile zipFile, String str, Application application) {
         // "processLibsBundle entryName " + str;
         this.a.a(str);
-        String fileNameFromEntryName = k.getFileNameFromEntryName(str);
-        String packageNameFromEntryName = k.getPackageNameFromEntryName(str);
+        String fileNameFromEntryName = Utils.getFileNameFromEntryName(str);
+        String packageNameFromEntryName = Utils.getPackageNameFromEntryName(str);
         if (packageNameFromEntryName == null
                 || packageNameFromEntryName.length() <= 0) {
             return false;

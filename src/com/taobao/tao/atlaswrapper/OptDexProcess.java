@@ -47,7 +47,7 @@ public class OptDexProcess {
             a();
             // .. "Install bundles not delayed cost time = " +
             // (System.currentTimeMillis() - currentTimeMillis) + " ms";
-            k.saveAtlasInfoBySharedPreferences(this.b);
+            Utils.saveAtlasInfoBySharedPreferences(this.b);
             System.setProperty("BUNDLES_INSTALLED", "true");
             b();
             currentTimeMillis = System.currentTimeMillis();
@@ -60,7 +60,7 @@ public class OptDexProcess {
 
     private void a() {
         for (Bundle bundle : Atlas.getInstance().getBundles()) {
-            if (!(bundle == null || a(k.c, bundle.getLocation()))) {
+            if (!(bundle == null || a(Utils.c, bundle.getLocation()))) {
                 try {
                     ((BundleImpl) bundle).optDexFile();
                     Atlas.getInstance().enableComponent(bundle.getLocation());
@@ -80,7 +80,7 @@ public class OptDexProcess {
     }
 
     private void c() {
-        for (String bundle : k.c) {
+        for (String bundle : Utils.c) {
             Bundle bundle2 = Atlas.getInstance().getBundle(bundle);
             if (bundle2 != null) {
                 try {

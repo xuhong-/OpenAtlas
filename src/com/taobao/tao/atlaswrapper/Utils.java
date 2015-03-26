@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /* compiled from: Utils.java */
-public class k {
+public class Utils {
     static final String[] a;
     static final String[] b;
     static final String[] c;
