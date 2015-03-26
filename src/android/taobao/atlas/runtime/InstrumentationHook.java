@@ -246,7 +246,7 @@ public class InstrumentationHook extends Instrumentation {
                     "execStartActivity", new Class[]{Context.class,
                             IBinder.class, IBinder.class, Activity.class,
                             Intent.class, int.class, Bundle.class});
-            mExecStartActivity1 = mInstrumentationInvoke.method(
+            mExecStartActivity2 = mInstrumentationInvoke.method(
                     "execStartActivity", new Class[]{Context.class,
                             IBinder.class, IBinder.class, Fragment.class,
                             Intent.class, int.class, Bundle.class});
@@ -380,7 +380,7 @@ public class InstrumentationHook extends Instrumentation {
                 throw classNotFoundException;
             }
             List runningTasks = ((ActivityManager) this.context
-                    .getSystemService("activity")).getRunningTasks(1);
+                    .getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1);
             if (runningTasks != null
                     && runningTasks.size() > 0
                     && ((RunningTaskInfo) runningTasks.get(0)).numActivities > 1
