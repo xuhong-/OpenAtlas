@@ -37,11 +37,13 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
     @SuppressLint({ "NewApi" })
     public void bundleChanged(BundleEvent bundleEvent) {
         switch (bundleEvent.getType()) {
-        case 0 /* 0 */:
+        case BundleEvent.LOADED:
             loaded(bundleEvent.getBundle());
-        case 1 /* 1 */:
+            break;
+        case BundleEvent.INSTALLED:
             installed(bundleEvent.getBundle());
-        case 2 /* 2 */:
+            break;
+        case BundleEvent.STARTED:
             if (isLewaOS()) {
                 if (Looper.myLooper() == null) {
                     Looper.prepare();
@@ -60,12 +62,20 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
             } else {
                 started(bundleEvent.getBundle());
             }
-        case 4 /* 4 */:
+            break;
+        case BundleEvent.STOPPED:
             stopped(bundleEvent.getBundle());
-        case 8 /* 8 */:
+            break;
+        case BundleEvent.UPDATED:
             updated(bundleEvent.getBundle());
-        case 16 /* 16 */:
-            uninstalled(bundleEvent.getBundle());
+            break;
+        case  BundleEvent.UNINSTALLED:
+        
+        {//TODO notice  plugin is uninstall !!!!
+        	Thread.currentThread().dumpStack();
+        	 uninstalled(bundleEvent.getBundle());
+        	
+        }
         default:
         }
     }

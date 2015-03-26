@@ -3,6 +3,7 @@ package org.osgi.framework;
 import java.util.EventObject;
 
 public class BundleEvent extends EventObject {
+	public static final int LOADED = 0;
     public static final int INSTALLED = 1;
     public static final int STARTED = 2;
     public static final int STOPPED = 4;

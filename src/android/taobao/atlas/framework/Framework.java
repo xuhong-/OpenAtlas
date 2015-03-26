@@ -1113,7 +1113,7 @@ public final class Framework {
         if (bundleImpl.registeredServices.isEmpty()) {
             bundleImpl.registeredServices = null;
         }
-        notifyServiceListeners(4, serviceReference);
+        notifyServiceListeners(BundleEvent.STOPPED, serviceReference);
         if (DEBUG_SERVICES && log.isInfoEnabled()) {
             log.info("Framework: UNREGISTERED SERVICE " + serviceReference);
         }
