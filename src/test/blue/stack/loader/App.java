@@ -289,10 +289,11 @@ public class App extends Application {
             e.printStackTrace();
         }
         int myPid = Process.myPid();
-        for (RunningAppProcessInfo runningAppProcessInfo : ((ActivityManager) getSystemService("activity"))
+        for (RunningAppProcessInfo runningAppProcessInfo : ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE))
                 .getRunningAppProcesses()) {
             if (runningAppProcessInfo.pid == myPid) {
                 this.processName = runningAppProcessInfo.processName;
+                break;
             }
         }
         this.mAtlasInitializer = new AtlasInitializer(this, this.processName);
