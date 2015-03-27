@@ -47,7 +47,7 @@ public class PackageLite {
 
 		XmlResourceParser openXmlResourceParser = null;
 		try {
-			AssetManager assetManager = (AssetManager) AssetManager.class
+			AssetManager assetManager = AssetManager.class
 					.newInstance();
 			int intValue = ((Integer) AtlasHacks.AssetManager_addAssetPath
 					.invoke(assetManager, file.getAbsolutePath())).intValue();
@@ -102,12 +102,9 @@ public class PackageLite {
 		return null;
 	}
 
-	protected static android.taobao.atlas.runtime.PackageLite parse(
-			android.content.res.XmlResourceParser xmlResourceParser)
-					throws java.lang.Exception {
+	protected static PackageLite parse(XmlResourceParser xmlResourceParser)throws Exception {
 
-		int v2;
-		// PackageLite v0_1;
+	
 		int index;
 		final int endTag = XmlPullParser.END_TAG;
 		final   int startTag = XmlPullParser.START_TAG;
@@ -131,29 +128,24 @@ public class PackageLite {
 					"package");
 			if (mPackageLite.packageName != null && mPackageLite.packageName.length() != 0) {
 				index = 0;
-				v2 = 0;
+				
 			} else {
 				PackageLite.log.error("<manifest> does not specify package");
 				return null;
 			}
 
-			while (index < ((AttributeSet) xmlResourceParser).getAttributeCount()) {
-				String value = ((AttributeSet) xmlResourceParser).getAttributeName(index);
+			for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
+				String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
 				if (value.equals("versionCode")) {
 					mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
-							.getAttributeIntValue(index, 0);
-					++v2;
+							.getAttributeIntValue(i, 0);
+				
 				} else if (value.equals("versionName")) {
 					mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
-							.getAttributeValue(index);
-					++v2;
+							.getAttributeValue(i);
+				
 				}
 
-				if (v2 >= startTag) {
-					break;
-				}
-
-				++index;
 			}
 
 			index = xmlResourceParser.getDepth() + 1;
@@ -163,8 +155,8 @@ public class PackageLite {
 				if (v1 != XmlPullParser.END_DOCUMENT) {
 					if (xmlResourceParser.getName().equals("application")) {
 						if (!PackageLite
-								.parseApplication(mPackageLite, ((XmlPullParser) xmlResourceParser),
-										((AttributeSet) xmlResourceParser))) {
+								.parseApplication(mPackageLite, (xmlResourceParser),
+										(xmlResourceParser))) {
 							return null;
 						}
 
@@ -183,7 +175,7 @@ public class PackageLite {
 						continue;
 					}
 
-					PackageLite.skipCurrentTag(((XmlPullParser) xmlResourceParser));
+					PackageLite.skipCurrentTag((xmlResourceParser));
 					continue;
 				}
 
@@ -220,8 +212,8 @@ public class PackageLite {
 						.getAttributeResourceValue(i, 0);
 			}
 		}
-		
-		
+
+
 
 		final int innerDepth = xmlPullParser.getDepth();
 
@@ -237,29 +229,29 @@ public class PackageLite {
 
 				parseComponentData(packageLite, xmlPullParser,
 						attributeSet, false);
-			
+
 			} else if (tagName.equals("receiver")) {
 
 				parseComponentData(packageLite, xmlPullParser,
 						attributeSet, true);
-			
+
 			} else if (tagName.equals("service")) {
 
 				parseComponentData(packageLite, xmlPullParser,
 						attributeSet, true);
-			
+
 			} else if (tagName.equals("provider")) {
 
 				parseComponentData(packageLite, xmlPullParser,
 						attributeSet, false);
-			
+
 			} else if (tagName.equals("activity-alias")) {
 			} else if (xmlPullParser.getName().equals("meta-data")) {
 
 				packageLite.metaData = parseMetaData(xmlPullParser,
 						attributeSet, packageLite.metaData);
-			
-				
+
+
 			} else if (tagName.equals("uses-library")) {
 			} else if (tagName.equals("uses-package")) {
 			} else {
@@ -337,33 +329,28 @@ public class PackageLite {
 	}
 
 	private static void parseComponentData(PackageLite packageLite,
-			XmlPullParser xmlPullParser, AttributeSet attributeSet, boolean z)
+			XmlPullParser xmlPullParser, AttributeSet attributeSet, boolean isDisable)
 					throws XmlPullParserException {
-		int i = 0;
-		String str = packageLite.packageName;
-		int i2 = 0;
-		while (i < attributeSet.getAttributeCount()) {
-			if (attributeSet.getAttributeName(i).equals("name")) {
-				String attributeValue = attributeSet.getAttributeValue(i);
-				if (attributeValue.startsWith(".")) {
-					attributeValue = str.concat(attributeValue);
+
+		String pkgName = packageLite.packageName;
+		for (int index = 0; index <attributeSet.getAttributeCount(); index++) {
+			if (attributeSet.getAttributeName(index).equals("name")) {
+				String mComponentName = attributeSet.getAttributeValue(index);
+				if (mComponentName.startsWith(".")) {
+					mComponentName = pkgName.concat(mComponentName);
 				}
-				packageLite.components.add(attributeValue);
-				if (z
+				packageLite.components.add(mComponentName);
+				if (isDisable
 						&& !(StringUtils
-								.equals(attributeValue,
+								.equals(mComponentName,
 										XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE) && StringUtils
-										.equals(attributeValue,
+										.equals(mComponentName,
 												XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE))) {
-					packageLite.disableComponents.add(attributeValue);
+					packageLite.disableComponents.add(mComponentName);
 				}
-				i2++;
-			}
-			if (i2 < attributeSet.getAttributeCount()) {
-				i++;
-			} else {
-				return;
+				
 			}
 		}
+
 	}
 }
