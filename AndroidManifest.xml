@@ -25,20 +25,19 @@
         </activity>
         <activity android:name="com.taobao.scan.MainActivity" >
             <intent-filter>
-             
                 <action android:name="com.taobao.scan.MainActivity" />
 
-        
-
                 <data
-                     android:host="scancode.m.taobao.com"
-                     android:path="/container" 
+                    android:host="scancode.m.taobao.com"
+                    android:path="/container"
                     android:scheme="http" />
             </intent-filter>
 
             <meta-data
                 android:name="bundleLocation"
                 android:value="com.taobao.android.scancode" />
+        </activity>
+        <activity android:name="com.taobao.scan.SaneService" >
         </activity>
     </application>
 
