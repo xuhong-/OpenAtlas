@@ -122,7 +122,7 @@ void dexopt(const char* apkPath,const char* dexPath,const char* args ){
 			char fdDexBuf [16];
 			sprintf(fdZipBuf, "%d", fdApk);//
 			sprintf(fdDexBuf, "%d", fdDex);
-			execl(dest, dest, "--zip", fdZipBuf, fdDexBuf, apkPath, args, 0);
+			execl(dest, dest, "--zip", fdZipBuf, fdDexBuf, args);
 
 			char * error = strerror(errno);
 			__android_log_print(6, "DexInv", "execl(%s) failed: %s\n", dest, error);
