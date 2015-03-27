@@ -102,12 +102,9 @@ public class PackageLite {
 		return null;
 	}
 
-	protected static android.taobao.atlas.runtime.PackageLite parse(
-			android.content.res.XmlResourceParser xmlResourceParser)
-					throws java.lang.Exception {
+	protected static PackageLite parse(XmlResourceParser xmlResourceParser)throws Exception {
 
-		int v2;
-		// PackageLite v0_1;
+	
 		int index;
 		final int endTag = XmlPullParser.END_TAG;
 		final   int startTag = XmlPullParser.START_TAG;
@@ -131,29 +128,24 @@ public class PackageLite {
 					"package");
 			if (mPackageLite.packageName != null && mPackageLite.packageName.length() != 0) {
 				index = 0;
-				v2 = 0;
+				
 			} else {
 				PackageLite.log.error("<manifest> does not specify package");
 				return null;
 			}
 
-			while (index < ((AttributeSet) xmlResourceParser).getAttributeCount()) {
-				String value = ((AttributeSet) xmlResourceParser).getAttributeName(index);
+			for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
+				String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
 				if (value.equals("versionCode")) {
 					mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
-							.getAttributeIntValue(index, 0);
-					++v2;
+							.getAttributeIntValue(i, 0);
+				
 				} else if (value.equals("versionName")) {
 					mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
-							.getAttributeValue(index);
-					++v2;
+							.getAttributeValue(i);
+				
 				}
 
-				if (v2 >= startTag) {
-					break;
-				}
-
-				++index;
 			}
 
 			index = xmlResourceParser.getDepth() + 1;
