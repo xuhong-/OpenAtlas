@@ -66,17 +66,17 @@ public class Welcome extends PanguActivity {
     public boolean onTouchEvent(MotionEvent event) {
 if (event.getAction()==MotionEvent.ACTION_UP) {
     Intent mIntent = new Intent(Intent.ACTION_VIEW);
-    mIntent.setPackage("com.taobao.taobao");
+   // mIntent.setPackage("com.taobao.taobao");
 //    mIntent.setComponent(new ComponentName("com.taobao.taobao",
 //            "com.taobao.scan.MainActivity"));
-
-try {
-Class<?> cls=RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity");
-mIntent.setClass(this, cls);
-} catch (ClassNotFoundException e) {
-// TODO Auto-generated catch block
-e.printStackTrace();
-}
+    mIntent.setClassName(this, "com.taobao.android.gamecenter.main.GcContainerActivity");
+//try {
+//Class<?> cls=RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity");
+//mIntent.setClass(this, cls);
+//} catch (ClassNotFoundException e) {
+//// TODO Auto-generated catch block
+//e.printStackTrace();
+//}
 
     // mComponent = {ComponentName@6742}
     // "ComponentInfo{com.taobao.taobao/com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity}"
@@ -102,6 +102,7 @@ e.printStackTrace();
     // mIntent.setClassName("com.taobao.scan",
     // "com.taobao.scan.MainActivity");
     startActivity(mIntent);
+  
 }
         return super.onTouchEvent(event);
     }

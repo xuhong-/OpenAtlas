@@ -49,7 +49,7 @@ public final class BundleImpl implements Bundle {
     List<ServiceListener> registeredServiceListeners;
     List<ServiceReference> registeredServices;
     Package[] staleExportedPackages;
-    int state;
+    int state=0;
 
     static {
         log = LoggerFactory.getInstance("BundleImpl");

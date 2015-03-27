@@ -16,6 +16,7 @@ import java.util.zip.ZipFile;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
+import com.taobao.android.lifecycle.PanguApplication;
 import com.taobao.android.task.Coordinator;
 import com.taobao.android.task.Coordinator.TaggedRunnable;
 import com.taobao.tao.Globals;
@@ -57,7 +58,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.taobao.atlas.framework.*;
 
-public class App extends Application {
+public class App extends PanguApplication {
     // static final String[] AUTOSTART_PACKAGES;
     // static final String[] DELAYED_PACKAGES;
     // static final String[] SORTED_PACKAGES;
