@@ -1,5 +1,7 @@
 package android.taobao.atlas.runtime;
 
+import org.osgi.framework.BundleException;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -15,7 +17,6 @@ import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.taobao.atlas.util.StringUtils;
 import android.text.TextUtils;
-import org.osgi.framework.BundleException;
 
 public class ContextImplHook extends ContextWrapper {
     static final Logger log;
@@ -31,26 +32,31 @@ public class ContextImplHook extends ContextWrapper {
         this.classLoader = classLoader;
     }
 
-    public Resources getResources() {
+    @Override
+	public Resources getResources() {
         return RuntimeVariables.getDelegateResources();
     }
 
-    public AssetManager getAssets() {
+    @Override
+	public AssetManager getAssets() {
         return RuntimeVariables.getDelegateResources().getAssets();
     }
 
-    public PackageManager getPackageManager() {
+    @Override
+	public PackageManager getPackageManager() {
         return getApplicationContext().getPackageManager();
     }
 
-    public ClassLoader getClassLoader() {
+    @Override
+	public ClassLoader getClassLoader() {
         if (this.classLoader != null) {
             return this.classLoader;
         }
         return super.getClassLoader();
     }
 
-    public void startActivity(Intent intent) {
+    @Override
+	public void startActivity(Intent intent) {
         String packageName;
         String obj = null;
         if (intent.getComponent() != null) {
@@ -99,7 +105,8 @@ public class ContextImplHook extends ContextWrapper {
         }
     }
 
-    public boolean bindService(Intent intent,
+    @Override
+	public boolean bindService(Intent intent,
             ServiceConnection serviceConnection, int i) {
         String packageName;
         String str = null;
@@ -131,6 +138,7 @@ public class ContextImplHook extends ContextWrapper {
                             e.getNestedException());
                 }
             }
+            
             return super.bindService(intent, serviceConnection, i);
         }
         try {
@@ -150,57 +158,7 @@ public class ContextImplHook extends ContextWrapper {
         return false;
     }
 
-    public ComponentName startServiceBAK(Intent intent) {
-        String packageName;
-        String className;
-        if (intent.getComponent() != null) {
-            packageName = intent.getComponent().getPackageName();
-            className = intent.getComponent().getClassName();
-        } else {
-            ResolveInfo resolveService = getBaseContext().getPackageManager()
-                    .resolveService(intent, 0);
-            if (resolveService == null || resolveService.serviceInfo == null) {
-                className = null;
-                packageName = null;
-            } else {
-                packageName = resolveService.serviceInfo.packageName;
-                className = resolveService.serviceInfo.name;
-            }
-        }
-        if (!StringUtils.equals(getBaseContext().getPackageName(), packageName)) {
-            return super.startService(intent);
-        }
-        packageName = DelegateComponent.locateComponent(className);
-        if (packageName != null) {
-            BundleImpl bundleImpl = (BundleImpl) Framework
-                    .getBundle(packageName);
-            if (bundleImpl != null) {
-                try {
-                    bundleImpl.startBundle();
-                } catch (BundleException e) {
-                    log.error(e.getMessage() + " Caused by: ",
-                            e.getNestedException());
-                }
-            }
-            return super.startService(intent);
-        }
-        try {
-            if (ClassLoadFromBundle.loadFromUninstalledBundles(className) != null) {
-                return super.startService(intent);
-            }
-        } catch (ClassNotFoundException e2) {
-            log.info("Can't find class " + className + " in all bundles.");
-        }
-        try {
-            if (Framework.getSystemClassLoader().loadClass(className) != null) {
-                return super.startService(intent);
-            }
-            return null;
-        } catch (ClassNotFoundException e3) {
-            log.error("Can't find class " + className);
-            return null;
-        }
-    }
+@Override
     public ComponentName startService(Intent intent) {
         String packageName;
         String className;
