@@ -25,11 +25,13 @@ final class Package implements ExportedPackage {
         this.resolved = z;
     }
 
-    public Bundle getExportingBundle() {
+    @Override
+	public Bundle getExportingBundle() {
         return this.classloader.bundle;
     }
 
-    public Bundle[] getImportingBundles() {
+    @Override
+	public Bundle[] getImportingBundles() {
         if (this.importingBundles == null) {
             return new Bundle[] { this.classloader.bundle };
         }
@@ -39,20 +41,25 @@ final class Package implements ExportedPackage {
         return bundleArr;
     }
 
-    public String getName() {
+    @Override
+	public String getName() {
         return this.pkg;
     }
 
-    public String getSpecificationVersion() {
+    @Override
+	public String getSpecificationVersion() {
         return this.version == null ? null : this.version[0] + "."
                 + this.version[1] + "." + this.version[2];
     }
 
-    public boolean isRemovalPending() {
+    @Override
+	public boolean isRemovalPending() {
         return this.removalPending;
     }
 
-    public boolean equals(Object obj) {
+    
+    @Override
+	public boolean equals(Object obj) {
         if (!(obj instanceof Package)) {
             return false;
         }
@@ -64,7 +71,8 @@ final class Package implements ExportedPackage {
         return obj.hashCode() == hashCode();
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         if (this.version == null) {
             return this.pkg;
         }
@@ -73,7 +81,8 @@ final class Package implements ExportedPackage {
                 + (this.resolved ? "" : " (UNRESOLVED)");
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return this.pkg.hashCode();
     }
 
