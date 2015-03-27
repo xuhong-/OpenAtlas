@@ -4,7 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
-import test.blue.stack.loader.g;
+import test.blue.stack.loader.ClassNotFoundInterceptorCallbackImpl;
 
 import com.taobao.android.task.Coordinator;
 import com.taobao.tao.ClassNotFoundInterceptor;

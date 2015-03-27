@@ -6,17 +6,17 @@ import java.util.List;
 import android.content.Intent;
 import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
 
-/* compiled from: ClassNotFoundInterceptor.java */
-public class g implements ClassNotFoundInterceptorCallback {
+
+public class ClassNotFoundInterceptorCallbackImpl implements ClassNotFoundInterceptorCallback {
     public static final List<String> GO_H5_BUNDLES_IF_NOT_EXISTS;
     public final String TAG;
 
-    public g() {
+    public ClassNotFoundInterceptorCallbackImpl() {
         this.TAG = "ClassNotFundInterceptor";
     }
 
     static {
-        GO_H5_BUNDLES_IF_NOT_EXISTS = new ArrayList();
+        GO_H5_BUNDLES_IF_NOT_EXISTS = new ArrayList<String>();
     }
 
     public static void addGoH5BundlesIfNotExists(String str) {
@@ -29,9 +29,11 @@ public class g implements ClassNotFoundInterceptorCallback {
         GO_H5_BUNDLES_IF_NOT_EXISTS.clear();
     }
 
-    public Intent returnIntent(Intent intent) {
+    @Override
+	public Intent returnIntent(Intent intent) {
         String className = intent.getComponent().getClassName();
         CharSequence dataString = intent.getDataString();
+        //TODO implement 
         if (className == null
                 || !className.equals("com.taobao.tao.welcome.Welcome")) {
             // if (Globals.isMiniPackage()) {
