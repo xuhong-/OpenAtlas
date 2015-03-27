@@ -2,9 +2,9 @@
 AtlasForAndroid
 This is A Plugin Framework run as Taobao
 
-The MIT License (MIT)
+The MIT License (MIT) Copyright (c) 2015 Bunny Blue,achellies
 
-Copyright (c) 2015 Bunny Blue,achellies
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
