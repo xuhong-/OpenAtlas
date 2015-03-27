@@ -49,6 +49,19 @@
                 android:name="bundleLocation"
                 android:value="com.taobao.android.gamecenter" />
         </service>
+
+        <activity android:name="com.taobao.android.gamecenter.main.ActivityInternalActivity" >
+        </activity>
+
+        <receiver
+            android:name="com.taobao.android.gamecenter.GameStaticReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.taobao.android.gamecenter.GameStaticReceiver" >
+                </action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
