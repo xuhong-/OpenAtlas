@@ -6,7 +6,7 @@ import android.content.pm.PackageInfo;
 import com.taobao.tao.Globals;
 import java.util.Properties;
 
-/* compiled from: MiniPackage.java g*/
+/* compiled from: MiniPackage.java ClassNotFoundInterceptorCallbackImpl*/
 public class MiniPackage {
     Application a;
 

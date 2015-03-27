@@ -1,6 +1,10 @@
 package test.blue.stack.loader;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -9,19 +13,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
+import android.os.Build.VERSION;
 import android.os.Process;
 import android.taobao.atlas.runtime.ContextImplHook;
 import android.taobao.atlas.runtime.RuntimeVariables;
+import android.text.TextUtils;
 import android.util.Log;
+import blue.stack.openAtlas.util.Utils;
 
 import com.taobao.android.lifecycle.PanguApplication;
+import com.taobao.tao.BaselineInfoProvider;
 import com.taobao.tao.Globals;
 import com.taobao.tao.atlaswrapper.AtlasInitializer;
 
 public class App extends PanguApplication {
-	// static final String[] AUTOSTART_PACKAGES;
-	// static final String[] DELAYED_PACKAGES;
-	// static final String[] SORTED_PACKAGES;
 
 
 	static final String TAG = "TestApp";
@@ -32,7 +41,9 @@ public class App extends PanguApplication {
 	private Context mBaseContext;
 	AtlasInitializer mAtlasInitializer;
 	public static App instaceApp;
-
+    private PackageManager mPackageManager;
+    private InvocationHandlerImpl mPackageManagerProxyhandler;
+    private PackageInfo mPackageInfo;
 	@Override
 	protected void attachBaseContext(Context context) {
 		super.attachBaseContext(context);
@@ -68,19 +79,8 @@ public class App extends PanguApplication {
 
 		this.mAtlasInitializer.startUp();
 		RuntimeVariables.setDelegateResources(getResources());
-	
+
 	}
-
-	private PackageInfo getPackageInfo() {
-		try {
-			return getPackageManager().getPackageInfo(getPackageName(), 0);
-		} catch (Throwable e) {
-			Log.e(TAG, "Error to get PackageInfo >>>", e);
-			return new PackageInfo();
-		}
-	}
-
-
 
 	@Override
 	public boolean bindService(Intent intent,
@@ -104,10 +104,97 @@ public class App extends PanguApplication {
 		return new ContextImplHook(getBaseContext(), null).startService(intent);
 	}
 
+	@Override
+	public SQLiteDatabase openOrCreateDatabase(String str, int i, CursorFactory cursorFactory) {
+		String processName =Utils.getProcessName();
+		if (!TextUtils.isEmpty(processName)) {
+			Log.i("SQLiteDatabase", processName);
+			if (!processName.equals(getPackageName())) {
+				String[] split = processName.split(":");
+				if (split != null && split.length > 1) {
+					processName = split[1] + "_" + str;
+					Log.i("SQLiteDatabase", "openOrCreateDatabase:" + processName);
+					return hookDatabase(processName, i, cursorFactory);
+				}
+			}
+		}
+		return hookDatabase(str, i, cursorFactory);
+	}
+	public SQLiteDatabase hookDatabase(String name, int mode, CursorFactory cursorFactory) {
+		if (VERSION.SDK_INT >= 11) {
+			return super.openOrCreateDatabase(name, mode, cursorFactory);
+		}
+		SQLiteDatabase sQLiteDatabase = null;
+		try {
+			return super.openOrCreateDatabase(name, mode, cursorFactory);
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+			if (Globals.getApplication().deleteDatabase(name)) {
+				return super.openOrCreateDatabase(name, mode, cursorFactory);
+			}
+			return sQLiteDatabase;
+		}
+	}
+
+    @Override
+	public PackageManager getPackageManager() {
+        if (this.mPackageManager != null) {
+            return this.mPackageManager;
+        }
+        try {
+            Class<?> clsIPackageManager = Class.forName("android.content.pm.IPackageManager");
+            Class<?> clsActivityThread = Class.forName("android.app.ActivityThread");
+            Method declaredMethod = clsActivityThread.getDeclaredMethod("getPackageManager", new Class[0]);
+            declaredMethod.setAccessible(true);
+            Object invoke = declaredMethod.invoke(clsActivityThread, new Object[0]);
+            if (invoke != null) {
+                if (this.mPackageManagerProxyhandler == null) {
+                    this.mPackageManagerProxyhandler = new InvocationHandlerImpl(this, invoke);
+                }
+                invoke = Proxy.newProxyInstance(getClassLoader(), new Class[]{clsIPackageManager}, this.mPackageManagerProxyhandler);
+                Constructor<?> declaredConstructor = Class.forName("android.app.ApplicationPackageManager").getDeclaredConstructor(new Class[]{Class.forName("android.app.ContextImpl"), clsIPackageManager});
+                declaredConstructor.setAccessible(true);
+                this.mPackageManager = (PackageManager) declaredConstructor.newInstance(new Object[]{this.mBaseContext, invoke});
+                return this.mPackageManager;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return super.getPackageManager();
+    }
 
 
+    public class InvocationHandlerImpl implements InvocationHandler {
+        final  App mApp;
+        private Object obj;
 
+        public InvocationHandlerImpl(App taobaoApplication, Object obj) {
+            this.mApp = taobaoApplication;
+            this.obj = obj;
+        }
 
+        @Override
+		public Object invoke(Object obj, Method method, Object[] objArr) throws Throwable {
+            Object invoke = method.invoke(this.obj, objArr);
+            if (!method.getName().equals("getPackageInfo") || objArr[0] == null || !objArr[0].equals(this.mApp.getPackageName())) {
+                return invoke;
+            }
+            PackageInfo packageInfo = (PackageInfo) invoke;
+            String str = packageInfo.versionName;
+            if (packageInfo.versionCode > BaselineInfoProvider.getInstance().getMainVersionCode()) {
+                this.mApp.mPackageInfo = packageInfo;
+                return this.mApp.mPackageInfo;
+            }
+            BaselineInfoProvider.getInstance().getMainVersionName();
+            str = BaselineInfoProvider.getInstance().getBaselineVersion();
+            if (TextUtils.isEmpty(str)) {
+                return this.mApp.mPackageInfo;
+            }
+            packageInfo.versionName = str;
+            this.mApp.mPackageInfo = packageInfo;
+            return this.mApp.mPackageInfo;
+        }
+    }
 
 
 }
