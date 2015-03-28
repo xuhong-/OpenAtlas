@@ -1,8 +1,26 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.framework;
 
-//import com.taobao.tao.util.Constants;
-//import com.taobao.tao.util.TBImageQuailtyStrategy;
-//import com.taobao.we.mtop.adapter.BaseRemoteBusiness;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -10,12 +28,10 @@ import java.util.EmptyStackException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
+
 import org.osgi.framework.Constants;
-//import mtopclass.com.tao.client.user.getUserInfo.GetUserInfoRequest;
-//import mtopsdk.common.util.SymbolExpUtil;
 import org.osgi.framework.Filter;
 import org.osgi.framework.GetUserInfoRequest;
 import org.osgi.framework.InvalidSyntaxException;
@@ -47,7 +63,8 @@ final class RFC1960Filter implements Filter {
             this.value = str2;
         }
 
-        public boolean match(ServiceReference serviceReference) {
+        @Override
+		public boolean match(ServiceReference serviceReference) {
             try {
                 return match(((ServiceReferenceImpl) serviceReference).properties);
             } catch (Exception e) {
@@ -61,7 +78,8 @@ final class RFC1960Filter implements Filter {
             }
         }
 
-        public boolean match(Dictionary dictionary) {
+        @Override
+		public boolean match(Dictionary dictionary) {
             Object obj;
             Object obj2 = dictionary.get(this.id);
             if (obj2 == null) {
@@ -359,12 +377,14 @@ final class RFC1960Filter implements Filter {
             return i3;
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return "(" + this.id + OP[this.comparator]
                     + (this.value == null ? "" : this.value) + ")";
         }
 
-        public boolean equals(Object obj) {
+        @Override
+		public boolean equals(Object obj) {
             if (!(obj instanceof RFC1960SimpleFilter)) {
                 return false;
             }
@@ -374,7 +394,8 @@ final class RFC1960Filter implements Filter {
                     && this.value.equals(rFC1960SimpleFilter.value);
         }
 
-        public int hashCode() {
+        @Override
+		public int hashCode() {
             return toString().hashCode();
         }
     }
@@ -383,11 +404,13 @@ final class RFC1960Filter implements Filter {
         OP = new String[] { "=", "=*", "~=", ">=", "<=" };
         STRINGCLASS = new Class[] { String.class };
         NULL_FILTER = new Filter() {
-            public boolean match(ServiceReference serviceReference) {
+            @Override
+			public boolean match(ServiceReference serviceReference) {
                 return true;
             }
 
-            public boolean match(Dictionary dictionary) {
+            @Override
+			public boolean match(Dictionary dictionary) {
                 return true;
             }
         };
@@ -620,7 +643,8 @@ final class RFC1960Filter implements Filter {
     // }
     // }
 
-    public String toString() {
+    @Override
+	public String toString() {
         int i = EQUALS;
         if (this.operator == 3) {
             return "(!" + this.operands.get(EQUALS) + ")";
@@ -637,7 +661,8 @@ final class RFC1960Filter implements Filter {
         return stringBuffer.toString();
     }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (!(obj instanceof RFC1960Filter)) {
             return false;
         }
@@ -657,7 +682,8 @@ final class RFC1960Filter implements Filter {
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return toString().hashCode();
     }
 

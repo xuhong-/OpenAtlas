@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.framework;
 
 import java.util.ArrayList;
@@ -30,7 +50,8 @@ final class ServiceReferenceImpl implements ServiceReference {
         private ServiceRegistrationImpl() {
         }
 
-        public ServiceReference getReference() {
+        @Override
+		public ServiceReference getReference() {
             if (ServiceReferenceImpl.this.service != null) {
                 return ServiceReferenceImpl.this;
             }
@@ -38,7 +59,8 @@ final class ServiceReferenceImpl implements ServiceReference {
                     "Service has already been uninstalled");
         }
 
-        public void setProperties(Dictionary<String, ?> dictionary) {
+        @Override
+		public void setProperties(Dictionary<String, ?> dictionary) {
             if (ServiceReferenceImpl.this.service == null) {
                 throw new IllegalStateException(
                         "Service has already been uninstalled");
@@ -76,7 +98,8 @@ final class ServiceReferenceImpl implements ServiceReference {
             Framework.notifyServiceListeners(2, ServiceReferenceImpl.this);
         }
 
-        public void unregister() {
+        @Override
+		public void unregister() {
             if (ServiceReferenceImpl.this.service == null) {
                 throw new IllegalStateException(
                         "Service has already been uninstalled");
@@ -161,11 +184,13 @@ final class ServiceReferenceImpl implements ServiceReference {
         }
     }
 
-    public Bundle getBundle() {
+    @Override
+	public Bundle getBundle() {
         return this.bundle;
     }
 
-    public Object getProperty(String str) {
+    @Override
+	public Object getProperty(String str) {
         Object obj = this.properties.get(str);
         if (obj != null) {
             return obj;
@@ -187,7 +212,8 @@ final class ServiceReferenceImpl implements ServiceReference {
         return obj2;
     }
 
-    public String[] getPropertyKeys() {
+    @Override
+	public String[] getPropertyKeys() {
         ArrayList arrayList = new ArrayList(this.properties.size());
         Enumeration keys = this.properties.keys();
         while (keys.hasMoreElements()) {
@@ -196,13 +222,14 @@ final class ServiceReferenceImpl implements ServiceReference {
         return (String[]) arrayList.toArray(new String[arrayList.size()]);
     }
 
-    public Bundle[] getUsingBundles() {
+    @Override
+	public Bundle[] getUsingBundles() {
         Bundle[] bundleArr;
         synchronized (this.useCounters) {
             if (this.useCounters.isEmpty()) {
                 bundleArr = null;
             } else {
-                bundleArr = (Bundle[]) this.useCounters.keySet().toArray(
+                bundleArr = this.useCounters.keySet().toArray(
                         new Bundle[this.useCounters.size()]);
             }
         }
@@ -215,7 +242,7 @@ final class ServiceReferenceImpl implements ServiceReference {
         }
         synchronized (this.useCounters) {
             Object valueOf;
-            Integer num = (Integer) this.useCounters.get(bundle);
+            Integer num = this.useCounters.get(bundle);
             if (num == null) {
                 valueOf = Integer.valueOf(1);
             } else {
@@ -253,7 +280,7 @@ final class ServiceReferenceImpl implements ServiceReference {
             if (this.service == null) {
                 return false;
             }
-            Integer num = (Integer) this.useCounters.get(bundle);
+            Integer num = this.useCounters.get(bundle);
             if (num == null) {
                 return false;
             } else if (num.intValue() == 1) {
@@ -272,7 +299,8 @@ final class ServiceReferenceImpl implements ServiceReference {
         }
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "ServiceReference{" + this.service + "}";
     }
 }

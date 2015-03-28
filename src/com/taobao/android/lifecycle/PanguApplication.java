@@ -1,15 +1,35 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.android.lifecycle;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import com.taobao.android.compat.ApplicationCompat;
-
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+
+import com.taobao.android.compat.ApplicationCompat;
 
 
 public class PanguApplication extends ApplicationCompat {
@@ -40,9 +60,10 @@ public class PanguApplication extends ApplicationCompat {
             this.name = str;
         }
 
-        public void run() {
+        @Override
+		public void run() {
             if (this.mApplication.mWeakActivity != null) {
-                Activity activity = (Activity) this.mApplication.mWeakActivity.get();
+                Activity activity = this.mApplication.mWeakActivity.get();
                 if (!(activity == null || this.mCrossActivityLifecycleCallback == null)) {
                     if ("onCreated".equals(this.name)) {
                         this.mCrossActivityLifecycleCallback.onCreated(activity);
@@ -63,7 +84,8 @@ public class PanguApplication extends ApplicationCompat {
             this.mApplication = panguApplication;
         }
 
-        public void onActivityCreated(Activity activity,  Bundle bundle) {
+        @Override
+		public void onActivityCreated(Activity activity,  Bundle bundle) {
             this.mApplication.mWeakActivity = new WeakReference(activity);
             if (this.mApplication.mCreationCount.getAndIncrement() == 0 && !this.mApplication.mCrossActivityLifecycleCallbacks.isEmpty()) {
                 for (CrossActivityLifecycleCallback onCreated : this.mApplication.mCrossActivityLifecycleCallbacks) {
@@ -72,7 +94,8 @@ public class PanguApplication extends ApplicationCompat {
             }
         }
 
-        public void onActivityStarted(Activity activity) {
+        @Override
+		public void onActivityStarted(Activity activity) {
             if (this.mApplication.mStartCount.getAndIncrement() == 0 && !this.mApplication.mCrossActivityLifecycleCallbacks.isEmpty()) {
                 for (CrossActivityLifecycleCallback onStarted : this.mApplication.mCrossActivityLifecycleCallbacks) {
                     onStarted.onStarted(activity);
@@ -80,7 +103,8 @@ public class PanguApplication extends ApplicationCompat {
             }
         }
 
-        public void onActivityStopped(Activity activity) {
+        @Override
+		public void onActivityStopped(Activity activity) {
             if (this.mApplication.mStartCount.decrementAndGet() == 0 && !this.mApplication.mCrossActivityLifecycleCallbacks.isEmpty()) {
                 for (CrossActivityLifecycleCallback onStopped : this.mApplication.mCrossActivityLifecycleCallbacks) {
                     onStopped.onStopped(activity);
@@ -88,7 +112,8 @@ public class PanguApplication extends ApplicationCompat {
             }
         }
 
-        public void onActivityDestroyed(Activity activity) {
+        @Override
+		public void onActivityDestroyed(Activity activity) {
             if (this.mApplication.mCreationCount.decrementAndGet() == 0 && !this.mApplication.mCrossActivityLifecycleCallbacks.isEmpty()) {
                 for (CrossActivityLifecycleCallback onDestroyed : this.mApplication.mCrossActivityLifecycleCallbacks) {
                     onDestroyed.onDestroyed(activity);
@@ -96,13 +121,16 @@ public class PanguApplication extends ApplicationCompat {
             }
         }
 
-        public void onActivityResumed(Activity activity) {
+        @Override
+		public void onActivityResumed(Activity activity) {
         }
 
-        public void onActivityPaused(Activity activity) {
+        @Override
+		public void onActivityPaused(Activity activity) {
         }
 
-        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+        @Override
+		public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
         }
     }
 
@@ -135,7 +163,8 @@ public class PanguApplication extends ApplicationCompat {
         mAppHandler.post(runnable);
     }
 
-    public void onCreate() {
+    @Override
+	public void onCreate() {
         super.onCreate();
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksCompatImpl(this));
      

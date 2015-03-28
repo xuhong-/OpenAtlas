@@ -1,8 +1,24 @@
-package android.taobao.atlas.framework;
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-import android.taobao.atlas.framework.Framework.ServiceListenerEntry;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
+package android.taobao.atlas.framework;
 
 import java.io.File;
 import java.io.InputStream;
@@ -23,6 +39,10 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.SynchronousBundleListener;
+
+import android.taobao.atlas.framework.Framework.ServiceListenerEntry;
+import android.taobao.atlas.log.Logger;
+import android.taobao.atlas.log.LoggerFactory;
 
 public class BundleContextImpl implements BundleContext {
     static final Logger log;
@@ -45,7 +65,8 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public void addBundleListener(BundleListener bundleListener) {
+    @Override
+	public void addBundleListener(BundleListener bundleListener) {
         checkValid();
         List list = bundleListener instanceof SynchronousBundleListener ? Framework.syncBundleListeners
                 : Framework.bundleListeners;
@@ -58,7 +79,8 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public void addFrameworkListener(FrameworkListener frameworkListener) {
+    @Override
+	public void addFrameworkListener(FrameworkListener frameworkListener) {
         checkValid();
         if (this.bundle.registeredFrameworkListeners == null) {
             this.bundle.registeredFrameworkListeners = new ArrayList();
@@ -70,7 +92,8 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public void addServiceListener(ServiceListener serviceListener, String str)
+    @Override
+	public void addServiceListener(ServiceListener serviceListener, String str)
             throws InvalidSyntaxException {
         checkValid();
         ServiceListenerEntry serviceListenerEntry = new ServiceListenerEntry(
@@ -87,7 +110,7 @@ public class BundleContextImpl implements BundleContext {
     }
 
     private boolean isServiceListenerRegistered(ServiceListener serviceListener) {
-        ServiceListener[] serviceListenerArr = (ServiceListener[]) this.bundle.registeredServiceListeners
+        ServiceListener[] serviceListenerArr = this.bundle.registeredServiceListeners
                 .toArray(new ServiceListener[this.bundle.registeredServiceListeners
                         .size()]);
         for (ServiceListener serviceListener2 : serviceListenerArr) {
@@ -98,7 +121,8 @@ public class BundleContextImpl implements BundleContext {
         return false;
     }
 
-    public void addServiceListener(ServiceListener serviceListener) {
+    @Override
+	public void addServiceListener(ServiceListener serviceListener) {
         checkValid();
         try {
             addServiceListener(serviceListener, null);
@@ -106,23 +130,27 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public Filter createFilter(String str) throws InvalidSyntaxException {
+    @Override
+	public Filter createFilter(String str) throws InvalidSyntaxException {
         if (str != null) {
             return RFC1960Filter.fromString(str);
         }
         throw new NullPointerException();
     }
 
-    public Bundle getBundle() {
+    @Override
+	public Bundle getBundle() {
         return this.bundle;
     }
 
-    public Bundle getBundle(long j) {
+    @Override
+	public Bundle getBundle(long j) {
         checkValid();
         return null;
     }
 
-    public Bundle[] getBundles() {
+    @Override
+	public Bundle[] getBundles() {
         checkValid();
         List bundles = Framework.getBundles();
         Bundle[] bundleArr = (Bundle[]) bundles.toArray(new Bundle[bundles
@@ -133,7 +161,8 @@ public class BundleContextImpl implements BundleContext {
         return obj;
     }
 
-    public File getDataFile(String str) {
+    @Override
+	public File getDataFile(String str) {
         checkValid();
         try {
             File file = new File(new File(this.bundle.bundleDir, "/data/"), str);
@@ -145,11 +174,13 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public String getProperty(String str) {
+    @Override
+	public String getProperty(String str) {
         return (String) Framework.properties.get(str);
     }
 
-    public Object getService(ServiceReference serviceReference) {
+    @Override
+	public Object getService(ServiceReference serviceReference) {
         checkValid();
         if (serviceReference != null) {
             return ((ServiceReferenceImpl) serviceReference)
@@ -158,7 +189,8 @@ public class BundleContextImpl implements BundleContext {
         throw new NullPointerException("Null service reference.");
     }
 
-    public ServiceReference[] getServiceReferences(String str, String str2)
+    @Override
+	public ServiceReference[] getServiceReferences(String str, String str2)
             throws InvalidSyntaxException {
         Collection collection = null;
         checkValid();
@@ -166,7 +198,7 @@ public class BundleContextImpl implements BundleContext {
         if (str == null) {
             collection = Framework.services;
         } else {
-            List list = (List) Framework.classes_services.get(str);
+            List list = Framework.classes_services.get(str);
             if (list == null) {
                 return null;
             }
@@ -187,12 +219,13 @@ public class BundleContextImpl implements BundleContext {
                 .toArray(new ServiceReference[arrayList.size()]);
     }
 
-    public ServiceReference getServiceReference(String str) {
+    @Override
+	public ServiceReference getServiceReference(String str) {
         ServiceReference serviceReference = null;
         checkValid();
         int i = -1;
         long j = 5000;// MAlarmHandler.NEXT_FIRE_INTERVAL;
-        List list = (List) Framework.classes_services.get(str);
+        List list = Framework.classes_services.get(str);
         if (list != null) {
             ServiceReference[] serviceReferenceArr = (ServiceReference[]) list
                     .toArray(new ServiceReference[list.size()]);
@@ -231,7 +264,8 @@ public class BundleContextImpl implements BundleContext {
         return serviceReference;
     }
 
-    public Bundle installBundle(String str) throws BundleException {
+    @Override
+	public Bundle installBundle(String str) throws BundleException {
         if (str == null) {
             throw new IllegalArgumentException("Location must not be null");
         }
@@ -239,7 +273,8 @@ public class BundleContextImpl implements BundleContext {
         return Framework.installNewBundle(str);
     }
 
-    public Bundle installBundle(String str, InputStream inputStream)
+    @Override
+	public Bundle installBundle(String str, InputStream inputStream)
             throws BundleException {
         if (str == null) {
             throw new IllegalArgumentException("Location must not be null");
@@ -248,7 +283,8 @@ public class BundleContextImpl implements BundleContext {
         return Framework.installNewBundle(str, inputStream);
     }
 
-    public ServiceRegistration registerService(String[] strArr, Object obj,
+    @Override
+	public ServiceRegistration registerService(String[] strArr, Object obj,
             Dictionary<String, ?> dictionary) {
         checkValid();
         if (obj == null) {
@@ -272,13 +308,15 @@ public class BundleContextImpl implements BundleContext {
         return serviceReferenceImpl.registration;
     }
 
-    public ServiceRegistration registerService(String str, Object obj,
+    @Override
+	public ServiceRegistration registerService(String str, Object obj,
             Dictionary<String, ?> dictionary) {
         return registerService(new String[] { str }, obj,
-                (Dictionary) dictionary);
+                dictionary);
     }
 
-    public void removeBundleListener(BundleListener bundleListener) {
+    @Override
+	public void removeBundleListener(BundleListener bundleListener) {
         checkValid();
         (bundleListener instanceof SynchronousBundleListener ? Framework.syncBundleListeners
                 : Framework.bundleListeners).remove(bundleListener);
@@ -288,7 +326,8 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public void removeFrameworkListener(FrameworkListener frameworkListener) {
+    @Override
+	public void removeFrameworkListener(FrameworkListener frameworkListener) {
         checkValid();
         Framework.frameworkListeners.remove(frameworkListener);
         this.bundle.registeredFrameworkListeners.remove(frameworkListener);
@@ -297,7 +336,8 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public void removeServiceListener(ServiceListener serviceListener) {
+    @Override
+	public void removeServiceListener(ServiceListener serviceListener) {
         checkValid();
         try {
             Framework.serviceListeners.remove(new ServiceListenerEntry(
@@ -310,7 +350,8 @@ public class BundleContextImpl implements BundleContext {
         }
     }
 
-    public synchronized boolean ungetService(ServiceReference serviceReference) {
+    @Override
+	public synchronized boolean ungetService(ServiceReference serviceReference) {
         checkValid();
         return ((ServiceReferenceImpl) serviceReference)
                 .ungetService(this.bundle);

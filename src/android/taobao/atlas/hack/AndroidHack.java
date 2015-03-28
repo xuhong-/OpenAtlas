@@ -1,4 +1,29 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.hack;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 import android.app.Application;
 import android.app.Instrumentation;
@@ -14,12 +39,6 @@ import android.taobao.atlas.hack.Hack.HackDeclaration.HackAssertionException;
 import android.taobao.atlas.runtime.DelegateClassLoader;
 import android.taobao.atlas.runtime.DelegateResources;
 import android.taobao.atlas.runtime.RuntimeVariables;
-import android.util.Log;
-
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
 
 public class AndroidHack {
     private static Object _mLoadedApk;
@@ -34,7 +53,8 @@ public class AndroidHack {
             this.activityThread = obj;
         }
 
-        public boolean handleMessage(Message message) {
+        @Override
+		public boolean handleMessage(Message message) {
             try {
                 AndroidHack.ensureLoadedApk();
                 this.handler.handleMessage(message);
@@ -55,7 +75,7 @@ public class AndroidHack {
                             runtimeException = new RuntimeException(
                                     "loadedapk is null");
                         } else {
-                            ClassLoader classLoader = (ClassLoader) AtlasHacks.LoadedApk_mClassLoader
+                            ClassLoader classLoader = AtlasHacks.LoadedApk_mClassLoader
                                     .get(loadedApk);
                             if (classLoader instanceof DelegateClassLoader) {
                                 runtimeException = new RuntimeException(
@@ -83,7 +103,8 @@ public class AndroidHack {
         ActvityThreadGetter() {
         }
 
-        public void run() {
+        @Override
+		public void run() {
             try {
                 AndroidHack._sActivityThread = AtlasHacks.ActivityThread_currentActivityThread
                         .invoke(AtlasHacks.ActivityThread.getmClass(),
@@ -157,7 +178,7 @@ public class AndroidHack {
             }
         }
         activityThread = loadedApk;
-        if (!(((ClassLoader) AtlasHacks.LoadedApk_mClassLoader
+        if (!((AtlasHacks.LoadedApk_mClassLoader
                 .get(activityThread)) instanceof DelegateClassLoader)) {
             AtlasHacks.LoadedApk_mClassLoader.set(activityThread,
                     RuntimeVariables.delegateClassLoader);
@@ -262,7 +283,7 @@ public class AndroidHack {
                 throw new RuntimeException(
                         "Failed to get ActivityThread.mLoadedApk");
             }
-            if (!(((ClassLoader) AtlasHacks.LoadedApk_mClassLoader
+            if (!((AtlasHacks.LoadedApk_mClassLoader
                     .get(activityThread)) instanceof DelegateClassLoader)) {
                 AtlasHacks.LoadedApk_mClassLoader.set(activityThread,
                         RuntimeVariables.delegateClassLoader);
@@ -278,7 +299,7 @@ public class AndroidHack {
     public static Instrumentation getInstrumentation() throws Exception {
         Object activityThread = getActivityThread();
         if (activityThread != null) {
-            return (Instrumentation) AtlasHacks.ActivityThread_mInstrumentation
+            return AtlasHacks.ActivityThread_mInstrumentation
                     .get(activityThread);
         }
         throw new Exception(

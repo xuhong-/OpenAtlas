@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.runtime;
 
 import java.lang.reflect.Constructor;
@@ -48,7 +68,7 @@ public class DelegateResources extends Resources {
                 arrayList.add(((BundleImpl) bundle).getArchive()
                         .getArchiveFile().getAbsolutePath());
             }
-            AssetManager assetManager = (AssetManager) AssetManager.class
+            AssetManager assetManager = AssetManager.class
                     .newInstance();
             for (String str : arrayList) {
                 AtlasHacks.AssetManager_addAssetPath.invoke(assetManager, str);
@@ -80,7 +100,7 @@ public class DelegateResources extends Resources {
                     if (i > 0) {
                         stringBuffer.append(",");
                     }
-                    stringBuffer.append((String) arrayList.get(i));
+                    stringBuffer.append(arrayList.get(i));
                 }
                 stringBuffer.append("]");
                 log.debug(stringBuffer.toString());
@@ -114,7 +134,7 @@ public class DelegateResources extends Resources {
                 String str4 = location + ":" + str;
                 if (!this.resIdentifierMap.isEmpty()
                         && this.resIdentifierMap.containsKey(str4)) {
-                    int intValue = ((Integer) this.resIdentifierMap.get(str4))
+                    int intValue = this.resIdentifierMap.get(str4)
                             .intValue();
                     if (intValue != 0) {
                         return intValue;
@@ -148,7 +168,8 @@ public class DelegateResources extends Resources {
         return 0;
     }
 
-    public String getString(int i) throws NotFoundException {
+    @Override
+	public String getString(int i) throws NotFoundException {
         if (i == 33816578 || i == 262146) {
             return "Web View";
         }

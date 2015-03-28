@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.framework;
 
 import java.io.DataInputStream;
@@ -98,19 +118,22 @@ public final class Framework {
             this.filter = str == null ? null : RFC1960Filter.fromString(str);
         }
 
-        public boolean equals(Object obj) {
+        @Override
+		public boolean equals(Object obj) {
             if (!(obj instanceof ServiceListenerEntry)) {
                 return false;
             }
             return this.listener.equals(((ServiceListenerEntry) obj).listener);
         }
 
-        public int hashCode() {
+        @Override
+		public int hashCode() {
             return (this.filter != null ? this.filter.hashCode() >> 8 : 0)
                     + this.listener.hashCode();
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return this.listener + " " + this.filter;
         }
     }
@@ -128,7 +151,8 @@ public final class Framework {
                 this.restart = z;
             }
 
-            public void run() {
+            @Override
+			public void run() {
                 Framework.shutdown(this.restart);
             }
         }
@@ -140,7 +164,8 @@ public final class Framework {
                 this.targetLevel = i;
             }
 
-            public void run() {
+            @Override
+			public void run() {
                 List bundles = Framework.getBundles();
                 SystemBundle.this.setLevel(
                         (Bundle[]) bundles.toArray(new Bundle[bundles.size()]),
@@ -159,7 +184,8 @@ public final class Framework {
                 this.bundleArray = bundleArr;
             }
 
-            public void run() {
+            @Override
+			public void run() {
                 synchronized (exportedPackages) {
                     try {
                         List bundles;
@@ -203,7 +229,7 @@ public final class Framework {
                                         if (packageR.importingBundles != null) {
                                             arrayList
                                                     .addAll(Arrays
-                                                            .asList((Bundle[]) packageR.importingBundles
+                                                            .asList(packageR.importingBundles
                                                                     .toArray(new Bundle[packageR.importingBundles
                                                                             .size()])));
                                         }
@@ -280,50 +306,62 @@ public final class Framework {
             this.registeredServices = new ServiceReference[] { serviceReferenceImpl };
         }
 
-        public long getBundleId() {
+        @Override
+		public long getBundleId() {
             return 0;
         }
 
-        public Dictionary<String, String> getHeaders() {
+        @Override
+		public Dictionary<String, String> getHeaders() {
             return this.props;
         }
 
-        public String getLocation() {
+        @Override
+		public String getLocation() {
             return Constants.SYSTEM_BUNDLE_LOCATION;
         }
 
-        public ServiceReference[] getRegisteredServices() {
+        @Override
+		public ServiceReference[] getRegisteredServices() {
             return this.registeredServices;
         }
 
-        public URL getResource(String str) {
+        @Override
+		public URL getResource(String str) {
             return getClass().getResource(str);
         }
 
-        public ServiceReference[] getServicesInUse() {
+        @Override
+		public ServiceReference[] getServicesInUse() {
             return null;
         }
 
-        public int getState() {
+        @Override
+		public int getState() {
             return this.state;
         }
 
-        public boolean hasPermission(Object obj) {
+        @Override
+		public boolean hasPermission(Object obj) {
             return true;
         }
 
-        public void start() throws BundleException {
+        @Override
+		public void start() throws BundleException {
         }
 
-        public void stop() throws BundleException {
+        @Override
+		public void stop() throws BundleException {
             shutdownThread(false);
         }
 
-        public void uninstall() throws BundleException {
+        @Override
+		public void uninstall() throws BundleException {
             throw new BundleException("Cannot uninstall the System Bundle");
         }
 
-        public void update() throws BundleException {
+        @Override
+		public void update() throws BundleException {
             shutdownThread(true);
         }
 
@@ -331,15 +369,18 @@ public final class Framework {
             new AnonymousClass_1(z).start();
         }
 
-        public void update(InputStream inputStream) throws BundleException {
+        @Override
+		public void update(InputStream inputStream) throws BundleException {
             shutdownThread(true);
         }
 
-        public void update(File file) throws BundleException {
+        @Override
+		public void update(File file) throws BundleException {
             shutdownThread(true);
         }
 
-        public int getBundleStartLevel(Bundle bundle) {
+        @Override
+		public int getBundleStartLevel(Bundle bundle) {
             if (bundle == this) {
                 return 0;
             }
@@ -351,15 +392,18 @@ public final class Framework {
                     + " has been uninstalled");
         }
 
-        public int getInitialBundleStartLevel() {
+        @Override
+		public int getInitialBundleStartLevel() {
             return Framework.initStartlevel;
         }
 
-        public int getStartLevel() {
+        @Override
+		public int getStartLevel() {
             return Framework.startlevel;
         }
 
-        public boolean isBundlePersistentlyStarted(Bundle bundle) {
+        @Override
+		public boolean isBundlePersistentlyStarted(Bundle bundle) {
             if (bundle == this) {
                 return true;
             }
@@ -371,7 +415,8 @@ public final class Framework {
                     + " has been uninstalled");
         }
 
-        public void setBundleStartLevel(Bundle bundle, int i) {
+        @Override
+		public void setBundleStartLevel(Bundle bundle, int i) {
             if (bundle == this) {
                 throw new IllegalArgumentException(
                         "Cannot set the start level for the system bundle.");
@@ -407,7 +452,8 @@ public final class Framework {
             }
         }
 
-        public void setInitialBundleStartLevel(int i) {
+        @Override
+		public void setInitialBundleStartLevel(int i) {
             if (i <= 0) {
                 throw new IllegalArgumentException("Start level " + i
                         + " is not Component valid level");
@@ -415,7 +461,8 @@ public final class Framework {
             Framework.initStartlevel = i;
         }
 
-        public void setStartLevel(int i) {
+        @Override
+		public void setStartLevel(int i) {
             if (i <= 0) {
                 throw new IllegalArgumentException("Start level " + i
                         + " is not Component valid level");
@@ -489,7 +536,8 @@ public final class Framework {
             }
         }
 
-        public ExportedPackage[] getExportedPackages(Bundle bundle) {
+        @Override
+		public ExportedPackage[] getExportedPackages(Bundle bundle) {
             return getExportedPackages(bundle, false);
         }
 
@@ -513,7 +561,7 @@ public final class Framework {
                         }
                         ArrayList arrayList = new ArrayList();
                         for (String str : strArr) {
-                            Package packageR = (Package) Framework.exportedPackages
+                            Package packageR = Framework.exportedPackages
                                     .get(new Package(str, null, false));
                             if (packageR != null
                                     && packageR.classloader == bundleImpl.classloader) {
@@ -541,17 +589,18 @@ public final class Framework {
                                                 .size()]);
                     }
                 }
-                return (ExportedPackage[]) Framework.exportedPackages.keySet()
+                return Framework.exportedPackages.keySet()
                         .toArray(
                                 new ExportedPackage[Framework.exportedPackages
                                         .size()]);
             }
         }
 
-        public ExportedPackage getExportedPackage(String str) {
+        @Override
+		public ExportedPackage getExportedPackage(String str) {
             synchronized (exportedPackages) {
                 try {
-                    Package packageR = (Package) exportedPackages
+                    Package packageR = exportedPackages
                             .get(new Package(str, null, false));
                     if (packageR == null) {
                         return null;
@@ -568,11 +617,13 @@ public final class Framework {
             return null;
         }
 
-        public void refreshPackages(Bundle[] bundleArr) {
+        @Override
+		public void refreshPackages(Bundle[] bundleArr) {
             new AnonymousClass_3(bundleArr).start();
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return "SystemBundle";
         }
     }
@@ -684,7 +735,7 @@ public final class Framework {
         }
         property = i;
         systemBundle.setLevel(
-                (Bundle[]) getBundles().toArray(new Bundle[bundles.size()]),
+                getBundles().toArray(new Bundle[bundles.size()]),
                 property, false);
         frameworkStartupShutdown = false;
         if (!restart) {
@@ -724,7 +775,7 @@ public final class Framework {
     }
 
     public static Bundle getBundle(String str) {
-        return (Bundle) bundles.get(str);
+        return bundles.get(str);
     }
 
     public static Bundle getBundle(long j) {
@@ -740,7 +791,7 @@ public final class Framework {
                 .println("---------------------------------------------------------");
         systemBundle.state = 16;
         systemBundle.setLevel(
-                (Bundle[]) getBundles().toArray(new Bundle[bundles.size()]), 0,
+                getBundles().toArray(new Bundle[bundles.size()]), 0,
                 true);
         bundles.clear();
         systemBundle.state = 1;
@@ -879,7 +930,7 @@ public final class Framework {
     }
 
     private static void storeProfile() {
-        BundleImpl[] bundleImplArr = (BundleImpl[]) getBundles().toArray(
+        BundleImpl[] bundleImplArr = getBundles().toArray(
                 new BundleImpl[bundles.size()]);
         for (BundleImpl updateMetadata : bundleImplArr) {
             updateMetadata.updateMetadata();
@@ -956,7 +1007,8 @@ public final class Framework {
                 File file2 = new File(STORAGE_LOCATION);
                 mergeWalsDir(new File(STORAGE_LOCATION, "wal"), file2);
                 File[] listFiles = file2.listFiles(new FilenameFilter() {
-                    public boolean accept(File file, String str) {
+                    @Override
+					public boolean accept(File file, String str) {
                         if (str.matches("^[0-9]*")) {
                             return false;
                         }
@@ -991,7 +1043,7 @@ public final class Framework {
         if (writeAheads != null && writeAheads.size() > 0) {
             for (int i = 0; i < writeAheads.size(); i++) {
                 if (writeAheads.get(i) != null) {
-                    File file3 = new File(file, (String) writeAheads.get(i));
+                    File file3 = new File(file, writeAheads.get(i));
                     if (file3 != null) {
                         try {
                             if (file3.exists()) {
@@ -1004,7 +1056,8 @@ public final class Framework {
                                             if (file5.exists()) {
                                                 File[] listFiles2 = file4
                                                         .listFiles(new FilenameFilter() {
-                                                            public boolean accept(
+                                                            @Override
+															public boolean accept(
                                                                     File file,
                                                                     String str) {
                                                                 return str
@@ -1123,13 +1176,13 @@ public final class Framework {
         int i2 = 0;
         if (!syncBundleListeners.isEmpty() || !bundleListeners.isEmpty()) {
             BundleEvent bundleEvent = new BundleEvent(i, bundle);
-            BundleListener[] bundleListenerArr = (BundleListener[]) syncBundleListeners
+            BundleListener[] bundleListenerArr = syncBundleListeners
                     .toArray(new BundleListener[syncBundleListeners.size()]);
             for (BundleListener bundleChanged : bundleListenerArr) {
                 bundleChanged.bundleChanged(bundleEvent);
             }
             if (!bundleListeners.isEmpty()) {
-                bundleListenerArr = (BundleListener[]) bundleListeners
+                bundleListenerArr = bundleListeners
                         .toArray(new BundleListener[bundleListeners.size()]);
                 while (i2 < bundleListenerArr.length) {
                     bundleListenerArr[i2].bundleChanged(bundleEvent);
@@ -1158,7 +1211,7 @@ public final class Framework {
     static void notifyFrameworkListeners(int i, Bundle bundle, Throwable th) {
         if (!frameworkListeners.isEmpty()) {
             FrameworkEvent frameworkEvent = new FrameworkEvent(i, bundle, th);
-            FrameworkListener[] frameworkListenerArr = (FrameworkListener[]) frameworkListeners
+            FrameworkListener[] frameworkListenerArr = frameworkListeners
                     .toArray(new FrameworkListener[frameworkListeners.size()]);
             for (FrameworkListener frameworkEvent2 : frameworkListenerArr) {
                 frameworkEvent2.frameworkEvent(frameworkEvent);
@@ -1169,7 +1222,7 @@ public final class Framework {
     static void notifyServiceListeners(int i, ServiceReference serviceReference) {
         if (!serviceListeners.isEmpty()) {
             ServiceEvent serviceEvent = new ServiceEvent(i, serviceReference);
-            ServiceListenerEntry[] serviceListenerEntryArr = (ServiceListenerEntry[]) serviceListeners
+            ServiceListenerEntry[] serviceListenerEntryArr = serviceListeners
                     .toArray(new ServiceListenerEntry[serviceListeners.size()]);
             int i2 = 0;
             while (i2 < serviceListenerEntryArr.length) {
@@ -1249,7 +1302,7 @@ public final class Framework {
             }
             for (String str : strArr) {
                 Package packageR = new Package(str, bundleClassLoader, z);
-                Package packageR2 = (Package) exportedPackages.get(packageR);
+                Package packageR2 = exportedPackages.get(packageR);
                 if (packageR2 == null) {
                     exportedPackages.put(packageR, packageR);
                     if (DEBUG_PACKAGES && log.isDebugEnabled()) {
@@ -1275,7 +1328,7 @@ public final class Framework {
         }
         synchronized (exportedPackages) {
             try {
-                Package packageR = (Package) exportedPackages.get(new Package(
+                Package packageR = exportedPackages.get(new Package(
                         str, null, false));
                 if (packageR == null || !(packageR.resolved || z)) {
                     return null;

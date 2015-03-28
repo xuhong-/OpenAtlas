@@ -1,15 +1,33 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.hack;
 
-import android.taobao.atlas.hack.Hack.HackDeclaration.HackAssertionException;
-import android.taobao.atlas.hack.Hack.HackedConstructor;
-import android.taobao.atlas.hack.Hack.HackedField;
-import android.taobao.atlas.hack.Hack.HackedMethod;
-import android.taobao.atlas.hack.Interception.InterceptionHandler;
-import android.taobao.atlas.runtime.DelegateClassLoader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import android.taobao.atlas.hack.Hack.HackDeclaration.HackAssertionException;
+import android.taobao.atlas.hack.Interception.InterceptionHandler;
+import android.taobao.atlas.runtime.DelegateClassLoader;
 
 public class Hack {
     private static AssertionFailureHandler sFailureHandler;
@@ -34,7 +52,8 @@ public class Hack {
                 super(exception);
             }
 
-            public String toString() {
+            @Override
+			public String toString() {
                 return getCause() != null ? getClass().getName() + ": "
                         + getCause() : super.toString();
             }
@@ -193,7 +212,7 @@ public class Hack {
                 throw new IllegalStateException("Cannot hijack null");
             }
             set(c, Interception.proxy(obj,
-                    (InterceptionHandler) interceptionHandler, obj.getClass()
+                    interceptionHandler, obj.getClass()
                             .getInterfaces()));
         }
 

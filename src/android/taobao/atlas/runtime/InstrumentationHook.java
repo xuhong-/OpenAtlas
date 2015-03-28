@@ -1,10 +1,29 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.runtime;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.osgi.framework.BundleException;
-
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -66,7 +85,8 @@ public class InstrumentationHook extends Instrumentation {
             this.requestCode = i;
         }
 
-        public ActivityResult execStartActivity() {
+        @Override
+		public ActivityResult execStartActivity() {
             if (mExecStartActivity1 == null) {
                 throw new NullPointerException("could not hook Instrumentation!");
             }
@@ -112,7 +132,8 @@ public class InstrumentationHook extends Instrumentation {
             this.options = bundle;
         }
 
-        public ActivityResult execStartActivity() {
+        @Override
+		public ActivityResult execStartActivity() {
             if (mExecStartActivity1 == null) {
                 throw new NullPointerException("could not hook Instrumentation!");
             }
@@ -155,7 +176,8 @@ public class InstrumentationHook extends Instrumentation {
             this.requestCode = i;
         }
 
-        public ActivityResult execStartActivity() {
+        @Override
+		public ActivityResult execStartActivity() {
             if (mExecStartActivity2 == null) {
                 throw new NullPointerException("could not hook Instrumentation!");
             }
@@ -205,7 +227,8 @@ public class InstrumentationHook extends Instrumentation {
             this.options = bundle;
         }
 
-        public ActivityResult execStartActivity() {
+        @Override
+		public ActivityResult execStartActivity() {
             if (mExecStartActivity2 == null) {
                 throw new NullPointerException("could not hook Instrumentation!");
             }
@@ -343,7 +366,8 @@ public class InstrumentationHook extends Instrumentation {
         }
     }
 
-    public Activity newActivity(Class<?> cls, Context context, IBinder iBinder,
+    @Override
+	public Activity newActivity(Class<?> cls, Context context, IBinder iBinder,
                                 Application application, Intent intent, ActivityInfo activityInfo,
                                 CharSequence charSequence, Activity activity, String str, Object obj)
             throws InstantiationException, IllegalAccessException {
@@ -359,7 +383,8 @@ public class InstrumentationHook extends Instrumentation {
         return newActivity;
     }
 
-    public Activity newActivity(ClassLoader classLoader, String str,
+    @Override
+	public Activity newActivity(ClassLoader classLoader, String str,
                                 Intent intent) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         Activity newActivity;
@@ -402,7 +427,8 @@ public class InstrumentationHook extends Instrumentation {
         return newActivity;
     }
 
-    public void callActivityOnCreate(Activity activity, Bundle bundle) {
+    @Override
+	public void callActivityOnCreate(Activity activity, Bundle bundle) {
         if (RuntimeVariables.androidApplication.getPackageName().equals(
                 activity.getPackageName())) {
             ContextImplHook contextImplHook = new ContextImplHook(
@@ -440,226 +466,280 @@ public class InstrumentationHook extends Instrumentation {
         this.mBase.callActivityOnCreate(activity, bundle);
     }
 
-    @TargetApi(18)
+    @Override
+	@TargetApi(18)
     public UiAutomation getUiAutomation() {
         return this.mBase.getUiAutomation();
     }
 
-    public void onCreate(Bundle bundle) {
+    @Override
+	public void onCreate(Bundle bundle) {
         this.mBase.onCreate(bundle);
     }
 
-    public void start() {
+    @Override
+	public void start() {
         this.mBase.start();
     }
 
-    public void onStart() {
+    @Override
+	public void onStart() {
         this.mBase.onStart();
     }
 
-    public boolean onException(Object obj, Throwable th) {
+    @Override
+	public boolean onException(Object obj, Throwable th) {
         return this.mBase.onException(obj, th);
     }
 
-    public void sendStatus(int i, Bundle bundle) {
+    @Override
+	public void sendStatus(int i, Bundle bundle) {
         this.mBase.sendStatus(i, bundle);
     }
 
-    public void finish(int i, Bundle bundle) {
+    @Override
+	public void finish(int i, Bundle bundle) {
         this.mBase.finish(i, bundle);
     }
 
-    public void setAutomaticPerformanceSnapshots() {
+    @Override
+	public void setAutomaticPerformanceSnapshots() {
         this.mBase.setAutomaticPerformanceSnapshots();
     }
 
-    public void startPerformanceSnapshot() {
+    @Override
+	public void startPerformanceSnapshot() {
         this.mBase.startPerformanceSnapshot();
     }
 
-    public void endPerformanceSnapshot() {
+    @Override
+	public void endPerformanceSnapshot() {
         this.mBase.endPerformanceSnapshot();
     }
 
-    public void onDestroy() {
+    @Override
+	public void onDestroy() {
         this.mBase.onDestroy();
     }
 
-    public Context getContext() {
+    @Override
+	public Context getContext() {
         return this.mBase.getContext();
     }
 
-    public ComponentName getComponentName() {
+    @Override
+	public ComponentName getComponentName() {
         return this.mBase.getComponentName();
     }
 
-    public Context getTargetContext() {
+    @Override
+	public Context getTargetContext() {
         return this.mBase.getTargetContext();
     }
 
-    public boolean isProfiling() {
+    @Override
+	public boolean isProfiling() {
         return this.mBase.isProfiling();
     }
 
-    public void startProfiling() {
+    @Override
+	public void startProfiling() {
         this.mBase.startProfiling();
     }
 
-    public void stopProfiling() {
+    @Override
+	public void stopProfiling() {
         this.mBase.stopProfiling();
     }
 
-    public void setInTouchMode(boolean z) {
+    @Override
+	public void setInTouchMode(boolean z) {
         this.mBase.setInTouchMode(z);
     }
 
-    public void waitForIdle(Runnable runnable) {
+    @Override
+	public void waitForIdle(Runnable runnable) {
         this.mBase.waitForIdle(runnable);
     }
 
-    public void waitForIdleSync() {
+    @Override
+	public void waitForIdleSync() {
         this.mBase.waitForIdleSync();
     }
 
-    public void runOnMainSync(Runnable runnable) {
+    @Override
+	public void runOnMainSync(Runnable runnable) {
         this.mBase.runOnMainSync(runnable);
     }
 
-    public Activity startActivitySync(Intent intent) {
+    @Override
+	public Activity startActivitySync(Intent intent) {
         return this.mBase.startActivitySync(intent);
     }
 
-    public void addMonitor(ActivityMonitor activityMonitor) {
+    @Override
+	public void addMonitor(ActivityMonitor activityMonitor) {
         this.mBase.addMonitor(activityMonitor);
     }
 
-    public ActivityMonitor addMonitor(IntentFilter intentFilter,
+    @Override
+	public ActivityMonitor addMonitor(IntentFilter intentFilter,
                                       ActivityResult activityResult, boolean z) {
         return this.mBase.addMonitor(intentFilter, activityResult, z);
     }
 
-    public ActivityMonitor addMonitor(String str,
+    @Override
+	public ActivityMonitor addMonitor(String str,
                                       ActivityResult activityResult, boolean z) {
         return this.mBase.addMonitor(str, activityResult, z);
     }
 
-    public boolean checkMonitorHit(ActivityMonitor activityMonitor, int i) {
+    @Override
+	public boolean checkMonitorHit(ActivityMonitor activityMonitor, int i) {
         return this.mBase.checkMonitorHit(activityMonitor, i);
     }
 
-    public Activity waitForMonitor(ActivityMonitor activityMonitor) {
+    @Override
+	public Activity waitForMonitor(ActivityMonitor activityMonitor) {
         return this.mBase.waitForMonitor(activityMonitor);
     }
 
-    public Activity waitForMonitorWithTimeout(ActivityMonitor activityMonitor,
+    @Override
+	public Activity waitForMonitorWithTimeout(ActivityMonitor activityMonitor,
                                               long j) {
         return this.mBase.waitForMonitorWithTimeout(activityMonitor, j);
     }
 
-    public void removeMonitor(ActivityMonitor activityMonitor) {
+    @Override
+	public void removeMonitor(ActivityMonitor activityMonitor) {
         this.mBase.removeMonitor(activityMonitor);
     }
 
-    public boolean invokeMenuActionSync(Activity activity, int i, int i2) {
+    @Override
+	public boolean invokeMenuActionSync(Activity activity, int i, int i2) {
         return this.mBase.invokeMenuActionSync(activity, i, i2);
     }
 
-    public boolean invokeContextMenuAction(Activity activity, int i, int i2) {
+    @Override
+	public boolean invokeContextMenuAction(Activity activity, int i, int i2) {
         return this.mBase.invokeContextMenuAction(activity, i, i2);
     }
 
-    public void sendStringSync(String str) {
+    @Override
+	public void sendStringSync(String str) {
         this.mBase.sendStringSync(str);
     }
 
-    public void sendKeySync(KeyEvent keyEvent) {
+    @Override
+	public void sendKeySync(KeyEvent keyEvent) {
         this.mBase.sendKeySync(keyEvent);
     }
 
-    public void sendKeyDownUpSync(int i) {
+    @Override
+	public void sendKeyDownUpSync(int i) {
         this.mBase.sendKeyDownUpSync(i);
     }
 
-    public void sendCharacterSync(int i) {
+    @Override
+	public void sendCharacterSync(int i) {
         this.mBase.sendCharacterSync(i);
     }
 
-    public void sendPointerSync(MotionEvent motionEvent) {
+    @Override
+	public void sendPointerSync(MotionEvent motionEvent) {
         this.mBase.sendPointerSync(motionEvent);
     }
 
-    public void sendTrackballEventSync(MotionEvent motionEvent) {
+    @Override
+	public void sendTrackballEventSync(MotionEvent motionEvent) {
         this.mBase.sendTrackballEventSync(motionEvent);
     }
 
-    public Application newApplication(ClassLoader classLoader, String str,
+    @Override
+	public Application newApplication(ClassLoader classLoader, String str,
                                       Context context) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         return this.mBase.newApplication(classLoader, str, context);
     }
 
-    public void callApplicationOnCreate(Application application) {
+    @Override
+	public void callApplicationOnCreate(Application application) {
         this.mBase.callApplicationOnCreate(application);
     }
 
-    public void callActivityOnDestroy(Activity activity) {
+    @Override
+	public void callActivityOnDestroy(Activity activity) {
         this.mBase.callActivityOnDestroy(activity);
     }
 
-    public void callActivityOnRestoreInstanceState(Activity activity,
+    @Override
+	public void callActivityOnRestoreInstanceState(Activity activity,
                                                    Bundle bundle) {
         this.mBase.callActivityOnRestoreInstanceState(activity, bundle);
     }
 
-    public void callActivityOnPostCreate(Activity activity, Bundle bundle) {
+    @Override
+	public void callActivityOnPostCreate(Activity activity, Bundle bundle) {
         this.mBase.callActivityOnPostCreate(activity, bundle);
     }
 
-    public void callActivityOnNewIntent(Activity activity, Intent intent) {
+    @Override
+	public void callActivityOnNewIntent(Activity activity, Intent intent) {
         this.mBase.callActivityOnNewIntent(activity, intent);
     }
 
-    public void callActivityOnStart(Activity activity) {
+    @Override
+	public void callActivityOnStart(Activity activity) {
         this.mBase.callActivityOnStart(activity);
     }
 
-    public void callActivityOnRestart(Activity activity) {
+    @Override
+	public void callActivityOnRestart(Activity activity) {
         this.mBase.callActivityOnRestart(activity);
     }
 
-    public void callActivityOnResume(Activity activity) {
+    @Override
+	public void callActivityOnResume(Activity activity) {
         this.mBase.callActivityOnResume(activity);
     }
 
-    public void callActivityOnStop(Activity activity) {
+    @Override
+	public void callActivityOnStop(Activity activity) {
         this.mBase.callActivityOnStop(activity);
     }
 
-    public void callActivityOnSaveInstanceState(Activity activity, Bundle bundle) {
+    @Override
+	public void callActivityOnSaveInstanceState(Activity activity, Bundle bundle) {
         this.mBase.callActivityOnSaveInstanceState(activity, bundle);
     }
 
-    public void callActivityOnPause(Activity activity) {
+    @Override
+	public void callActivityOnPause(Activity activity) {
         this.mBase.callActivityOnPause(activity);
     }
 
-    public void callActivityOnUserLeaving(Activity activity) {
+    @Override
+	public void callActivityOnUserLeaving(Activity activity) {
         this.mBase.callActivityOnUserLeaving(activity);
     }
 
-    public void startAllocCounting() {
+    @Override
+	public void startAllocCounting() {
         this.mBase.startAllocCounting();
     }
 
-    public void stopAllocCounting() {
+    @Override
+	public void stopAllocCounting() {
         this.mBase.stopAllocCounting();
     }
 
-    public Bundle getAllocCounts() {
+    @Override
+	public Bundle getAllocCounts() {
         return this.mBase.getAllocCounts();
     }
 
-    public Bundle getBinderCounts() {
+    @Override
+	public Bundle getBinderCounts() {
         return this.mBase.getBinderCounts();
     }
 }

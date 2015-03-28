@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.runtime;
 
 import java.util.List;
@@ -30,7 +50,8 @@ public class SecurityFrameListener implements FrameworkListener {
                     .getProperty("android.taobao.atlas.publickey");
         }
 
-        protected Boolean doInBackground(String... strArr) {
+        @Override
+		protected Boolean doInBackground(String... strArr) {
             if (this.PUBLIC_KEY == null || this.PUBLIC_KEY.isEmpty()) {
                 return Boolean.valueOf(true);
             }
@@ -60,7 +81,8 @@ public class SecurityFrameListener implements FrameworkListener {
             return Boolean.valueOf(true);
         }
 
-        protected void onPostExecute(Boolean bool) {
+        @Override
+		protected void onPostExecute(Boolean bool) {
             if (bool != null && !bool.booleanValue()) {
                 Toast.makeText(
                         RuntimeVariables.androidApplication,
@@ -73,7 +95,8 @@ public class SecurityFrameListener implements FrameworkListener {
     }
 
     public class ShutdownProcessHandler extends Handler {
-        public void handleMessage(Message message) {
+        @Override
+		public void handleMessage(Message message) {
             Process.killProcess(Process.myPid());
         }
     }
@@ -82,7 +105,8 @@ public class SecurityFrameListener implements FrameworkListener {
         this.shutdownProcessHandler = new ShutdownProcessHandler();
     }
 
-    public void frameworkEvent(FrameworkEvent frameworkEvent) {
+    @Override
+	public void frameworkEvent(FrameworkEvent frameworkEvent) {
         switch (frameworkEvent.getType()) {
         case 1 /* 1 */:
             if (VERSION.SDK_INT >= 11) {
