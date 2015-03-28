@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.android.task;
 
 import java.io.File;
@@ -38,7 +58,8 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
             this.mRunnable = runnable;
         }
 
-        public void run() {
+        @Override
+		public void run() {
             mNumRunning.incrementAndGet();
             try {
                 this.mRunnable.run();
@@ -65,23 +86,27 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
             this.mExecutor = saturativeExecutor;
         }
 
-        public boolean add(T t) {
+        @Override
+		public boolean add(T t) {
             if (!this.mExecutor.isReallyUnsaturated()) {
                 return super.add(t);
             }
             throw new IllegalStateException("Unsaturated");
         }
 
-        public boolean offer(T t) {
+        @Override
+		public boolean offer(T t) {
             return this.mExecutor.isReallyUnsaturated() ? DEBUG : super
                     .offer(t);
         }
 
-        public void put(T t) {
+        @Override
+		public void put(T t) {
             throw new UnsupportedOperationException();
         }
 
-        public boolean offer(T t, long j, TimeUnit timeUnit) {
+        @Override
+		public boolean offer(T t, long j, TimeUnit timeUnit) {
             throw new UnsupportedOperationException();
         }
     }
@@ -92,7 +117,8 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
         mThreads = new HashSet();
     }
 
-    public void execute(Runnable runnable) {
+    @Override
+	public void execute(Runnable runnable) {
         super.execute(new CountedTask(runnable));
     }
 

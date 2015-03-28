@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.android.dexposed;
 
 import java.util.ArrayList;
@@ -36,7 +56,7 @@ public class ClassUtils {
         primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
         wrapperPrimitiveMap = new HashMap();
         for (Class cls : primitiveWrapperMap.keySet()) {
-            Class cls2 = (Class) primitiveWrapperMap.get(cls);
+            Class cls2 = primitiveWrapperMap.get(cls);
             if (!cls.equals(cls2)) {
                 wrapperPrimitiveMap.put(cls2, cls);
             }
@@ -86,7 +106,7 @@ public class ClassUtils {
             }
         }
         if (reverseAbbreviationMap.containsKey(str)) {
-            str2 = (String) reverseAbbreviationMap.get(str);
+            str2 = reverseAbbreviationMap.get(str);
         } else {
             str2 = str;
         }
@@ -203,7 +223,7 @@ public class ClassUtils {
         int lastIndexOf;
         try {
             return abbreviationMap.containsKey(str) ? Class.forName(
-                    "[" + ((String) abbreviationMap.get(str)), z, classLoader)
+                    "[" + (abbreviationMap.get(str)), z, classLoader)
                     .getComponentType() : Class.forName(toCanonicalName(str),
                     z, classLoader);
         } catch (ClassNotFoundException e2) {
@@ -260,7 +280,7 @@ public class ClassUtils {
                 stringBuilder.append("[");
                 str2 = deleteWhitespace;
             }
-            deleteWhitespace = (String) abbreviationMap.get(str2);
+            deleteWhitespace = abbreviationMap.get(str2);
             if (deleteWhitespace != null) {
                 stringBuilder.append(deleteWhitespace);
             } else {

@@ -1,11 +1,24 @@
-package android.taobao.atlas.framework;
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-import android.taobao.atlas.framework.bundlestorage.Archive;
-import android.taobao.atlas.framework.bundlestorage.BundleArchive;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
-import android.taobao.atlas.util.AtlasFileLock;
-import android.taobao.atlas.util.StringUtils;
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
+package android.taobao.atlas.framework;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,6 +45,13 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+
+import android.taobao.atlas.framework.bundlestorage.Archive;
+import android.taobao.atlas.framework.bundlestorage.BundleArchive;
+import android.taobao.atlas.log.Logger;
+import android.taobao.atlas.log.LoggerFactory;
+import android.taobao.atlas.util.AtlasFileLock;
+import android.taobao.atlas.util.StringUtils;
 
 public final class BundleImpl implements Bundle {
     static final Logger log;
@@ -155,15 +175,18 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public long getBundleId() {
+    @Override
+	public long getBundleId() {
         return 0;
     }
 
-    public Dictionary<String, String> getHeaders() {
+    @Override
+	public Dictionary<String, String> getHeaders() {
         return this.headers;
     }
 
-    public String getLocation() {
+    @Override
+	public String getLocation() {
         return this.location;
     }
 
@@ -175,20 +198,22 @@ public final class BundleImpl implements Bundle {
         return this.classloader;
     }
 
-    public ServiceReference[] getRegisteredServices() {
+    @Override
+	public ServiceReference[] getRegisteredServices() {
         if (this.state == 1) {
             throw new IllegalStateException("Bundle " + toString()
                     + "has been unregistered.");
         } else if (this.registeredServices == null) {
             return null;
         } else {
-            return (ServiceReference[]) this.registeredServices
+            return this.registeredServices
                     .toArray(new ServiceReference[this.registeredServices
                             .size()]);
         }
     }
 
-    public URL getResource(String str) {
+    @Override
+	public URL getResource(String str) {
         if (this.state != 1) {
             return this.classloader.getResource(str);
         }
@@ -196,13 +221,14 @@ public final class BundleImpl implements Bundle {
                 + " has been uninstalled");
     }
 
-    public ServiceReference[] getServicesInUse() {
+    @Override
+	public ServiceReference[] getServicesInUse() {
         if (this.state == 1) {
             throw new IllegalStateException("Bundle " + toString()
                     + "has been unregistered.");
         }
         ArrayList arrayList = new ArrayList();
-        ServiceReferenceImpl[] serviceReferenceImplArr = (ServiceReferenceImpl[]) Framework.services
+        ServiceReferenceImpl[] serviceReferenceImplArr = Framework.services
                 .toArray(new ServiceReferenceImpl[Framework.services.size()]);
         int i = 0;
         while (i < serviceReferenceImplArr.length) {
@@ -217,11 +243,13 @@ public final class BundleImpl implements Bundle {
                 .toArray(new ServiceReference[arrayList.size()]);
     }
 
-    public int getState() {
+    @Override
+	public int getState() {
         return this.state;
     }
 
-    public boolean hasPermission(Object obj) {
+    @Override
+	public boolean hasPermission(Object obj) {
         if (this.state != 1) {
             return true;
         }
@@ -229,7 +257,8 @@ public final class BundleImpl implements Bundle {
                 + "has been unregistered.");
     }
 
-    public synchronized void start() throws BundleException {
+    @Override
+	public synchronized void start() throws BundleException {
         this.persistently = true;
         updateMetadata();
         if (this.currentStartlevel <= Framework.startlevel) {
@@ -283,7 +312,8 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public synchronized void stop() throws BundleException {
+    @Override
+	public synchronized void stop() throws BundleException {
         this.persistently = false;
         updateMetadata();
         stopBundle();
@@ -317,7 +347,8 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public synchronized void uninstall() throws BundleException {
+    @Override
+	public synchronized void uninstall() throws BundleException {
         if (this.state == 1) {
             throw new IllegalStateException("Bundle " + toString()
                     + " is already uninstalled.");
@@ -350,8 +381,9 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public synchronized void update() throws BundleException {
-        String str = (String) this.headers.get(Constants.BUNDLE_UPDATELOCATION);
+    @Override
+	public synchronized void update() throws BundleException {
+        String str = this.headers.get(Constants.BUNDLE_UPDATELOCATION);
         try {
             String str2;
             if (str == null) {
@@ -366,7 +398,8 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public synchronized void update(InputStream inputStream)
+    @Override
+	public synchronized void update(InputStream inputStream)
             throws BundleException {
         if (this.state == 1) {
             throw new IllegalStateException("Cannot update uninstalled bundle "
@@ -381,7 +414,8 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public synchronized void update(File file) throws BundleException {
+    @Override
+	public synchronized void update(File file) throws BundleException {
         if (this.state == 1) {
             throw new IllegalStateException("Cannot update uninstalled bundle "
                     + toString());
@@ -415,7 +449,7 @@ public final class BundleImpl implements Bundle {
                 Object obj2 = null;
                 while (i < strArr.length) {
                     Object obj3;
-                    Package packageR = (Package) Framework.exportedPackages
+                    Package packageR = Framework.exportedPackages
                             .get(new Package(strArr[i], null, false));
                     if (packageR.importingBundles == null
                             || packageR.classloader != this.classloader) {
@@ -557,7 +591,8 @@ public final class BundleImpl implements Bundle {
         }
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return this.location;
     }
 }

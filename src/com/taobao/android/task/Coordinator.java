@@ -1,13 +1,24 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.android.task;
-
-import android.annotation.TargetApi;
-import android.os.AsyncTask;
-import android.os.Build.VERSION;
-import android.os.Debug;
-import android.os.Looper;
-import android.util.Log;
-
-import com.taobao.android.task.Coordinator.TaggedRunnable;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;
@@ -20,6 +31,13 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import android.annotation.TargetApi;
+import android.os.AsyncTask;
+import android.os.Build.VERSION;
+import android.os.Debug;
+import android.os.Looper;
+import android.util.Log;
+
 public class Coordinator {
     private static final String TAG = "Coord";
     private static final Executor mExecutor;
@@ -28,7 +46,8 @@ public class Coordinator {
 
     public static class CoordinatorRejectHandler implements
             RejectedExecutionHandler {
-        public void rejectedExecution(Runnable runnable,
+        @Override
+		public void rejectedExecution(Runnable runnable,
                 ThreadPoolExecutor threadPoolExecutor) {
             Object[] toArray = mPoolWorkQueue.toArray();
             StringBuilder stringBuilder = new StringBuilder();
@@ -71,7 +90,8 @@ public class Coordinator {
             this.tag = str;
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return getClass().getName() + "@" + this.tag;
         }
     }
@@ -79,8 +99,9 @@ public class Coordinator {
     static class axx extends AsyncTask<Void, Void, Void> {
         private final TaggedRunnable a;
 
-        protected Void doInBackground(Void... params) {
-            return a((Void[]) params);
+        @Override
+		protected Void doInBackground(Void... params) {
+            return a(params);
         }
 
         public axx(TaggedRunnable taggedRunnable) {
@@ -92,7 +113,8 @@ public class Coordinator {
             return null;
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return getClass().getSimpleName() + "@" + this.a;
         }
 
@@ -211,7 +233,7 @@ public class Coordinator {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(8, 16,
                 1, TimeUnit.SECONDS, mPoolWorkQueue, new b(),
                 new CoordinatorRejectHandler());
-        mExecutor = (Executor) threadPoolExecutor;
+        mExecutor = threadPoolExecutor;
         SaturativeExecutor
                 .installAsDefaultAsyncTaskExecutor(threadPoolExecutor);
     }

@@ -1,7 +1,25 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.framework.bundlestorage;
 
-import android.taobao.atlas.framework.Framework;
-import android.taobao.atlas.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +28,9 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.jar.Manifest;
+
+import android.taobao.atlas.framework.Framework;
+import android.taobao.atlas.util.StringUtils;
 
 public class BundleArchive implements Archive {
     public static final String REVISION_DIRECTORY = "version";
@@ -36,7 +57,7 @@ public class BundleArchive implements Archive {
                     "No valid revisions in bundle archive directory: " + file);
         }
         this.bundleDir = file;
-        long longValue = ((Long) this.revisions.lastKey()).longValue();
+        long longValue = this.revisions.lastKey().longValue();
         BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
                 str, longValue, new File(file, "version."
                         + String.valueOf(longValue)));
@@ -64,9 +85,10 @@ public class BundleArchive implements Archive {
         this.currentRevision = bundleArchiveRevision;
     }
 
-    public BundleArchiveRevision newRevision(String str, File file,
+    @Override
+	public BundleArchiveRevision newRevision(String str, File file,
             InputStream inputStream) throws IOException {
-        long longValue = 1 + ((Long) this.revisions.lastKey()).longValue();
+        long longValue = 1 + this.revisions.lastKey().longValue();
         BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
                 str, longValue, new File(file, "version."
                         + String.valueOf(longValue)), inputStream);
@@ -74,9 +96,10 @@ public class BundleArchive implements Archive {
         return bundleArchiveRevision;
     }
 
-    public BundleArchiveRevision newRevision(String str, File file, File file2)
+    @Override
+	public BundleArchiveRevision newRevision(String str, File file, File file2)
             throws IOException {
-        long longValue = 1 + ((Long) this.revisions.lastKey()).longValue();
+        long longValue = 1 + this.revisions.lastKey().longValue();
         BundleArchiveRevision bundleArchiveRevision = new BundleArchiveRevision(
                 str, longValue, new File(file, "version."
                         + String.valueOf(longValue)), file2);
@@ -84,11 +107,13 @@ public class BundleArchive implements Archive {
         return bundleArchiveRevision;
     }
 
-    public BundleArchiveRevision getCurrentRevision() {
+    @Override
+	public BundleArchiveRevision getCurrentRevision() {
         return this.currentRevision;
     }
 
-    public File getArchiveFile() {
+    @Override
+	public File getArchiveFile() {
         return this.currentRevision.getRevisionFile();
     }
 
@@ -96,40 +121,49 @@ public class BundleArchive implements Archive {
         return this.bundleDir;
     }
 
-    public boolean isDexOpted() {
+    @Override
+	public boolean isDexOpted() {
         return this.currentRevision.isDexOpted();
     }
 
-    public void optDexFile() {
+    @Override
+	public void optDexFile() {
         this.currentRevision.optDexFile();
     }
 
-    public InputStream openAssetInputStream(String str) throws IOException {
+    @Override
+	public InputStream openAssetInputStream(String str) throws IOException {
         return this.currentRevision.openAssetInputStream(str);
     }
 
-    public InputStream openNonAssetInputStream(String str) throws IOException {
+    @Override
+	public InputStream openNonAssetInputStream(String str) throws IOException {
         return this.currentRevision.openNonAssetInputStream(str);
     }
 
-    public Manifest getManifest() throws IOException {
+    @Override
+	public Manifest getManifest() throws IOException {
         return this.currentRevision.getManifest();
     }
 
-    public Class<?> findClass(String str, ClassLoader classLoader)
+    @Override
+	public Class<?> findClass(String str, ClassLoader classLoader)
             throws ClassNotFoundException {
         return this.currentRevision.findClass(str, classLoader);
     }
 
-    public File findLibrary(String str) {
+    @Override
+	public File findLibrary(String str) {
         return this.currentRevision.findSoLibrary(str);
     }
 
-    public List<URL> getResources(String str) throws IOException {
+    @Override
+	public List<URL> getResources(String str) throws IOException {
         return this.currentRevision.getResources(str);
     }
 
-    public void purge() throws Exception {
+    @Override
+	public void purge() throws Exception {
         if (this.revisions.size() > 1) {
             long revisionNum = this.currentRevision.getRevisionNum();
             for (Long longValue : this.revisions.keySet()) {
@@ -147,6 +181,7 @@ public class BundleArchive implements Archive {
         }
     }
 
-    public void close() {
+    @Override
+	public void close() {
     }
 }

@@ -1,29 +1,37 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao;
+
+import java.io.File;
+import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
 import android.os.Bundle;
-
-import android.text.Layout.Alignment;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import com.taobao.android.lifecycle.PanguActivity;
-import com.taobao.securityjni.StaticDataStore;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import com.taobao.android.lifecycle.PanguActivity;
 
 public class BaseActivity extends PanguActivity {
     private final String TAG;
@@ -41,7 +49,8 @@ public class BaseActivity extends PanguActivity {
         this.isNaviActivity = false;
     }
 
-    @TargetApi(14)
+    @Override
+	@TargetApi(14)
     protected void onCreate(Bundle bundle) {
     }
 
@@ -53,7 +62,8 @@ public class BaseActivity extends PanguActivity {
         this.disablefinishAnimation = true;
     }
 
-    protected void onNewIntent(Intent intent) {
+    @Override
+	protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
     }
 
@@ -61,23 +71,28 @@ public class BaseActivity extends PanguActivity {
         return this;
     }
 
-    public SharedPreferences getSharedPreferences(String str, int i) {
+    @Override
+	public SharedPreferences getSharedPreferences(String str, int i) {
         return getApplicationContext().getSharedPreferences(str, i);
     }
 
-    public File getFilesDir() {
+    @Override
+	public File getFilesDir() {
         return getApplicationContext().getFilesDir();
     }
 
-    public File getCacheDir() {
+    @Override
+	public File getCacheDir() {
         return getApplicationContext().getCacheDir();
     }
 
-    public File getDir(String str, int i) {
+    @Override
+	public File getDir(String str, int i) {
         return getApplicationContext().getDir(str, i);
     }
 
-    public File getDatabasePath(String str) {
+    @Override
+	public File getDatabasePath(String str) {
         return getApplicationContext().getDatabasePath(str);
     }
 

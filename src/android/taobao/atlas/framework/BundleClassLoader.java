@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.framework;
 
 import java.io.File;
@@ -57,11 +77,13 @@ public final class BundleClassLoader extends ClassLoader {
                 this.stream = inputStream;
             }
 
-            public int read() throws IOException {
+            @Override
+			public int read() throws IOException {
                 return this.stream.read();
             }
 
-            public int read(byte[] bArr) throws IOException {
+            @Override
+			public int read(byte[] bArr) throws IOException {
                 return this.stream.read(bArr);
             }
         }
@@ -71,11 +93,13 @@ public final class BundleClassLoader extends ClassLoader {
                 super(url);
             }
 
-            public InputStream getInputStream() throws IOException {
+            @Override
+			public InputStream getInputStream() throws IOException {
                 return BundleURLHandler.this.input;
             }
 
-            public void connect() throws IOException {
+            @Override
+			public void connect() throws IOException {
             }
         }
 
@@ -83,11 +107,13 @@ public final class BundleClassLoader extends ClassLoader {
             this.input = new AnonymousClass_1(inputStream);
         }
 
-        protected URLConnection openConnection(URL url) throws IOException {
+        @Override
+		protected URLConnection openConnection(URL url) throws IOException {
             return new AnonymousClass_2(url);
         }
 
-        protected int hashCode(URL url) {
+        @Override
+		protected int hashCode(URL url) {
             return this.input.hashCode();
         }
     }
@@ -255,7 +281,7 @@ public final class BundleClassLoader extends ClassLoader {
     void cleanup(boolean z) {
         ArrayList arrayList = new ArrayList();
         for (String str : this.exports) {
-            Package packageR = (Package) Framework.exportedPackages
+            Package packageR = Framework.exportedPackages
                     .get(new Package(str, null, false));
             if (packageR != null) {
                 if (packageR.importingBundles == null) {
@@ -276,10 +302,10 @@ public final class BundleClassLoader extends ClassLoader {
             }
         }
         if (this.importDelegations != null) {
-            String[] strArr = (String[]) this.importDelegations.keySet()
+            String[] strArr = this.importDelegations.keySet()
                     .toArray(new String[this.importDelegations.size()]);
             for (String str2 : strArr) {
-                Package packageR2 = (Package) Framework.exportedPackages
+                Package packageR2 = Framework.exportedPackages
                         .get(new Package(str2, null, false));
                 if (!(packageR2 == null || packageR2.importingBundles == null)) {
                     packageR2.importingBundles.remove(this.bundle);
@@ -305,7 +331,8 @@ public final class BundleClassLoader extends ClassLoader {
         }
     }
 
-    protected Class<?> findClass(String str) throws ClassNotFoundException {
+    @Override
+	protected Class<?> findClass(String str) throws ClassNotFoundException {
         if (FRAMEWORK_PACKAGES.contains(packageOf(str))) {
             return Framework.systemClassLoader.loadClass(str);
         }
@@ -316,7 +343,7 @@ public final class BundleClassLoader extends ClassLoader {
         if (this.dynamicImports.length > 0) {
             for (int i = 0; i < this.dynamicImports.length; i++) {
                 if (this.dynamicImports[i].indexOf("version") > -1) {
-                    Package[] packageArr = (Package[]) Framework.exportedPackages
+                    Package[] packageArr = Framework.exportedPackages
                             .keySet().toArray(
                                     new Package[Framework.exportedPackages
                                             .size()]);
@@ -331,7 +358,7 @@ public final class BundleClassLoader extends ClassLoader {
                     }
                     continue;
                 } else {
-                    Package packageR = (Package) Framework.exportedPackages
+                    Package packageR = Framework.exportedPackages
                             .get(new Package(packageOf(str), null, false));
                     if (packageR != null) {
                         findOwnClass = findDelegatedClass(packageR.classloader,
@@ -346,7 +373,7 @@ public final class BundleClassLoader extends ClassLoader {
             }
         }
         if (this.importDelegations != null) {
-            BundleClassLoader bundleClassLoader = (BundleClassLoader) this.importDelegations
+            BundleClassLoader bundleClassLoader = this.importDelegations
                     .get(packageOf(str));
             if (bundleClassLoader != null) {
                 findOwnClass = findDelegatedClass(bundleClassLoader, str);
@@ -389,7 +416,8 @@ public final class BundleClassLoader extends ClassLoader {
         return findLoadedClass;
     }
 
-    protected URL findResource(String str) {
+    @Override
+	protected URL findResource(String str) {
         String stripTrailing = stripTrailing(str);
         List findOwnResources = findOwnResources(stripTrailing, false);
         if (findOwnResources.size() > 0) {
@@ -400,7 +428,8 @@ public final class BundleClassLoader extends ClassLoader {
                 .get(0) : null;
     }
 
-    protected Enumeration<URL> findResources(String str) {
+    @Override
+	protected Enumeration<URL> findResources(String str) {
         String stripTrailing = stripTrailing(str);
         Collection findOwnResources = findOwnResources(stripTrailing, true);
         findOwnResources.addAll(findImportedResources(stripTrailing, true));
@@ -420,7 +449,7 @@ public final class BundleClassLoader extends ClassLoader {
         if (this.bundle.state == 2 || this.importDelegations == null) {
             return EMPTY_LIST;
         }
-        BundleClassLoader bundleClassLoader = (BundleClassLoader) this.importDelegations
+        BundleClassLoader bundleClassLoader = this.importDelegations
                 .get(packageOf(pseudoClassname(str)));
         if (bundleClassLoader == null) {
             return EMPTY_LIST;
@@ -430,7 +459,8 @@ public final class BundleClassLoader extends ClassLoader {
                 .findOwnResources(str, z);
     }
 
-    protected String findLibrary(String str) {
+    @Override
+	protected String findLibrary(String str) {
         String mapLibraryName = System.mapLibraryName(str);
         if (this.nativeLibraryDirectories != null) {
             for (File file : this.nativeLibraryDirectories) {
@@ -453,7 +483,8 @@ public final class BundleClassLoader extends ClassLoader {
         }
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "BundleClassLoader[Bundle" + this.bundle + "]";
     }
 
@@ -490,7 +521,7 @@ public final class BundleClassLoader extends ClassLoader {
 
     private static String packageOf(String str) {
         int lastIndexOf = str.lastIndexOf(46);
-        return (String) (lastIndexOf > -1 ? str.substring(0, lastIndexOf) : "");
+        return lastIndexOf > -1 ? str.substring(0, lastIndexOf) : "";
     }
 
     private static String pseudoClassname(String str) {

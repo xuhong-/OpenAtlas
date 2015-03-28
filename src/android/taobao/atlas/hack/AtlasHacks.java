@@ -1,4 +1,27 @@
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.hack;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import android.app.Application;
 import android.app.Instrumentation;
@@ -11,7 +34,6 @@ import android.content.res.Resources.Theme;
 import android.os.Build.VERSION;
 import android.taobao.atlas.hack.Hack.AssertionFailureHandler;
 import android.taobao.atlas.hack.Hack.HackDeclaration;
-import android.taobao.atlas.hack.Hack.HackDeclaration.HackAssertionException;
 import android.taobao.atlas.hack.Hack.HackedClass;
 import android.taobao.atlas.hack.Hack.HackedField;
 import android.taobao.atlas.hack.Hack.HackedMethod;
@@ -19,8 +41,6 @@ import android.taobao.atlas.log.Logger;
 import android.taobao.atlas.log.LoggerFactory;
 import android.view.ContextThemeWrapper;
 import dalvik.system.DexClassLoader;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class AtlasHacks extends HackDeclaration implements
         AssertionFailureHandler {
@@ -205,7 +225,8 @@ public class AtlasHacks extends HackDeclaration implements
     public static void allConstructors() throws HackAssertionException {
     }
 
-    public boolean onAssertionFailure(
+    @Override
+	public boolean onAssertionFailure(
             HackAssertionException hackAssertionException) {
         if (!sIsIgnoreFailure) {
             if (this.mExceptionArray == null) {
