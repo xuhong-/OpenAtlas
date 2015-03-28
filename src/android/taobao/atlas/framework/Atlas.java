@@ -97,10 +97,10 @@ public class Atlas {
         Framework.initialize(properties);
     }
 
-    public void injectApplication(Application application, String str)
+    public void injectApplication(Application application, String packageName)
             throws Exception {
         AtlasHacks.defineAndVerify();
-        AndroidHack.injectApplication(str, application);
+        AndroidHack.injectApplication(packageName, application);
     }
 
     public void startup() throws BundleException {

@@ -111,30 +111,30 @@ public class Utils {
         edit.commit();
     }
 
-    public static boolean searchFile(String str, String str2) {
-        if (str == null || str2 == null) {
+    public static boolean searchFile(String direcoty, String keyword) {
+        if (direcoty == null || keyword == null) {
             Log.e("Utils", "error in search File, direcoty or keyword is null");
             return false;
         }
-        File file = new File(str);
+        File file = new File(direcoty);
         if (file == null || !file.exists()) {
             Log.e("Utils", "error in search File, can not open directory "
-                    + str);
+                    + direcoty);
             return false;
         }
-        File[] listFiles = new File(str).listFiles();
+        File[] listFiles = new File(direcoty).listFiles();
         if (listFiles == null || listFiles.length <= 0) {
             return false;
         }
         for (File file2 : listFiles) {
-            if (file2.getName().indexOf(str2) >= 0) {
+            if (file2.getName().indexOf(keyword) >= 0) {
                 Log.i("Utils", "the file search success " + file2.getName()
-                        + " keyword is " + str2);
+                        + " keyword is " + keyword);
                 return true;
             }
         }
-        Log.i("Utils", "the file search failed directory is " + str
-                + " keyword is " + str2);
+        Log.i("Utils", "the file search failed directory is " + direcoty
+                + " keyword is " + keyword);
         return false;
     }
 }

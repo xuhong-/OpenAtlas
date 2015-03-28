@@ -86,7 +86,7 @@ public class App extends PanguApplication {
 			}
 		}
 		this.mAtlasInitializer = new AtlasInitializer(this, this.processName);
-		this.mAtlasInitializer.injectApplication();
+		// this.mAtlasInitializer.injectApplication();
 		// initCrashHandlerAndSafeMode(this.mBaseContext);
 		this.mAtlasInitializer.init();
 	}

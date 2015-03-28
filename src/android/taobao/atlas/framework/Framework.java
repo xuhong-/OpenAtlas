@@ -756,7 +756,7 @@ public final class Framework {
         System.out.flush();
         systemBundle.state = 32;
         try {
-            notifyFrameworkListeners(1, systemBundle, null);
+            notifyFrameworkListeners(FrameworkEvent.STARTED, systemBundle, null);
         } catch (Throwable e222) {
             throw new RuntimeException("notifyFrameworkListeners failed", e222);
         }

@@ -43,7 +43,7 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
         switch (frameworkEvent.getType()) {
         case 0 /* 0 */:
             starting();
-        case 1 /* 1 */:
+        case FrameworkEvent.STARTED /* 1 */:
             started();
         default:
         }
