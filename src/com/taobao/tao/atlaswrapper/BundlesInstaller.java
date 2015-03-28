@@ -1,4 +1,34 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao.atlaswrapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import org.osgi.framework.Bundle;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -13,54 +43,44 @@ import android.taobao.atlas.runtime.RuntimeVariables;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import org.osgi.framework.Bundle;
-
-/* compiled from: BundlesInstaller BundlesInstaller.java d*/
 public class BundlesInstaller {
-    private static boolean g;
-    private static BundlesInstaller h;
-    c a;
-    private Application b;
-    private MiniPackage c;
-    private PackageInfo d;
-    private boolean e;
+    private static boolean isAppPkg;
+    private static BundlesInstaller mBundlesInstaller;
+    AwbDebug a;
+    private Application mApplication;
+    private MiniPackage miniPackage;
+    private PackageInfo mPackageInfo;
+    private boolean isInited;
     private boolean f;
 
     BundlesInstaller() {
     }
 
-    void a(Application application, MiniPackage gVar, c cVar, boolean z) {
-        this.b = application;
-        this.c = gVar;
+    void init(Application application, MiniPackage miniPackage, AwbDebug cVar, boolean isAppPkg) {
+        this.mApplication = application;
+        this.miniPackage = miniPackage;
         this.a = cVar;
-        g = z;
-        this.d = Utils.getPackageInfo(application);
-        this.e = true;
+        isAppPkg = isAppPkg;
+        this.mPackageInfo = Utils.getPackageInfo(application);
+        this.isInited = true;
     }
 
-    static synchronized BundlesInstaller a() {
-        BundlesInstaller dVar;
+    static synchronized BundlesInstaller getInstance() {
+   
         synchronized (BundlesInstaller.class) {
-            if (h == null) {
-                h = new BundlesInstaller();
+            if (mBundlesInstaller == null) {
+                mBundlesInstaller = new BundlesInstaller();
             }
-            dVar = h;
+           
         }
-        return dVar;
+        return mBundlesInstaller;
     }
 
     public synchronized void process() {
         ZipFile zipFile;
         Throwable e;
-        if (!this.e) {
+        if (!this.isInited) {
             Log.e("BundlesInstaller",
                     "Bundle Installer not initialized yet, process abort!");
         } else if (this.f) {
@@ -68,10 +88,10 @@ public class BundlesInstaller {
                     "Bundle install already executed, just return");
         } else {
             try {
-                zipFile = new ZipFile(this.b.getApplicationInfo().sourceDir);
-                List a = a(zipFile, "lib/armeabi/libcom_", ".so");
-                if (a != null && a.size() > 0
-                        && b() < ((long) (((a.size() * 2) * 1024) * 1024))) {
+                zipFile = new ZipFile(this.mApplication.getApplicationInfo().sourceDir);
+                List mFileList = getFileList(zipFile, "lib/armeabi/libcom_", ".so");
+                if (mFileList != null && mFileList.size() > 0
+                        && getSpace() < (((mFileList.size() * 2) * 1024) * 1024)) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                         @Override
@@ -85,7 +105,7 @@ public class BundlesInstaller {
                         }
                     });
                 }
-                a(zipFile, a, this.b);
+                install(zipFile, mFileList, this.mApplication);
                 UpdatePackageVersion();
                 if (zipFile != null) {
                     try {
@@ -109,14 +129,14 @@ public class BundlesInstaller {
     }
 
     public void UpdatePackageVersion() {
-        if (this.e) {
-            SharedPreferences sharedPreferences = this.b.getSharedPreferences(
+        if (this.isInited) {
+            SharedPreferences sharedPreferences = this.mApplication.getSharedPreferences(
                     "atlas_configs", 0);
-            this.c.a(sharedPreferences, this.d);
+            this.miniPackage.a(sharedPreferences, this.mPackageInfo);
             Editor edit = sharedPreferences.edit();
-            edit.putInt("last_version_code", this.d.versionCode);
-            edit.putString("last_version_name", this.d.versionName);
-            edit.putString(this.d.versionName, "dexopt");
+            edit.putInt("last_version_code", this.mPackageInfo.versionCode);
+            edit.putString("last_version_name", this.mPackageInfo.versionName);
+            edit.putString(this.mPackageInfo.versionName, "dexopt");
             edit.commit();
             return;
         }
@@ -124,13 +144,13 @@ public class BundlesInstaller {
                 "Bundle Installer not initialized yet, process abort!");
     }
 
-    private List<String> a(ZipFile zipFile, String str, String str2) {
+    private List<String> getFileList(ZipFile zipFile, String mPref, String mSuffix) {
         List<String> arrayList = new ArrayList();
         try {
             Enumeration entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 String name = ((ZipEntry) entries.nextElement()).getName();
-                if (name.startsWith(str) && name.endsWith(str2)) {
+                if (name.startsWith(mPref) && name.endsWith(mSuffix)) {
                     arrayList.add(name);
                 }
             }
@@ -141,26 +161,26 @@ public class BundlesInstaller {
         return arrayList;
     }
 
-    private long b() {
+    private long getSpace() {
         StatFs statFs = new StatFs(Environment.getDataDirectory().getPath());
         return ((long) statFs.getAvailableBlocks())
                 * ((long) statFs.getBlockSize());
     }
 
-    private void a(ZipFile zipFile, List<String> list, Application application) {
+    private void install(ZipFile zipFile, List<String> list, Application application) {
         int i = 0;
-        for (String replace : Utils.a) {
-            String replace2 = a(list, replace.replace(".", "_"));
+        for (String replace : Utils.DELAY) {
+            String replace2 = isContains(list, replace.replace(".", "_"));
             if (replace2 != null && replace2.length() > 0) {
-                a(zipFile, replace2, application);
+                install(zipFile, replace2, application);
                 list.remove(replace2);
             }
         }
         for (String a : list) {
-            a(zipFile, a, application);
+            install(zipFile, a, application);
         }
-        if (g) {
-            String[] strArr = Utils.b;
+        if (isAppPkg) {
+            String[] strArr = Utils.AUTO;
             int length = strArr.length;
             while (i < length) {
                 Bundle bundle = Atlas.getInstance().getBundle(strArr[i]);
@@ -178,7 +198,7 @@ public class BundlesInstaller {
         }
     }
 
-    private String a(List<String> list, String str) {
+    private String isContains(List<String> list, String str) {
         if (list == null || str == null) {
             return null;
         }
@@ -190,9 +210,9 @@ public class BundlesInstaller {
         return null;
     }
 
-    private boolean a(ZipFile zipFile, String str, Application application) {
+    private boolean install(ZipFile zipFile, String str, Application application) {
         // "processLibsBundle entryName " + str;
-        this.a.a(str);
+        this.a.installBundle(str);
         String fileNameFromEntryName = Utils.getFileNameFromEntryName(str);
         String packageNameFromEntryName = Utils.getPackageNameFromEntryName(str);
         if (packageNameFromEntryName == null

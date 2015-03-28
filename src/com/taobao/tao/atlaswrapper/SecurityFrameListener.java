@@ -1,4 +1,31 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao.atlaswrapper;
+
+import java.io.File;
+import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences.Editor;
@@ -14,32 +41,25 @@ import android.taobao.atlas.util.StringUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.List;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
-
-/* compiled from: SecurityFrameListener.java */
 public class SecurityFrameListener implements FrameworkListener {
 	public static final String PUBLIC_KEY = "30819f300d06092a864886f70d010101050003818d00308189028181008406125f369fde2720f7264923a63dc48e1243c1d9783ed44d8c276602d2d570073d92c155b81d5899e9a8a97e06353ac4b044d07ca3e2333677d199e0969c96489f6323ed5368e1760731704402d0112c002ccd09a06d27946269a438fe4b0216b718b658eed9d165023f24c6ddaec0af6f47ada8306ad0c4f0fcd80d9b69110203010001";
-	b a;
+	ProcessHandler mHandler;
 
-	/* compiled from: SecurityFrameListener.java */
+
 	private class SecurityTask extends AsyncTask<String, Void, Boolean> {
-		final   SecurityFrameListener a;
+		final   SecurityFrameListener mSecurityFrameListener;
 
 		private SecurityTask(SecurityFrameListener jVar) {
-			this.a = jVar;
+			this.mSecurityFrameListener = jVar;
 		}
 
 
+		@Override
 		protected   void onPostExecute(Boolean obj) {
-			a((Boolean) obj);
+			checkEnv(obj);
 		}
 
-		protected Boolean a(String... strArr) {
+		protected Boolean checkFiles(String... strArr) {
 			if (SecurityFrameListener.PUBLIC_KEY == null || SecurityFrameListener.PUBLIC_KEY.isEmpty()) {
 				return Boolean.valueOf(true);
 			}
@@ -52,7 +72,7 @@ public class SecurityFrameListener implements FrameworkListener {
 			if (bundles != null) {
 				for (Bundle bundle : bundles) {
 					File bundleFile = Atlas.getInstance().getBundleFile(bundle.getLocation());
-					if (!this.a.b(bundleFile.getAbsolutePath())) {
+					if (!this.mSecurityFrameListener.b(bundleFile.getAbsolutePath())) {
 						return Boolean.valueOf(false);
 					}
 					String[] apkPublicKey = ApkUtils.getApkPublicKey(bundleFile.getAbsolutePath());
@@ -64,9 +84,9 @@ public class SecurityFrameListener implements FrameworkListener {
 					} else {
 						Log.e("SecurityFrameListener", "Security check failed. " + bundle.getLocation());
 						if (apkPublicKey == null || apkPublicKey.length == 0) {
-							this.a.a(bundle.getLocation() + ": NULL");
+							this.mSecurityFrameListener.saveBadFileConfig(bundle.getLocation() + ": NULL");
 						} else {
-							this.a.a(bundle.getLocation() + ": " + apkPublicKey[0]);
+							this.mSecurityFrameListener.saveBadFileConfig(bundle.getLocation() + ": " + apkPublicKey[0]);
 						}
 						return Boolean.valueOf(false);
 					}
@@ -75,30 +95,32 @@ public class SecurityFrameListener implements FrameworkListener {
 			return Boolean.valueOf(true);
 		}
 
-		protected void a(Boolean bool) {
+		protected void checkEnv(Boolean bool) {
 			if (bool != null && !bool.booleanValue()) {
 				Toast.makeText(RuntimeVariables.androidApplication, "检测到安装文件被损坏，请卸载后重新安装！", 1).show();
-				this.a.a.sendEmptyMessageDelayed(0,5000);
+				this.mSecurityFrameListener.mHandler.sendEmptyMessageDelayed(0,5000);
 			}
 		}
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			return a(params);
+			return checkFiles(params);
 			}
 	}
 
-	/* compiled from: SecurityFrameListener.java */
-	public static class b extends Handler {
+
+	public static class ProcessHandler extends Handler {
+		@Override
 		public void handleMessage(Message message) {
 			Process.killProcess(Process.myPid());
 		}
 	}
 
 	public SecurityFrameListener() {
-		this.a = new b();
+		this.mHandler = new ProcessHandler();
 	}
 
+	@Override
 	@SuppressLint({"NewApi"})
 	public void frameworkEvent(FrameworkEvent frameworkEvent) {
 		switch (frameworkEvent.getType()) {
@@ -113,7 +135,7 @@ public class SecurityFrameListener implements FrameworkListener {
 		}
 	}
 
-	private void a(String str) {
+	private void saveBadFileConfig(String str) {
 		Editor edit = RuntimeVariables.androidApplication.getSharedPreferences("atlas_configs", 0).edit();
 		edit.putString("BadSignature", str);
 		edit.commit();
