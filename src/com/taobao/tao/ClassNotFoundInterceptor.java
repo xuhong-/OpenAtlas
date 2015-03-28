@@ -1,3 +1,23 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao;
 
 import java.util.ArrayList;
@@ -9,7 +29,6 @@ import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
 
 import com.taobao.lightapk.BundleListing.Component;
 
-/* compiled from: ClassNotFoundInterceptor.java */
 public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallback {
     public static final List<String> GO_H5_BUNDLES_IF_NOT_EXISTS;
     public final String TAG;
@@ -32,7 +51,8 @@ public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallbac
         GO_H5_BUNDLES_IF_NOT_EXISTS.clear();
     }
 
-    public Intent returnIntent(Intent intent) {
+    @Override
+	public Intent returnIntent(Intent intent) {
         Object obj = 1;
         Object obj2 = null;
         String className = intent.getComponent().getClassName();
@@ -40,11 +60,11 @@ public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallbac
         if (className == null || !className.equals("com.taobao.tao.welcome.Welcome")) {
             String bundleForComponet = BundleInfoList.getInstance().getBundleForComponet(className);
          //   Atlas.getInstance().getBundle(intent.get)
-//            if (b.sInternalBundles == null) {
-//                b.instance().resolveInternalBundles();
+//            if (mOptDexProcess.sInternalBundles == null) {
+//                mOptDexProcess.instance().resolveInternalBundles();
 //            }
-//            if (b.sInternalBundles != null) {
-//                if (b.sInternalBundles.contains(bundleForComponet) || Atlas.getInstance().getBundle(bundleForComponet) != null) {
+//            if (mOptDexProcess.sInternalBundles != null) {
+//                if (mOptDexProcess.sInternalBundles.contains(bundleForComponet) || Atlas.getInstance().getBundle(bundleForComponet) != null) {
 //                    obj = null;
 //                }
 //                obj2 = obj;
@@ -52,33 +72,34 @@ public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallbac
 //                obj2 = 1;
 //            }
             if (obj2 != null) {
-//                Component findBundleByActivity =Component();// b.instance().findBundleByActivity(className);
+//                Component findBundleByActivity =Component();// mOptDexProcess.instance().findBundleByActivity(className);
 //                if (!(findBundleByActivity == null || Atlas.getInstance().getBundle(findBundleByActivity.getPkgName()) != null || GO_H5_BUNDLES_IF_NOT_EXISTS.contains(findBundleByActivity.getPkgName()))) {
-//                    new Handler(Looper.getMainLooper()).post(new k(this, intent, className, findBundleByActivity));
+//                    new Handler(Looper.getMainLooper()).post(new BootRunnable(this, intent, className, findBundleByActivity));
 //                }
             }
 //            if (!TextUtils.isEmpty(dataString)) {
-//                Nav.from(Globals.getApplication()).withCategory(c.BROWSER_ONLY_CATEGORY).withExtras(intent.getExtras()).toUri(intent.getData());
+//                Nav.from(Globals.getApplication()).withCategory(AwbDebug.BROWSER_ONLY_CATEGORY).withExtras(intent.getExtras()).toUri(intent.getData());
 //            }
         }
         return intent;
     }
     public static final String KEY_ACTIVITY = "lightapk_activity";
     public static final String KEY_BUNDLE_PKG = "lightapk_pkg";
-    class k implements Runnable {
-        final /* synthetic */ Intent a;
-        final /* synthetic */ String b;
-        final /* synthetic */ Component c;
-        final /* synthetic */ ClassNotFoundInterceptor d;
+    class BootRunnable implements Runnable {
+        final  Intent a;
+        final  String b;
+        final  Component c;
+        final  ClassNotFoundInterceptor d;
 
-        k(ClassNotFoundInterceptor jVar, Intent intent, String str, Component aVar) {
+        BootRunnable(ClassNotFoundInterceptor jVar, Intent intent, String str, Component aVar) {
             this.d = jVar;
             this.a = intent;
             this.b = str;
             this.c = aVar;
         }
 
-        public void run() {
+        @Override
+		public void run() {
             Intent intent = new Intent();
             if (this.a.getExtras() != null) {
                 intent.putExtras(this.a.getExtras());

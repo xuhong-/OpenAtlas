@@ -1,14 +1,28 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao.atlaswrapper;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
-
-import test.blue.stack.loader.ClassNotFoundInterceptorCallbackImpl;
-
-import com.taobao.android.task.Coordinator;
-import com.taobao.tao.ClassNotFoundInterceptor;
-import com.taobao.tao.Globals;
 
 import android.app.Application;
 import android.content.Intent;
@@ -16,35 +30,38 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.taobao.atlas.framework.Atlas;
-import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.taobao.android.task.Coordinator;
+import com.taobao.tao.ClassNotFoundInterceptor;
+import com.taobao.tao.Globals;
+
 public class AtlasInitializer {
     private static long a;
-    private static boolean g;
-    private Application b;
-    private String c;
-    private c d;
-    private MiniPackage e;
+    private static boolean isAppPkg;
+    private Application mApplication;
+    private String mPkgName;
+    private AwbDebug awDebug;
+    private MiniPackage miniPackage;
     private String f;
     private boolean h;
     private boolean i;
 
-    public AtlasInitializer(Application application, String str) {
+    public AtlasInitializer(Application application, String mPkgName) {
         this.f = "bundleinfo";
         this.i = false;
-        this.b = application;
-        this.c = str;
-        if (application.getPackageName().equals(str)) {
-            g = true;
+        this.mApplication = application;
+        this.mPkgName = mPkgName;
+        if (application.getPackageName().equals(mPkgName)) {
+            isAppPkg = true;
         }
     }
 
     public void injectApplication() {
         try {
-            Atlas.getInstance().injectApplication(this.b,
-                    this.b.getPackageName());
+            Atlas.getInstance().injectApplication(this.mApplication,
+                    this.mApplication.getPackageName());
         } catch (Exception e) {
             throw new RuntimeException("atlas inject mApplication fail"
                     + e.getMessage());
@@ -57,17 +74,17 @@ public class AtlasInitializer {
         properties.put("android.taobao.atlas.welcome",
                 "com.taobao.tao.welcome.Welcome");
         properties.put("android.taobao.atlas.debug.bundles", "true");
-        properties.put("android.taobao.atlas.AppDirectory", this.b
+        properties.put("android.taobao.atlas.AppDirectory", this.mApplication
                 .getFilesDir().getParent());
-        this.e = new MiniPackage(this.b);
-        this.e.a(properties);
+        this.miniPackage = new MiniPackage(this.mApplication);
+        this.miniPackage.init(properties);
         try {
             Field declaredField = Globals.class
                     .getDeclaredField("sApplication");
             declaredField.setAccessible(true);
-            declaredField.set(null, this.b);
+            declaredField.set(null, this.mApplication);
             try {
-                Atlas.getInstance().init(this.b, properties);
+                Atlas.getInstance().init(this.mApplication, properties);
                 // "Atlas framework inited " + (System.currentTimeMillis() - Component)
                 // + " ms";
                 try {
@@ -76,18 +93,18 @@ public class AtlasInitializer {
                     declaredField.setAccessible(true);
                     declaredField.set(null, Atlas.getInstance()
                             .getDelegateClassLoader());
-                    this.d = new c();
+                    this.awDebug = new AwbDebug();
                     this.i = c();
                     if (this.i) {
-                        File file = new File(this.b.getFilesDir()
+                        File file = new File(this.mApplication.getFilesDir()
                                 + File.separator + "bundleBaseline"
                                 + File.separator + "baselineInfo");
                         if (file.exists()) {
                             file.delete();
                         }
                     }
-                    if (this.b.getPackageName().equals(this.c)) {
-                        // if (!(Versions.isDebug() || b() ||
+                    if (this.mApplication.getPackageName().equals(this.mPkgName)) {
+                        // if (!(Versions.isDebug() || mOptDexProcess() ||
                         // !ApkUtils.isRootSystem())) {
                         // properties.put("android.taobao.atlas.publickey",
                         // SecurityFrameListener.PUBLIC_KEY);
@@ -99,7 +116,7 @@ public class AtlasInitializer {
                     }
                     // "Atlas framework starting in process " + this.c + " " +
                     // (System.currentTimeMillis() - Component) + " ms";
-                    if (!Utils.searchFile(this.b.getFilesDir().getParentFile()
+                    if (!Utils.searchFile(this.mApplication.getFilesDir().getParentFile()
                             + "/lib", "libcom_taobao")) {
                         InstallSolutionConfig.install_when_oncreate = true;
                     }
@@ -127,18 +144,17 @@ public class AtlasInitializer {
     }
 
     public void startUp() {
-        BundlesInstaller a = BundlesInstaller.a();
+        BundlesInstaller mBundlesInstaller = BundlesInstaller.getInstance();
         OptDexProcess instance = OptDexProcess.getInstance();
-        if (this.b.getPackageName().equals(this.c) && (this.i || this.d.a())) {
-            a.a(this.b, this.e, this.d, g);
-            instance.a(this.b);
+        if (this.mApplication.getPackageName().equals(this.mPkgName) && (this.i || this.awDebug.init())) {
+            mBundlesInstaller.init(this.mApplication, this.miniPackage, this.awDebug, isAppPkg);
+            instance.init(this.mApplication);
         }
-        // "Atlas framework begin to start in process " + this.c + " " +
-        // (System.currentTimeMillis() - Component) + " ms";
+   
       Atlas.getInstance().setClassNotFoundInterceptorCallback(new ClassNotFoundInterceptor());
         try {
             Atlas.getInstance().startup();
-            Coordinator.postTask(new b(this, "AtlasStartup", a, instance));
+            Coordinator.postTask(new StartupRunnable(this, "AtlasStartup", mBundlesInstaller, instance));
         } catch (Throwable e) {
             Log.e("AtlasInitializer", "Could not start up atlas framework !!!",
                     e);
@@ -147,7 +163,7 @@ public class AtlasInitializer {
     }
 
     // private void Component() {
-    // BundleListing bundleListing = b.instance().getBundleListing();
+    // BundleListing bundleListing = mOptDexProcess.instance().getBundleListing();
     // if (bundleListing != null && bundleListing.getBundles() != null) {
     // LinkedList linkedList = new LinkedList();
     // for (com.taobao.lightapk.BundleListing.Component aVar :
@@ -179,14 +195,14 @@ public class AtlasInitializer {
     // }
     private boolean c() {
         try {
-            PackageInfo packageInfo = this.b.getPackageManager()
-                    .getPackageInfo(this.b.getPackageName(), 0);
-            SharedPreferences sharedPreferences = this.b.getSharedPreferences(
+            PackageInfo packageInfo = this.mApplication.getPackageManager()
+                    .getPackageInfo(this.mApplication.getPackageName(), 0);
+            SharedPreferences sharedPreferences = this.mApplication.getSharedPreferences(
                     "atlas_configs", 0);
             int i = sharedPreferences.getInt("last_version_code", 0);
             CharSequence string = sharedPreferences.getString(
                     "last_version_name", "");
-            SharedPreferences sharedPreferences2 = this.b.getSharedPreferences(
+            SharedPreferences sharedPreferences2 = this.mApplication.getSharedPreferences(
                     "atlas_configs", 0);
             CharSequence string2 = sharedPreferences2.getString(
                     "isMiniPackage", "");
@@ -211,22 +227,21 @@ public class AtlasInitializer {
         }
     }
 
-    void a(BundlesInstaller dVar, OptDexProcess hVar) {
-        // "Atlas framework started in process " + this.c + " " +
-        // (System.currentTimeMillis() - Component) + " ms";
-        if (this.b.getPackageName().equals(this.c) && (this.i || this.d.a())) {
+    void process(BundlesInstaller dVar, OptDexProcess hVar) {
+
+        if (this.mApplication.getPackageName().equals(this.mPkgName) && (this.i || this.awDebug.init())) {
             if (InstallSolutionConfig.install_when_oncreate) {
                 dVar.process();
                 hVar.processPackages();
                 return;
             }
             System.setProperty("BUNDLES_INSTALLED", "true");
-            this.b.sendBroadcast(new Intent(
+            this.mApplication.sendBroadcast(new Intent(
                     "com.taobao.taobao.action.BUNDLES_INSTALLED"));
             dVar.UpdatePackageVersion();
-        } else if (!this.i && this.b.getPackageName().equals(this.c)) {
+        } else if (!this.i && this.mApplication.getPackageName().equals(this.mPkgName)) {
             System.setProperty("BUNDLES_INSTALLED", "true");
-            this.b.sendBroadcast(new Intent(
+            this.mApplication.sendBroadcast(new Intent(
                     "com.taobao.taobao.action.BUNDLES_INSTALLED"));
         }
     }

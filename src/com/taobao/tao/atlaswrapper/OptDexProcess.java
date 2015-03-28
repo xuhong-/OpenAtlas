@@ -1,4 +1,26 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao.atlaswrapper;
+
+import org.osgi.framework.Bundle;
 
 import android.app.Application;
 import android.content.Intent;
@@ -7,60 +29,58 @@ import android.taobao.atlas.framework.BundleImpl;
 import android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
 import android.util.Log;
 
-import org.osgi.framework.Bundle;
 
-/* compiled from: OptDexProcess.java  h */
 public class OptDexProcess {
-    private static OptDexProcess a;
-    private Application b;
-    private boolean c;
-    private boolean d;
+    private static OptDexProcess optDexProcess;
+    private Application mApplication;
+    private boolean isInited;
+    private boolean isExecuted;
 
     OptDexProcess() {
     }
 
     public static synchronized OptDexProcess getInstance() {
-        OptDexProcess hVar;
+  
         synchronized (OptDexProcess.class) {
-            if (a == null) {
-                a = new OptDexProcess();
+            if (optDexProcess == null) {
+                optDexProcess = new OptDexProcess();
             }
-            hVar = a;
+           
         }
-        return hVar;
+        return optDexProcess;
     }
 
-    void a(Application application) {
-        this.b = application;
-        this.c = true;
+    void init(Application application) {
+        this.mApplication = application;
+        this.isInited = true;
     }
 
     public synchronized void processPackages() {
-        if (!this.c) {
+        if (!this.isInited) {
             Log.e("OptDexProcess",
                     "Bundle Installer not initialized yet, process abort!");
-        } else if (this.d) {
+        } else if (this.isExecuted) {
             Log.i("OptDexProcess",
                     "Bundle install already executed, just return");
         } else {
             long currentTimeMillis = System.currentTimeMillis();
-            a();
+            install();
             // .. "Install bundles not delayed cost time = " +
             // (System.currentTimeMillis() - currentTimeMillis) + " ms";
-            Utils.saveAtlasInfoBySharedPreferences(this.b);
+            Utils.saveAtlasInfoBySharedPreferences(this.mApplication);
             System.setProperty("BUNDLES_INSTALLED", "true");
-            b();
+            notifyInstalled();
             currentTimeMillis = System.currentTimeMillis();
-            getInstance().c();
+            getInstance().installDely();
             // "Install delayed bundles cost time = " +
             // (System.currentTimeMillis() - currentTimeMillis) + " ms";
-            this.d = true;
+            this.isExecuted = true;
         }
     }
 
-    private void a() {
+    private void install() {
         for (Bundle bundle : Atlas.getInstance().getBundles()) {
-            if (!(bundle == null || a(Utils.c, bundle.getLocation()))) {
+            if (!(bundle == null || isContanins(Utils.STORE, bundle.getLocation()))) {
                 try {
                     ((BundleImpl) bundle).optDexFile();
                     Atlas.getInstance().enableComponent(bundle.getLocation());
@@ -74,13 +94,13 @@ public class OptDexProcess {
         }
     }
 
-    private void b() {
-        this.b.sendBroadcast(new Intent(
+    private void notifyInstalled() {
+        this.mApplication.sendBroadcast(new Intent(
                 "com.taobao.taobao.action.BUNDLES_INSTALLED"));
     }
 
-    private void c() {
-        for (String bundle : Utils.c) {
+    private void installDely() {
+        for (String bundle : Utils.STORE) {
             Bundle bundle2 = Atlas.getInstance().getBundle(bundle);
             if (bundle2 != null) {
                 try {
@@ -96,7 +116,7 @@ public class OptDexProcess {
         }
     }
 
-    private boolean a(String[] strArr, String str) {
+    private boolean isContanins(String[] strArr, String str) {
         if (strArr == null || str == null) {
             return false;
         }

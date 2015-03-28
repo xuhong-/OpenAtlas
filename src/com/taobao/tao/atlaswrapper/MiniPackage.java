@@ -1,20 +1,42 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao.atlaswrapper;
+
+import java.util.Properties;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import com.taobao.tao.Globals;
-import java.util.Properties;
 
-/* compiled from: MiniPackage.java ClassNotFoundInterceptorCallbackImpl*/
+import com.taobao.tao.Globals;
+
+
 public class MiniPackage {
-    Application a;
+    Application mApplication;
 
     MiniPackage(Application application) {
-        this.a = application;
+        this.mApplication = application;
     }
 
-    void a(Properties properties) {
+    void init(Properties properties) {
         if (!Globals.isMiniPackage()) {
         }
     }

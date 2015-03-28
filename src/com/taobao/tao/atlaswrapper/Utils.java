@@ -1,33 +1,54 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (AwbDebug) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package com.taobao.tao.atlaswrapper;
+
+import java.io.File;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.util.Log;
-import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-/* compiled from: Utils.java */
+
 public class Utils {
-    static final String[] a;
-    static final String[] b;
-    static final String[] c;
+    static final String[] DELAY;
+    static final String[] AUTO;
+    static final String[] STORE;
 
     static {
-        a = new String[] { "com.taobao.login4android",
+        DELAY = new String[] { "com.taobao.login4android",
                 "com.taobao.taobao.home", "com.taobao.passivelocation",
                 "com.taobao.mytaobao", "com.taobao.wangxin",
                 "com.taobao.allspark", "com.taobao.search",
                 "com.taobao.android.scancode", "com.taobao.android.trade",
                 "com.taobao.taobao.cashdesk", "com.taobao.weapp",
                 "com.taobao.taobao.alipay" };
-        b = new String[] { "com.taobao.login4android",
+        AUTO = new String[] { "com.taobao.login4android",
                 "com.taobao.taobao.home", "com.taobao.mytaobao",
                 "com.taobao.wangxin", "com.taobao.passivelocation",
                 "com.taobao.allspark" };
-        c = new String[] { "com.taobao.scan",
+        STORE = new String[] { "com.taobao.scan",
                 "com.taobao.taobao.pluginservice", "com.taobao.legacy",
                 "com.ut.share", "com.taobao.taobao.map",
                 "com.taobao.android.gamecenter", "com.taobao.tongxue",
@@ -85,7 +106,7 @@ public class Utils {
         }
         Editor edit = sharedPreferences.edit();
         for (String str : concurrentHashMap.keySet()) {
-            edit.putString(str, (String) concurrentHashMap.get(str));
+            edit.putString(str, concurrentHashMap.get(str));
         }
         edit.commit();
     }
