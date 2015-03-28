@@ -1,7 +1,28 @@
+/**
+ *  OpenAtlasForAndroid
+The MIT License (MIT) Copyright (c) 2015 Bunny Blue,achellies
+
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies 
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@author BunnyBlue
+ * **/
 package android.taobao.atlas.runtime;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,17 +32,15 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.content.res.AssetManager;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
-import android.taobao.atlas.hack.AtlasHacks;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
-import android.taobao.atlas.util.StringUtils;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 
-//This Class can ref PackageParser
+
 public class PackageLite {
 	private static final String XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AlipayAuthenticationService";
 	private static final String XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AuthenticationService";
-	static final Logger log;
+
 	public String applicationClassName;
 	public int applicationDescription;
 	public int applicationIcon;
@@ -32,25 +51,24 @@ public class PackageLite {
 	public String packageName;
 	public int versionCode;
 	public String versionName;
+	static String tag="PackageLite";
 
-	static {
-		log = LoggerFactory.getInstance("PackageInfo");
-	}
 
 	PackageLite() {
-		this.components = new HashSet();
-		this.disableComponents = new HashSet();
+		this.components = new HashSet<String>();
+		this.disableComponents = new HashSet<String>();
 	}
 
 	public static PackageLite parse(File file) {
-		Throwable e;
+
 
 		XmlResourceParser openXmlResourceParser = null;
 		try {
 			AssetManager assetManager = AssetManager.class
 					.newInstance();
-			int intValue = ((Integer) AtlasHacks.AssetManager_addAssetPath
-					.invoke(assetManager, file.getAbsolutePath())).intValue();
+			Method addAssetPath = AssetManager.class.getMethod("addAssetPath", new Class[]{String.class});
+			int intValue = (Integer) addAssetPath.invoke(assetManager, file.getAbsolutePath());
+
 			if (intValue != 0) {
 				openXmlResourceParser = assetManager.openXmlResourceParser(
 						intValue, "AndroidManifest.xml");
@@ -67,12 +85,11 @@ public class PackageLite {
 
 					openXmlResourceParser.close();
 					return parse;
-				} catch (Exception e2) {
-					e = e2;
+				} catch (Exception e) {
+					e.printStackTrace();
+
 					try {
-						log.error(
-								"Exception while parse AndroidManifest.xml >>>",
-								e);
+
 						if (openXmlResourceParser != null) {
 							openXmlResourceParser.close();
 						}
@@ -87,13 +104,13 @@ public class PackageLite {
 				}
 			}
 			return null;
-		} catch (Exception e3) {
-			e = e3;
+		} catch (Exception e) {
+
 			openXmlResourceParser = null;
-			log.error("Exception while parse AndroidManifest.xml >>>", e);
+
 			return null;
-		} catch (Throwable th2) {
-			e = th2;
+		} catch (Throwable eThrowable) {
+
 			if (openXmlResourceParser != null) {
 				openXmlResourceParser.close();
 			}
@@ -103,90 +120,151 @@ public class PackageLite {
 	}
 
 	protected static PackageLite parse(XmlResourceParser xmlResourceParser)throws Exception {
-
-	
-		int index;
-		final int endTag = XmlPullParser.END_TAG;
-		final   int startTag = XmlPullParser.START_TAG;
-
+		int currentTag=xmlResourceParser.next();
 		PackageLite mPackageLite = new PackageLite();
-		do {
-			index = xmlResourceParser.next();
-			if (index == startTag) {
-				break;
-			}
-		} while (index != XmlPullParser.END_DOCUMENT);
-
-		if (index != startTag) {
-			PackageLite.log.error("No start tag found");
-			mPackageLite=null;
-		} else if (!xmlResourceParser.getName().equals("manifest")) {
-			PackageLite.log.error("No <manifest> tag");
-			mPackageLite=null;
-		} else {
-			mPackageLite.packageName = ((AttributeSet) xmlResourceParser).getAttributeValue(null,
-					"package");
-			if (mPackageLite.packageName != null && mPackageLite.packageName.length() != 0) {
-				index = 0;
-				
-			} else {
-				PackageLite.log.error("<manifest> does not specify package");
-				return null;
-			}
-
-			for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
-				String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
-				if (value.equals("versionCode")) {
-					mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
-							.getAttributeIntValue(i, 0);
-				
-				} else if (value.equals("versionName")) {
-					mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
-							.getAttributeValue(i);
-				
-				}
-
-			}
-
-			index = xmlResourceParser.getDepth() + 1;
-			while (true) {
-				int v1 = xmlResourceParser.next();
-				System.out.println(xmlResourceParser.getName());
-				if (v1 != XmlPullParser.END_DOCUMENT) {
-					if (xmlResourceParser.getName().equals("application")) {
-						if (!PackageLite
-								.parseApplication(mPackageLite, (xmlResourceParser),
-										(xmlResourceParser))) {
-							return null;
-						}
-
-						return mPackageLite;
-					}
-
-					if (v1 == endTag && xmlResourceParser.getDepth() < index) {
-						break;
-					}
-
-					if (v1 == endTag) {
-						continue;
-					}
-
-					if (v1 == 4) {
-						continue;
-					}
-
-					PackageLite.skipCurrentTag((xmlResourceParser));
-					continue;
-				}
+		while (currentTag!=XmlPullParser.END_DOCUMENT) {
+			switch (currentTag) {
+			case XmlPullParser.START_DOCUMENT:	
 
 				break;
+			case XmlPullParser.START_TAG:
+				
+				if (xmlResourceParser.getName().equals("manifest")) {
+					parserManifestAttribute(xmlResourceParser, mPackageLite);
+				}
+
+				if (xmlResourceParser.getName().equals("application")) {
+					if (!parseApplication(mPackageLite, (xmlResourceParser),
+							(xmlResourceParser))) {
+						return null;
+					}
+
+					return mPackageLite;
+				}
+				break;
+			case XmlPullParser.END_DOCUMENT:
+				xmlResourceParser.close();
+				break;
+
+			case XmlPullParser.END_TAG:
+				
+				break;
+			default:
+				break;
 			}
-
-
+		
+			currentTag=xmlResourceParser.next();
 		}
+//TODO  if code is code  delete next version
+		//	
+		//		do {
+		//			index = xmlResourceParser.next();
+		//			if (index == startTag) {
+		//				break;
+		//			}
+		//		} while (index != XmlPullParser.END_DOCUMENT);
+		//
+		//		if (index != startTag) {
+		//			//PackageLite.log.error("No start tag found");
+		//			mPackageLite=null;
+		//		} else if (!xmlResourceParser.getName().equals("manifest")) {
+		//			//PackageLite.log.error("No <manifest> tag");
+		//			mPackageLite=null;
+		//		} else {
+		//			mPackageLite.packageName = ((AttributeSet) xmlResourceParser).getAttributeValue(null,
+		//					"package");
+		//			if (mPackageLite.packageName != null && mPackageLite.packageName.length() != 0) {
+		//				index = 0;
+		//
+		//			} else {
+		//				//	PackageLite.log.error("<manifest> does not specify package");
+		//				return null;
+		//			}
+		//
+		//			for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
+		//				String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
+		//				if (value.equals("versionCode")) {
+		//					mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
+		//							.getAttributeIntValue(i, 0);
+		//
+		//				} else if (value.equals("versionName")) {
+		//					mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
+		//							.getAttributeValue(i);
+		//
+		//				}
+		//
+		//			}
+		//
+		//			index = xmlResourceParser.getDepth() + 1;
+		//			while (true) {
+		//				int v1 = xmlResourceParser.next();
+		//				System.out.println(xmlResourceParser.getName());
+		//				if (v1 != XmlPullParser.END_DOCUMENT) {
+		//					if (xmlResourceParser.getName().equals("application")) {
+		//						if (!PackageLite
+		//								.parseApplication(mPackageLite, (xmlResourceParser),
+		//										(xmlResourceParser))) {
+		//							return null;
+		//						}
+		//
+		//						return mPackageLite;
+		//					}
+		//
+		//					if (v1 == endTag && xmlResourceParser.getDepth() < index) {
+		//						break;
+		//					}
+		//
+		//					if (v1 == endTag) {
+		//						continue;
+		//					}
+		//
+		//					if (v1 == 4) {
+		//						continue;
+		//					}
+		//
+		//					PackageLite.skipCurrentTag((xmlResourceParser));
+		//					continue;
+		//				}
+		//
+		//				break;
+		//			}
+		//
+		//
+		//		}
 
 		return mPackageLite;
 
+	}
+
+	/**
+	 * parser ManifestAttribute such package name and so on
+	 * @param xmlResourceParser
+	 * @param mPackageLite
+	 */
+	private static void parserManifestAttribute(
+			XmlResourceParser xmlResourceParser, PackageLite mPackageLite) {
+		mPackageLite.packageName = ((AttributeSet) xmlResourceParser).getAttributeValue(null,"package");
+		if (TextUtils.isEmpty(mPackageLite.packageName)) {
+			Log.e("tag", "packageName is null");
+		}
+
+		mPackageLite.versionCode = ((AttributeSet) xmlResourceParser).getAttributeIntValue(null, "versionCode", 0);
+		mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
+				.getAttributeValue(null,
+						"versionName");
+		//					for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
+		//						String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
+		//						if (value.equals("versionCode")) {
+		//							mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
+		//									.getAttributeIntValue(i, 0);
+		//
+		//						} else if (value.equals("versionName")) {
+		//							mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
+		//									.getAttributeValue(i);
+		//
+		//						}
+		//
+		//					}
 	}
 
 
@@ -293,7 +371,7 @@ public class PackageLite {
 
 	private static String buildClassName(String str, CharSequence charSequence) {
 		if (charSequence == null || charSequence.length() <= 0) {
-			log.error("Empty class name in package " + str);
+			System.out.println("Empty class name in package " + str);
 			return null;
 		}
 		String obj = charSequence.toString();
@@ -309,11 +387,12 @@ public class PackageLite {
 		} else if (charAt >= 'a' && charAt <= 'z') {
 			return obj.intern();
 		} else {
-			log.error("Bad class name " + obj + " in package " + str);
+			System.out.println("Bad class name " + obj + " in package " + str);
 			return null;
 		}
 	}
-
+			@SuppressWarnings("unused")
+			@Deprecated
 	private static void skipCurrentTag(XmlPullParser xmlPullParser)
 			throws XmlPullParserException, IOException {
 		int depth = xmlPullParser.getDepth();
@@ -341,14 +420,14 @@ public class PackageLite {
 				}
 				packageLite.components.add(mComponentName);
 				if (isDisable
-						&& !(StringUtils
+						&& !(TextUtils
 								.equals(mComponentName,
-										XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE) && StringUtils
+										XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE) && TextUtils
 										.equals(mComponentName,
 												XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE))) {
 					packageLite.disableComponents.add(mComponentName);
 				}
-				
+
 			}
 		}
 
