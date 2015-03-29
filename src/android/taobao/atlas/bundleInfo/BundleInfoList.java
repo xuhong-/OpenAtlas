@@ -39,8 +39,8 @@ public class BundleInfoList {
         public boolean hasSO;
     }
 
-    public BundleInfoList() {
-        this.TAG = "BundleInfoList";
+    private BundleInfoList() {
+        this.TAG = BundleInfoList.class.getSimpleName();
     }
 
     public static synchronized BundleInfoList getInstance() {
@@ -55,15 +55,15 @@ public class BundleInfoList {
     }
 
     public synchronized boolean init(LinkedList<BundleInfo> linkedList) {
-        boolean z;
+        boolean initilized;
         if (this.mBundleInfoList != null || linkedList == null) {
-            Log.i("BundleInfoList", "BundleInfoList initialization failed.");
-            z = false;
+            Log.i(TAG, "BundleInfoList initialization failed.");
+            initilized = false;
         } else {
             this.mBundleInfoList = linkedList;
-            z = true;
+            initilized = true;
         }
-        return z;
+        return initilized;
     }
 
     public List<String> getDependencyForBundle(String str) {
@@ -72,9 +72,10 @@ public class BundleInfoList {
         }
         for (BundleInfo bundleInfo : this.mBundleInfoList) {
             if (bundleInfo.bundleName.equals(str)) {
-                List<String> arrayList = new ArrayList();
+            	List<String> arrayList = null;
                 if (!(bundleInfo == null || bundleInfo.DependentBundles == null)) {
-                    for (int i = 0; i < bundleInfo.DependentBundles.size(); i++) {
+                	arrayList = new ArrayList<String>();
+                    for (int i = 0; i < bundleInfo.DependentBundles.size(); ++i) {
                         if (!TextUtils
                                 .isEmpty(bundleInfo.DependentBundles
                                         .get(i))) {
@@ -89,10 +90,11 @@ public class BundleInfoList {
     }
 
     public boolean getHasSO(String str) {
-        if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
+        if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return false;
         }
-        for (BundleInfo bundleInfo : this.mBundleInfoList) {
+        for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
+        	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
             if (bundleInfo.bundleName.equals(str)) {
                 return bundleInfo.hasSO;
             }
@@ -101,10 +103,11 @@ public class BundleInfoList {
     }
 
     public String getBundleForComponet(String str) {
-        if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
+        if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return null;
         }
-        for (BundleInfo bundleInfo : this.mBundleInfoList) {
+        for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
+        	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
             for (String equals : bundleInfo.Components) {
                 if (equals.equals(str)) {
                     return bundleInfo.bundleName;
@@ -115,21 +118,23 @@ public class BundleInfoList {
     }
 
     public List<String> getAllBundleNames() {
-        if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
+        if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return null;
         }
-        LinkedList linkedList = new LinkedList();
-        for (BundleInfo bundleInfo : this.mBundleInfoList) {
+        LinkedList<String> linkedList = new LinkedList<String>();
+        for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
+        	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
             linkedList.add(bundleInfo.bundleName);
         }
         return linkedList;
     }
 
     public BundleInfo getBundleInfo(String str) {
-        if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
+        if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return null;
         }
-        for (BundleInfo bundleInfo : this.mBundleInfoList) {
+        for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
+        	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
             if (bundleInfo.bundleName.equals(str)) {
                 return bundleInfo;
             }
@@ -138,14 +143,15 @@ public class BundleInfoList {
     }
 
     public void print() {
-        if (this.mBundleInfoList != null && this.mBundleInfoList.size() != 0) {
-            for (BundleInfo bundleInfo : this.mBundleInfoList) {
-                Log.i("BundleInfoList", "BundleName: " + bundleInfo.bundleName);
+        if (this.mBundleInfoList != null && this.mBundleInfoList.isEmpty()) {
+            for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
+            	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
+                Log.i(TAG, "BundleName: " + bundleInfo.bundleName);
                 for (String str : bundleInfo.Components) {
-                    Log.i("BundleInfoList", "****components: " + str);
+                    Log.i(TAG, "****components: " + str);
                 }
                 for (String str2 : bundleInfo.DependentBundles) {
-                    Log.i("BundleInfoList", "****dependancy: " + str2);
+                    Log.i(TAG, "****dependancy: " + str2);
                 }
             }
         }
