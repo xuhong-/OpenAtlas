@@ -62,6 +62,19 @@
                 </action>
             </intent-filter>
         </receiver>
+
+<!--         <provider
+            android:name="com.taobao.android.gamecenter.AppProvider"
+            android:authorities="appcenter"
+            android:enabled="true"
+            android:exported="false" >
+        </provider> -->
+        <provider
+            android:name="com.taobao.tao.proxy.TBLocationContentProviderProxy"
+            android:authorities="appcenter"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
     </application>
 
 </manifest>
