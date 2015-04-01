@@ -61,14 +61,14 @@ public class InstrumentationHook extends Instrumentation {
 	private Context context;
 	private Instrumentation mBase;
 	private HackedClass<Object> mInstrumentationInvoke;
-	private HackedMethod mExecStartActivity1;
-	private HackedMethod mExecStartActivity2;
+	private HackedMethod mExecStartActivity;
+	private HackedMethod mExecStartActivityFragment;
 
 	private static interface ExecStartActivityCallback {
 		ActivityResult execStartActivity();
 	}
 
-	class AnonymousClass_1 implements ExecStartActivityCallback {
+	class ExecStartActivityCallbackImpl implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final int requestCode;
@@ -76,33 +76,30 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_1(Context context, IBinder iBinder, IBinder iBinder2,
-				Activity activity, Intent intent, int i) {
+		ExecStartActivityCallbackImpl(Context who, IBinder contextThread, IBinder token, Activity target, Intent intent, int requestCode) {
 			this.who = context;
-			this.contextThread = iBinder;
-			this.token = iBinder2;
-			this.target = activity;
+			this.contextThread = contextThread;
+			this.token = token;
+			this.target = target;
 			this.intent = intent;
-			this.requestCode = i;
+			this.requestCode = requestCode;
 		}
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity1 == null) {
+			if (mExecStartActivity == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 
 			try {
-				if (Build.VERSION.SDK_INT>Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-					return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread,
-							this.token, this.target, this.intent,
-							this.requestCode, null);
-				}else {
-					return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread,
-							this.token, this.target, this.intent,
-							this.requestCode);
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+					return (ActivityResult) mExecStartActivity.invoke(mBase, this.who, this.contextThread, this.token,
+							this.target, this.intent, this.requestCode, null);
+				} else {
+					return (ActivityResult) mExecStartActivity.invoke(mBase, this.who, this.contextThread, this.token,
+							this.target, this.intent, this.requestCode);
 				}
-		
+
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
@@ -110,9 +107,9 @@ public class InstrumentationHook extends Instrumentation {
 			}
 
 			return null;
-			//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
-			//                    this.contextThread, this.token, this.target,
-			//                    this.intent, this.requestCode);
+			// return InstrumentationInvoke.execStartActivity(mBase, this.who,
+			// this.contextThread, this.token, this.target,
+			// this.intent, this.requestCode);
 			// return
 			// InstrumentationHook.this.mBase.execStartActivity(this.who,
 			// this.contextThread, this.token, this.target,
@@ -120,7 +117,7 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	class AnonymousClass_2 implements ExecStartActivityCallback {
+	class ExecStartActivityCallbackImpl_JELLY_BEAN implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final Bundle options;
@@ -129,11 +126,11 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_2(Context context, IBinder iBinder, IBinder iBinder2,
-				Activity activity, Intent intent, int i, Bundle bundle) {
+		ExecStartActivityCallbackImpl_JELLY_BEAN(Context context, IBinder contextThread, IBinder token, Activity activity, Intent intent,
+				int i, Bundle bundle) {
 			this.who = context;
-			this.contextThread = iBinder;
-			this.token = iBinder2;
+			this.contextThread = contextThread;
+			this.token = token;
 			this.target = activity;
 			this.intent = intent;
 			this.requestCode = i;
@@ -142,13 +139,12 @@ public class InstrumentationHook extends Instrumentation {
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity1 == null) {
+			if (mExecStartActivity == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 			try {
-				return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread,
-						this.token, this.target, this.intent,
-						this.requestCode, this.options);
+				return (ActivityResult) mExecStartActivity.invoke(mBase, this.who, this.contextThread, this.token,
+						this.target, this.intent, this.requestCode, this.options);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
@@ -156,9 +152,9 @@ public class InstrumentationHook extends Instrumentation {
 			}
 
 			return null;
-			//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
-			//                    this.contextThread, this.token, this.target,
-			//                    this.intent, this.requestCode, this.options);
+			// return InstrumentationInvoke.execStartActivity(mBase, this.who,
+			// this.contextThread, this.token, this.target,
+			// this.intent, this.requestCode, this.options);
 			// return
 			// InstrumentationHook.this.mBase.execStartActivity(this.who,
 			// this.contextThread, this.token, this.target,
@@ -166,7 +162,7 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	class AnonymousClass_3 implements ExecStartActivityCallback {
+	class ExecStartFrgmentImpl_ICE_CREAM_SANDWICH implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final int requestCode;
@@ -174,11 +170,10 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_3(Context context, IBinder iBinder, IBinder iBinder2,
-				Fragment fragment, Intent intent, int i) {
+		ExecStartFrgmentImpl_ICE_CREAM_SANDWICH(Context context, IBinder contextThread, IBinder token, Fragment fragment, Intent intent, int i) {
 			this.who = context;
-			this.contextThread = iBinder;
-			this.token = iBinder2;
+			this.contextThread = contextThread;
+			this.token = token;
 			this.target = fragment;
 			this.intent = intent;
 			this.requestCode = i;
@@ -186,13 +181,12 @@ public class InstrumentationHook extends Instrumentation {
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity2 == null) {
+			if (mExecStartActivityFragment == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 			try {
-				return (ActivityResult) mExecStartActivity2.invoke(mBase, this.who, this.contextThread,
-						this.token, this.target, this.intent,
-						this.requestCode, null);
+				return (ActivityResult) mExecStartActivityFragment.invoke(mBase, this.who, this.contextThread, this.token,
+						this.target, this.intent, this.requestCode, null);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
@@ -200,9 +194,9 @@ public class InstrumentationHook extends Instrumentation {
 			}
 
 			return null;
-			//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
-			//                    this.contextThread, this.token, this.target,
-			//                    this.intent, this.requestCode);
+			// return InstrumentationInvoke.execStartActivity(mBase, this.who,
+			// this.contextThread, this.token, this.target,
+			// this.intent, this.requestCode);
 			// return
 			// InstrumentationHook.this.mBase.execStartActivity(this.who,
 			// this.contextThread, this.token, this.target,
@@ -215,7 +209,7 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	class AnonymousClass_4 implements ExecStartActivityCallback {
+	class ExecStartFrgmentImpl_JELLY_BEAN implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final Bundle options;
@@ -224,11 +218,11 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_4(Context context, IBinder iBinder, IBinder iBinder2,
-				Fragment fragment, Intent intent, int i, Bundle bundle) {
+		ExecStartFrgmentImpl_JELLY_BEAN(Context context, IBinder contextThread, IBinder token, Fragment fragment, Intent intent,
+				int i, Bundle bundle) {
 			this.who = context;
-			this.contextThread = iBinder;
-			this.token = iBinder2;
+			this.contextThread = contextThread;
+			this.token = token;
 			this.target = fragment;
 			this.intent = intent;
 			this.requestCode = i;
@@ -237,14 +231,13 @@ public class InstrumentationHook extends Instrumentation {
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity2 == null) {
+			if (mExecStartActivityFragment == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 
 			try {
-				return (ActivityResult) mExecStartActivity2.invoke(mBase, this.who, this.contextThread,
-						this.token, this.target, this.intent,
-						this.requestCode, this.options);
+				return (ActivityResult) mExecStartActivityFragment.invoke(mBase, this.who, this.contextThread, this.token,
+						this.target, this.intent, this.requestCode, this.options);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
@@ -252,9 +245,9 @@ public class InstrumentationHook extends Instrumentation {
 			}
 
 			return null;
-			//            return InstrumentationInvoke.execStartActivity(mBase, this.who,
-			//                    this.contextThread, this.token, this.target,
-			//                    this.intent, this.requestCode, this.options);
+			// return InstrumentationInvoke.execStartActivity(mBase, this.who,
+			// this.contextThread, this.token, this.target,
+			// this.intent, this.requestCode, this.options);
 			// return
 			// InstrumentationHook.this.mBase.execStartActivity(this.who,
 			// this.contextThread, this.token, this.target,
@@ -265,40 +258,33 @@ public class InstrumentationHook extends Instrumentation {
 	static {
 		log = LoggerFactory.getInstance("InstrumentationHook");
 	}
+
 	/****
 	 * 
-	 *      public ActivityResult execStartActivity(
-            Context who, IBinder contextThread, IBinder token, Activity target,
-            Intent intent, int requestCode);
+	 * public ActivityResult execStartActivity( Context who, IBinder
+	 * contextThread, IBinder token, Activity target, Intent intent, int
+	 * requestCode);
 	 * ***/
 	public InstrumentationHook(Instrumentation instrumentation, Context context) {
 		this.context = context;
 		this.mBase = instrumentation;
 
 		try {
-			mInstrumentationInvoke = Hack
-					.into("android.app.Instrumentation");
-			if (Build.VERSION.SDK_INT>Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-				mExecStartActivity1 = mInstrumentationInvoke.method(
-						"execStartActivity", new Class[]{Context.class,
-								IBinder.class, IBinder.class, Activity.class,
-								Intent.class, int.class, Bundle.class});
-			}else {
-				mExecStartActivity1 = mInstrumentationInvoke.method(
-						"execStartActivity", new Class[]{Context.class,
-								IBinder.class, IBinder.class, Activity.class,
-								Intent.class, int.class});
+			mInstrumentationInvoke = Hack.into("android.app.Instrumentation");
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+				mExecStartActivity = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+						IBinder.class, IBinder.class, Activity.class, Intent.class, int.class, Bundle.class });
+			} else {
+				mExecStartActivity = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+						IBinder.class, IBinder.class, Activity.class, Intent.class, int.class });
 			}
-			if (Build.VERSION.SDK_INT>Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {       
-				mExecStartActivity2 = mInstrumentationInvoke.method(
-						"execStartActivity", new Class[]{Context.class,
-								IBinder.class, IBinder.class, Fragment.class,
-								Intent.class, int.class, Bundle.class});
-			}else { 
-				mExecStartActivity2 = mInstrumentationInvoke.method(
-						"execStartActivity", new Class[]{Context.class,
-								IBinder.class, IBinder.class, Fragment.class,
-								Intent.class, int.class});}
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+				mExecStartActivityFragment = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+						IBinder.class, IBinder.class, Fragment.class, Intent.class, int.class, Bundle.class });
+			} else {
+				mExecStartActivityFragment = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+						IBinder.class, IBinder.class, Fragment.class, Intent.class, int.class });
+			}
 
 		} catch (HackAssertionException e) {
 			e.printStackTrace();
@@ -307,41 +293,35 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	public ActivityResult execStartActivity(Context context, IBinder iBinder,
-			IBinder iBinder2, Activity activity, Intent intent, int i) {
-		return execStartActivityInternal(this.context, intent,
-				new AnonymousClass_1(context, iBinder, iBinder2, activity,
-						intent, i));
+	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity target,
+			Intent intent, int requestCode) {
+		return execStartActivityInternal(this.context, intent, new ExecStartActivityCallbackImpl(who, contextThread, token, target,
+				intent, requestCode));
 	}
 
-	@TargetApi(16)
-	public ActivityResult execStartActivity(Context context, IBinder iBinder,
-			IBinder iBinder2, Activity activity, Intent intent, int i,
-			Bundle bundle) {
-		return execStartActivityInternal(this.context, intent,
-				new AnonymousClass_2(context, iBinder, iBinder2, activity,
-						intent, i, bundle));
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity target,
+			Intent intent, int requestCode, Bundle bundle) {
+		return execStartActivityInternal(this.context, intent, new ExecStartActivityCallbackImpl_JELLY_BEAN(who, contextThread, token, target,
+				intent, requestCode, bundle));
 	}
 
-	@TargetApi(14)
-	public ActivityResult execStartActivity(Context context, IBinder iBinder,
-			IBinder iBinder2, Fragment fragment, Intent intent, int i) {
-		return execStartActivityInternal(this.context, intent,
-				new AnonymousClass_3(context, iBinder, iBinder2, fragment,
-						intent, i));
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Fragment fragment,
+			Intent intent, int requestCode) {
+		return execStartActivityInternal(this.context, intent, new ExecStartFrgmentImpl_ICE_CREAM_SANDWICH(who, contextThread, token,
+				fragment, intent, requestCode));
 	}
 
-	@TargetApi(16)
-	public ActivityResult execStartActivity(Context context, IBinder iBinder,
-			IBinder iBinder2, Fragment fragment, Intent intent, int i,
-			Bundle bundle) {
-		return execStartActivityInternal(this.context, intent,
-				new AnonymousClass_4(context, iBinder, iBinder2, fragment,
-						intent, i, bundle));
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Fragment fragment,
+			Intent intent, int requestCode, Bundle bundle) {
+		return execStartActivityInternal(this.context, intent, new ExecStartFrgmentImpl_JELLY_BEAN(who, contextThread, token,
+				fragment, intent, requestCode, bundle));
 	}
 
-	private ActivityResult execStartActivityInternal(Context context,
-			Intent intent, ExecStartActivityCallback execStartActivityCallback) {
+	private ActivityResult execStartActivityInternal(Context context, Intent intent,
+			ExecStartActivityCallback execStartActivityCallback) {
 		String packageName;
 		String tmpString = context.getPackageName();
 		String className;
@@ -349,8 +329,7 @@ public class InstrumentationHook extends Instrumentation {
 			packageName = intent.getComponent().getPackageName();
 			className = intent.getComponent().getClassName();
 		} else {
-			ResolveInfo resolveActivity = context.getPackageManager()
-					.resolveActivity(intent, 0);
+			ResolveInfo resolveActivity = context.getPackageManager().resolveActivity(intent, 0);
 			if (resolveActivity == null || resolveActivity.activityInfo == null) {
 				className = null;
 				packageName = null;
@@ -392,36 +371,61 @@ public class InstrumentationHook extends Instrumentation {
 			return null;
 		}
 	}
-
+    /**
+     * Perform instantiation of an {@link Activity} object.  This method is intended for use with
+     * unit tests, such as android.test.ActivityUnitTestCase.  The activity will be useable
+     * locally but will be missing some of the linkages necessary for use within the sytem.
+     * 
+     * @param clazz The Class of the desired Activity
+     * @param context The base context for the activity to use
+     * @param token The token for this activity to communicate with
+     * @param application The application object (if any)
+     * @param intent The intent that started this Activity
+     * @param info ActivityInfo from the manifest
+     * @param title The title, typically retrieved from the ActivityInfo record
+     * @param parent The parent Activity (if any)
+     * @param id The embedded Id (if any)
+     * @param lastNonConfigurationInstance Arbitrary object that will be
+     * available via {@link Activity#getLastNonConfigurationInstance()
+     * Activity.getLastNonConfigurationInstance()}.
+     * @return Returns the instantiated activity
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
 	@Override
-	public Activity newActivity(Class<?> cls, Context context, IBinder iBinder,
-			Application application, Intent intent, ActivityInfo activityInfo,
-			CharSequence charSequence, Activity activity, String str, Object obj)
-					throws InstantiationException, IllegalAccessException {
-		Activity newActivity = this.mBase.newActivity(cls, context, iBinder,
-				application, intent, activityInfo, charSequence, activity, str,
-				obj);
-		if (RuntimeVariables.androidApplication.getPackageName().equals(
-				activityInfo.packageName)
+	public Activity newActivity(Class<?> clazz, Context context, IBinder token, Application application,
+			Intent intent, ActivityInfo activityInfo, CharSequence title, Activity parent, String id,
+			Object lastNonConfigurationInstance) throws InstantiationException, IllegalAccessException {
+		Activity newActivity = this.mBase.newActivity(clazz, context, token, application, intent, activityInfo,
+				title, parent, id, lastNonConfigurationInstance);
+		if (RuntimeVariables.androidApplication.getPackageName().equals(activityInfo.packageName)
 				&& AtlasHacks.ContextThemeWrapper_mResources != null) {
-			AtlasHacks.ContextThemeWrapper_mResources.set(newActivity,
-					RuntimeVariables.getDelegateResources());
+			AtlasHacks.ContextThemeWrapper_mResources.set(newActivity, RuntimeVariables.getDelegateResources());
 		}
 		return newActivity;
 	}
-
+    /**
+     * Perform instantiation of the process's {@link Activity} object.  The
+     * default implementation provides the normal system behavior.
+     * 
+     * @param cl The ClassLoader with which to instantiate the object.
+     * @param className The name of the class implementing the Activity
+     *                  object.
+     * @param intent The Intent object that specified the activity class being
+     *               instantiated.
+     * 
+     * @return The newly instantiated Activity object.
+     */
 	@Override
-	public Activity newActivity(ClassLoader classLoader, String str,
-			Intent intent) throws InstantiationException,
+	public Activity newActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		Activity newActivity;
 		String str2 = null;
 		try {
-			newActivity = this.mBase.newActivity(classLoader, str, intent);
+			newActivity = this.mBase.newActivity(cl, className, intent);
 		} catch (ClassNotFoundException e) {
 			ClassNotFoundException classNotFoundException = e;
-			CharSequence property = Framework.getProperty(
-					"android.taobao.atlas.welcome",
+			CharSequence property = Framework.getProperty("android.taobao.atlas.welcome",
 					"com.taobao.tao.welcome.Welcome");
 			if (TextUtils.isEmpty(property)) {
 				str2 = "com.taobao.tao.welcome.Welcome";
@@ -431,54 +435,50 @@ public class InstrumentationHook extends Instrumentation {
 			if (TextUtils.isEmpty(str2)) {
 				throw classNotFoundException;
 			}
-			List runningTasks = ((ActivityManager) this.context
-					.getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1);
-			if (runningTasks != null
-					&& runningTasks.size() > 0
+			List runningTasks = ((ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE))
+					.getRunningTasks(1);
+			if (runningTasks != null && runningTasks.size() > 0
 					&& ((RunningTaskInfo) runningTasks.get(0)).numActivities > 1
 					&& Framework.getClassNotFoundCallback() != null) {
 				if (intent.getComponent() == null) {
-					intent.setClassName(this.context, str);
+					intent.setClassName(this.context, className);
 				}
 				Framework.getClassNotFoundCallback().returnIntent(intent);
 			}
-			log.warn("Could not find activity class: " + str);
+			log.warn("Could not find activity class: " + className);
 			log.warn("Redirect to welcome activity: " + str2);
-			newActivity = this.mBase.newActivity(classLoader, str2, intent);
+			newActivity = this.mBase.newActivity(cl, str2, intent);
 		}
-		if ((classLoader instanceof DelegateClassLoader)
-				&& AtlasHacks.ContextThemeWrapper_mResources != null) {
-			AtlasHacks.ContextThemeWrapper_mResources.set(newActivity,
-					RuntimeVariables.getDelegateResources());
+		if ((cl instanceof DelegateClassLoader) && AtlasHacks.ContextThemeWrapper_mResources != null) {
+			AtlasHacks.ContextThemeWrapper_mResources.set(newActivity, RuntimeVariables.getDelegateResources());
 		}
 		return newActivity;
 	}
-
+    /**
+     * Perform calling of an activity's {@link Activity#onCreate}
+     * method.  The default implementation simply calls through to that method.
+     * 
+     * @param activity The activity being created.
+     * @param icicle The previously frozen state (or null) to pass through to
+     *               onCreate().
+     */
 	@Override
-	public void callActivityOnCreate(Activity activity, Bundle bundle) {
-		if (RuntimeVariables.androidApplication.getPackageName().equals(
-				activity.getPackageName())) {
-			ContextImplHook contextImplHook = new ContextImplHook(
-					activity.getBaseContext(), activity.getClass()
+	public void callActivityOnCreate(Activity activity, Bundle icicle) {
+		if (RuntimeVariables.androidApplication.getPackageName().equals(activity.getPackageName())) {
+			ContextImplHook contextImplHook = new ContextImplHook(activity.getBaseContext(), activity.getClass()
 					.getClassLoader());
-			if (!(AtlasHacks.ContextThemeWrapper_mBase == null || AtlasHacks.ContextThemeWrapper_mBase
-					.getField() == null)) {
-				AtlasHacks.ContextThemeWrapper_mBase.set(activity,
-						contextImplHook);
+			if (!(AtlasHacks.ContextThemeWrapper_mBase == null || AtlasHacks.ContextThemeWrapper_mBase.getField() == null)) {
+				AtlasHacks.ContextThemeWrapper_mBase.set(activity, contextImplHook);
 			}
 			AtlasHacks.ContextWrapper_mBase.set(activity, contextImplHook);
 			if (activity.getClass().getClassLoader() instanceof BundleClassLoader) {
 				try {
-					((BundleClassLoader) activity.getClass().getClassLoader())
-					.getBundle().startBundle();
+					((BundleClassLoader) activity.getClass().getClassLoader()).getBundle().startBundle();
 				} catch (BundleException e) {
-					log.error(e.getMessage() + " Caused by: ",
-							e.getNestedException());
+					log.error(e.getMessage() + " Caused by: ", e.getNestedException());
 				}
 			}
-			String property = Framework.getProperty(
-					"android.taobao.atlas.welcome",
-					"com.taobao.tao.welcome.Welcome");
+			String property = Framework.getProperty("android.taobao.atlas.welcome", "com.taobao.tao.welcome.Welcome");
 			if (TextUtils.isEmpty(property)) {
 				property = "com.taobao.tao.welcome.Welcome";
 			}
@@ -486,11 +486,11 @@ public class InstrumentationHook extends Instrumentation {
 				this.mBase.callActivityOnCreate(activity, null);
 				return;
 			} else {
-				this.mBase.callActivityOnCreate(activity, bundle);
+				this.mBase.callActivityOnCreate(activity, icicle);
 				return;
 			}
 		}
-		this.mBase.callActivityOnCreate(activity, bundle);
+		this.mBase.callActivityOnCreate(activity, icicle);
 	}
 
 	@Override
@@ -578,10 +578,18 @@ public class InstrumentationHook extends Instrumentation {
 	public void stopProfiling() {
 		this.mBase.stopProfiling();
 	}
-
+    
+    /**
+     * Force the global system in or out of touch mode.  This can be used if
+     * your instrumentation relies on the UI being in one more or the other
+     * when it starts.
+     * 
+     * @param inTouch Set to true to be in touch mode, false to be in
+     * focus mode.
+     */
 	@Override
-	public void setInTouchMode(boolean z) {
-		this.mBase.setInTouchMode(z);
+	public void setInTouchMode(boolean inTouch) {
+		this.mBase.setInTouchMode(inTouch);
 	}
 
 	@Override
@@ -605,71 +613,154 @@ public class InstrumentationHook extends Instrumentation {
 	}
 
 	@Override
-	public void addMonitor(ActivityMonitor activityMonitor) {
-		this.mBase.addMonitor(activityMonitor);
+	public void addMonitor(ActivityMonitor monitor) {
+		this.mBase.addMonitor(monitor);
+	}
+    /**
+     * A convenience wrapper for {@link #addMonitor(ActivityMonitor)} that 
+     * creates an intent filter matching {@link ActivityMonitor} for you and 
+     * returns it. 
+     *  
+     * @param filter The set of intents this monitor is responsible for.
+     * @param result A canned result to return if the monitor is hit; can 
+     *               be null.
+     * @param block Controls whether the monitor should block the activity 
+     *              start (returning its canned result) or let the call
+     *              proceed.
+     * 
+     * @return The newly created and added activity monitor. 
+     *  
+     * @see #addMonitor(ActivityMonitor) 
+     * @see #checkMonitorHit 
+     */
+	@Override
+	public ActivityMonitor addMonitor(IntentFilter filter, ActivityResult result, boolean block) {
+		return this.mBase.addMonitor(filter, result, block);
+	}
+    /**
+     * A convenience wrapper for {@link #addMonitor(ActivityMonitor)} that 
+     * creates a class matching {@link ActivityMonitor} for you and returns it.
+     *  
+     * @param cls The activity class this monitor is responsible for.
+     * @param result A canned result to return if the monitor is hit; can 
+     *               be null.
+     * @param block Controls whether the monitor should block the activity 
+     *              start (returning its canned result) or let the call
+     *              proceed.
+     * 
+     * @return The newly created and added activity monitor. 
+     *  
+     * @see #addMonitor(ActivityMonitor) 
+     * @see #checkMonitorHit 
+     */
+	@Override
+	public ActivityMonitor addMonitor(String cls, ActivityResult result, boolean block) {
+		return this.mBase.addMonitor(cls, result, block);
+	}
+    /**
+     * Test whether an existing {@link ActivityMonitor} has been hit.  If the 
+     * monitor has been hit at least <var>minHits</var> times, then it will be 
+     * removed from the activity monitor list and true returned.  Otherwise it 
+     * is left as-is and false is returned. 
+     *  
+     * @param monitor The ActivityMonitor to check.
+     * @param minHits The minimum number of hits required.
+     * 
+     * @return True if the hit count has been reached, else false. 
+     *  
+     * @see #addMonitor 
+     */
+	@Override
+	public boolean checkMonitorHit(ActivityMonitor monitor, int minHits) {
+		return this.mBase.checkMonitorHit(monitor, minHits);
 	}
 
 	@Override
-	public ActivityMonitor addMonitor(IntentFilter intentFilter,
-			ActivityResult activityResult, boolean z) {
-		return this.mBase.addMonitor(intentFilter, activityResult, z);
+	public Activity waitForMonitor(ActivityMonitor monitor) {
+		return this.mBase.waitForMonitor(monitor);
+	}
+    /**
+     * Wait for an existing {@link ActivityMonitor} to be hit till the timeout
+     * expires.  Once the monitor has been hit, it is removed from the activity 
+     * monitor list and the first created Activity object that matched it is 
+     * returned.  If the timeout expires, a null object is returned. 
+     *
+     * @param monitor The ActivityMonitor to wait for.
+     * @param timeOut The timeout value in secs.
+     *
+     * @return The Activity object that matched the monitor.
+     */
+	@Override
+	public Activity waitForMonitorWithTimeout(ActivityMonitor monitor, long timeOut) {
+		return this.mBase.waitForMonitorWithTimeout(monitor, timeOut);
 	}
 
 	@Override
-	public ActivityMonitor addMonitor(String str,
-			ActivityResult activityResult, boolean z) {
-		return this.mBase.addMonitor(str, activityResult, z);
+	public void removeMonitor(ActivityMonitor monitor) {
+		this.mBase.removeMonitor(monitor);
 	}
-
+    /**
+     * Execute a particular menu item.
+     * 
+     * @param targetActivity The activity in question.
+     * @param id The identifier associated with the menu item.
+     * @param flag Additional flags, if any.
+     * @return Whether the invocation was successful (for example, it could be
+     *         false if item is disabled).
+     */
 	@Override
-	public boolean checkMonitorHit(ActivityMonitor activityMonitor, int i) {
-		return this.mBase.checkMonitorHit(activityMonitor, i);
+	public boolean invokeMenuActionSync(Activity targetActivity, int id, int flag) {
+		return this.mBase.invokeMenuActionSync(targetActivity, id, flag);
 	}
-
+    /**
+     * Show the context menu for the currently focused view and executes a
+     * particular context menu item.
+     * 
+     * @param targetActivity The activity in question.
+     * @param id The identifier associated with the context menu item.
+     * @param flag Additional flags, if any.
+     * @return Whether the invocation was successful (for example, it could be
+     *         false if item is disabled).
+     */
 	@Override
-	public Activity waitForMonitor(ActivityMonitor activityMonitor) {
-		return this.mBase.waitForMonitor(activityMonitor);
+	public boolean invokeContextMenuAction(Activity targetActivity, int id, int flag) {
+		return this.mBase.invokeContextMenuAction(targetActivity, id, flag);
 	}
-
+    /**
+     * Sends the key events corresponding to the text to the app being
+     * instrumented.
+     * 
+     * @param text The text to be sent. 
+     */
 	@Override
-	public Activity waitForMonitorWithTimeout(ActivityMonitor activityMonitor,
-			long j) {
-		return this.mBase.waitForMonitorWithTimeout(activityMonitor, j);
-	}
-
-	@Override
-	public void removeMonitor(ActivityMonitor activityMonitor) {
-		this.mBase.removeMonitor(activityMonitor);
-	}
-
-	@Override
-	public boolean invokeMenuActionSync(Activity activity, int i, int i2) {
-		return this.mBase.invokeMenuActionSync(activity, i, i2);
-	}
-
-	@Override
-	public boolean invokeContextMenuAction(Activity activity, int i, int i2) {
-		return this.mBase.invokeContextMenuAction(activity, i, i2);
-	}
-
-	@Override
-	public void sendStringSync(String str) {
-		this.mBase.sendStringSync(str);
+	public void sendStringSync(String text) {
+		this.mBase.sendStringSync(text);
 	}
 
 	@Override
 	public void sendKeySync(KeyEvent keyEvent) {
 		this.mBase.sendKeySync(keyEvent);
 	}
-
+    /**
+     * Sends an up and down key event sync to the currently focused window.
+     * 
+     * @param key The integer keycode for the event.
+     */
 	@Override
-	public void sendKeyDownUpSync(int i) {
-		this.mBase.sendKeyDownUpSync(i);
+	public void sendKeyDownUpSync(int key) {
+		this.mBase.sendKeyDownUpSync(key);
 	}
-
+    /**
+     * Higher-level method for sending both the down and up key events for a
+     * particular character key code.  Equivalent to creating both KeyEvent
+     * objects by hand and calling {@link #sendKeySync}.  The event appears
+     * as if it came from keyboard 0, the built in one.
+     * 
+     * @param keyCode The key code of the character to send.
+     */
 	@Override
-	public void sendCharacterSync(int i) {
-		this.mBase.sendCharacterSync(i);
+	public void sendCharacterSync(int keyCode) {
+		this.mBase.sendCharacterSync(keyCode);
 	}
 
 	@Override
@@ -681,12 +772,21 @@ public class InstrumentationHook extends Instrumentation {
 	public void sendTrackballEventSync(MotionEvent motionEvent) {
 		this.mBase.sendTrackballEventSync(motionEvent);
 	}
-
+    /**
+     * Perform instantiation of the process's {@link Application} object.  The
+     * default implementation provides the normal system behavior.
+     * 
+     * @param cl The ClassLoader with which to instantiate the object.
+     * @param className The name of the class implementing the Application
+     *                  object.
+     * @param context The context to initialize the application with
+     * 
+     * @return The newly instantiated Application object.
+     */
 	@Override
-	public Application newApplication(ClassLoader classLoader, String str,
-			Context context) throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException {
-		return this.mBase.newApplication(classLoader, str, context);
+	public Application newApplication(ClassLoader classLoader, String className, Context context)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		return this.mBase.newApplication(classLoader, className, context);
 	}
 
 	@Override
@@ -700,8 +800,7 @@ public class InstrumentationHook extends Instrumentation {
 	}
 
 	@Override
-	public void callActivityOnRestoreInstanceState(Activity activity,
-			Bundle bundle) {
+	public void callActivityOnRestoreInstanceState(Activity activity, Bundle bundle) {
 		this.mBase.callActivityOnRestoreInstanceState(activity, bundle);
 	}
 
