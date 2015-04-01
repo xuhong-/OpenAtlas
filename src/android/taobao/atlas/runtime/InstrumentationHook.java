@@ -61,14 +61,14 @@ public class InstrumentationHook extends Instrumentation {
 	private Context context;
 	private Instrumentation mBase;
 	private HackedClass<Object> mInstrumentationInvoke;
-	private HackedMethod mExecStartActivity1;
-	private HackedMethod mExecStartActivity2;
+	private HackedMethod mExecStartActivity;
+	private HackedMethod mExecStartActivityFragment;
 
 	private static interface ExecStartActivityCallback {
 		ActivityResult execStartActivity();
 	}
 
-	class AnonymousClass_1 implements ExecStartActivityCallback {
+	class ExecStartActivityCallbackImpl implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final int requestCode;
@@ -76,27 +76,27 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_1(Context context, IBinder contextThread, IBinder token, Activity activity, Intent intent, int i) {
+		ExecStartActivityCallbackImpl(Context who, IBinder contextThread, IBinder token, Activity target, Intent intent, int requestCode) {
 			this.who = context;
 			this.contextThread = contextThread;
 			this.token = token;
-			this.target = activity;
+			this.target = target;
 			this.intent = intent;
-			this.requestCode = i;
+			this.requestCode = requestCode;
 		}
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity1 == null) {
+			if (mExecStartActivity == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 
 			try {
 				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-					return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread, this.token,
+					return (ActivityResult) mExecStartActivity.invoke(mBase, this.who, this.contextThread, this.token,
 							this.target, this.intent, this.requestCode, null);
 				} else {
-					return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread, this.token,
+					return (ActivityResult) mExecStartActivity.invoke(mBase, this.who, this.contextThread, this.token,
 							this.target, this.intent, this.requestCode);
 				}
 
@@ -117,7 +117,7 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	class AnonymousClass_2 implements ExecStartActivityCallback {
+	class ExecStartActivityCallbackImpl_JELLY_BEAN implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final Bundle options;
@@ -126,7 +126,7 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_2(Context context, IBinder contextThread, IBinder token, Activity activity, Intent intent,
+		ExecStartActivityCallbackImpl_JELLY_BEAN(Context context, IBinder contextThread, IBinder token, Activity activity, Intent intent,
 				int i, Bundle bundle) {
 			this.who = context;
 			this.contextThread = contextThread;
@@ -139,11 +139,11 @@ public class InstrumentationHook extends Instrumentation {
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity1 == null) {
+			if (mExecStartActivity == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 			try {
-				return (ActivityResult) mExecStartActivity1.invoke(mBase, this.who, this.contextThread, this.token,
+				return (ActivityResult) mExecStartActivity.invoke(mBase, this.who, this.contextThread, this.token,
 						this.target, this.intent, this.requestCode, this.options);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -162,7 +162,7 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	class AnonymousClass_3 implements ExecStartActivityCallback {
+	class ExecStartFrgmentImpl_ICE_CREAM_SANDWICH implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final int requestCode;
@@ -170,7 +170,7 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_3(Context context, IBinder contextThread, IBinder token, Fragment fragment, Intent intent, int i) {
+		ExecStartFrgmentImpl_ICE_CREAM_SANDWICH(Context context, IBinder contextThread, IBinder token, Fragment fragment, Intent intent, int i) {
 			this.who = context;
 			this.contextThread = contextThread;
 			this.token = token;
@@ -181,11 +181,11 @@ public class InstrumentationHook extends Instrumentation {
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity2 == null) {
+			if (mExecStartActivityFragment == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 			try {
-				return (ActivityResult) mExecStartActivity2.invoke(mBase, this.who, this.contextThread, this.token,
+				return (ActivityResult) mExecStartActivityFragment.invoke(mBase, this.who, this.contextThread, this.token,
 						this.target, this.intent, this.requestCode, null);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -209,7 +209,7 @@ public class InstrumentationHook extends Instrumentation {
 		}
 	}
 
-	class AnonymousClass_4 implements ExecStartActivityCallback {
+	class ExecStartFrgmentImpl_JELLY_BEAN implements ExecStartActivityCallback {
 		final IBinder contextThread;
 		final Intent intent;
 		final Bundle options;
@@ -218,7 +218,7 @@ public class InstrumentationHook extends Instrumentation {
 		final IBinder token;
 		final Context who;
 
-		AnonymousClass_4(Context context, IBinder contextThread, IBinder token, Fragment fragment, Intent intent,
+		ExecStartFrgmentImpl_JELLY_BEAN(Context context, IBinder contextThread, IBinder token, Fragment fragment, Intent intent,
 				int i, Bundle bundle) {
 			this.who = context;
 			this.contextThread = contextThread;
@@ -231,12 +231,12 @@ public class InstrumentationHook extends Instrumentation {
 
 		@Override
 		public ActivityResult execStartActivity() {
-			if (mExecStartActivity2 == null) {
+			if (mExecStartActivityFragment == null) {
 				throw new NullPointerException("could not hook Instrumentation!");
 			}
 
 			try {
-				return (ActivityResult) mExecStartActivity2.invoke(mBase, this.who, this.contextThread, this.token,
+				return (ActivityResult) mExecStartActivityFragment.invoke(mBase, this.who, this.contextThread, this.token,
 						this.target, this.intent, this.requestCode, this.options);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -272,17 +272,17 @@ public class InstrumentationHook extends Instrumentation {
 		try {
 			mInstrumentationInvoke = Hack.into("android.app.Instrumentation");
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-				mExecStartActivity1 = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+				mExecStartActivity = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
 						IBinder.class, IBinder.class, Activity.class, Intent.class, int.class, Bundle.class });
 			} else {
-				mExecStartActivity1 = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+				mExecStartActivity = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
 						IBinder.class, IBinder.class, Activity.class, Intent.class, int.class });
 			}
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-				mExecStartActivity2 = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+				mExecStartActivityFragment = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
 						IBinder.class, IBinder.class, Fragment.class, Intent.class, int.class, Bundle.class });
 			} else {
-				mExecStartActivity2 = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
+				mExecStartActivityFragment = mInstrumentationInvoke.method("execStartActivity", new Class[] { Context.class,
 						IBinder.class, IBinder.class, Fragment.class, Intent.class, int.class });
 			}
 
@@ -295,28 +295,28 @@ public class InstrumentationHook extends Instrumentation {
 
 	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity target,
 			Intent intent, int requestCode) {
-		return execStartActivityInternal(this.context, intent, new AnonymousClass_1(who, contextThread, token, target,
+		return execStartActivityInternal(this.context, intent, new ExecStartActivityCallbackImpl(who, contextThread, token, target,
 				intent, requestCode));
 	}
 
-	@TargetApi(16)
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Activity target,
 			Intent intent, int requestCode, Bundle bundle) {
-		return execStartActivityInternal(this.context, intent, new AnonymousClass_2(who, contextThread, token, target,
+		return execStartActivityInternal(this.context, intent, new ExecStartActivityCallbackImpl_JELLY_BEAN(who, contextThread, token, target,
 				intent, requestCode, bundle));
 	}
 
-	@TargetApi(14)
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Fragment fragment,
 			Intent intent, int requestCode) {
-		return execStartActivityInternal(this.context, intent, new AnonymousClass_3(who, contextThread, token,
+		return execStartActivityInternal(this.context, intent, new ExecStartFrgmentImpl_ICE_CREAM_SANDWICH(who, contextThread, token,
 				fragment, intent, requestCode));
 	}
 
-	@TargetApi(16)
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Fragment fragment,
 			Intent intent, int requestCode, Bundle bundle) {
-		return execStartActivityInternal(this.context, intent, new AnonymousClass_4(who, contextThread, token,
+		return execStartActivityInternal(this.context, intent, new ExecStartFrgmentImpl_JELLY_BEAN(who, contextThread, token,
 				fragment, intent, requestCode, bundle));
 	}
 
