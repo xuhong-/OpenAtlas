@@ -100,8 +100,8 @@ public class AtlasHacks extends HackDeclaration implements
         sIsReflectAvailable = false;
         sIsReflectChecked = false;
         sIsIgnoreFailure = false;
-        GeneratePackageInfoList = new ArrayList();
-        GetPackageInfoList = new ArrayList();
+        GeneratePackageInfoList = new ArrayList<HackedMethod>();
+        GetPackageInfoList = new ArrayList<HackedMethod>();
     }
 
     public static boolean defineAndVerify() throws AssertionArrayException {

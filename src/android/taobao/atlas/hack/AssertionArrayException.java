@@ -33,7 +33,7 @@ public class AssertionArrayException extends Exception {
 
     public AssertionArrayException(String str) {
         super(str);
-        this.mAssertionErr = new ArrayList();
+        this.mAssertionErr = new ArrayList<HackAssertionException>();
     }
 
     public void addException(HackAssertionException hackAssertionException) {

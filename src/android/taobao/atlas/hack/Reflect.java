@@ -32,12 +32,12 @@ public class Reflect {
 	}
 
 
-	public static java.lang.reflect.Method getMethod(java.lang.Class<?> r2,
-			java.lang.String r3, java.lang.Class<?>... r4) {
+	public static java.lang.reflect.Method getMethod(Class<?> cls,
+			String name, Class<?>... parameterTypes) {
 		try {
-			Method r0 = r2.getDeclaredMethod(r3, r4);
-			r0.setAccessible(true);
-			return r0;
+			Method method = cls.getDeclaredMethod(name, parameterTypes);
+			method.setAccessible(true);
+			return method;
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,11 +47,10 @@ public class Reflect {
 
 	}
 
-	public static Object invokeMethod(Method method, Object obj,
-			Object... objArr) {
+	public static Object invokeMethod(Method method, Object obj,Object... args) {
 		try {
 			method.setAccessible(true);
-			return method.invoke(obj, objArr);
+			return method.invoke(obj, args);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			return null;
@@ -64,9 +63,9 @@ public class Reflect {
 		}
 	}
 
-	public static Object fieldGet(Class<?> cls, Object obj, String str) {
+	public static Object fieldGet(Class<?> cls, Object obj, String fieldName) {
 		try {
-			Field declaredField = cls.getDeclaredField(str);
+			Field declaredField = cls.getDeclaredField(fieldName);
 			declaredField.setAccessible(true);
 			return declaredField.get(obj);
 		} catch (SecurityException e) {
@@ -101,39 +100,33 @@ public class Reflect {
 	}
 
 
-	public static boolean fieldSet(java.lang.reflect.Field r2,
-			java.lang.Object r3, java.lang.Object r4) {
-		r2.setAccessible(true);
+	public static boolean fieldSet(Field field,Object mObject, Object mValue) {
+		field.setAccessible(true);
 		try {
-			r2.set(r3, r4);
+			field.set(mObject, mValue);
 			return true;
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-	/* JADX WARNING: inconsistent code. */
-	/* Code decompiled incorrectly, please refer to instructions dump. */
-	public static boolean fieldSet(java.lang.Class<?> r3, java.lang.Object r4,
-			java.lang.String r5, java.lang.Object r6) {
+
+	public static boolean fieldSet(Class<?> cls, Object object,String fieldName, Object value) {
 		try {
-			Field r1 = r3.getDeclaredField(r5);
-			r1.setAccessible(true);
-			r1.set(r4, r6);
+			Field field = cls.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			field.set(object, value);
 			return true;
 		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+		} catch (IllegalAccessException e) {	
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+		} catch (IllegalArgumentException e) {		
 			e.printStackTrace();
 		}
 
@@ -141,17 +134,16 @@ public class Reflect {
 	}
 
 
-	public static java.lang.reflect.Field getField(java.lang.Class<?> r2,
-			java.lang.String r3) {
+	public static Field getField(Class<?> cls,String fieldName) {
 		try {
-			Field r0 = r2.getDeclaredField(r3);
-			r0.setAccessible(true);
-			return r0;
+			Field field = cls.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return field;
 		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
-		;
+		
 		return null;
 	}
 }
