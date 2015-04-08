@@ -43,7 +43,7 @@ import android.taobao.atlas.runtime.ContextImplHook;
 import android.taobao.atlas.runtime.RuntimeVariables;
 import android.text.TextUtils;
 import android.util.Log;
-import blue.stack.openAtlas.util.Utils;
+import blue.stack.openAtlas.dexopt.util.Utils;
 
 import com.taobao.android.lifecycle.PanguApplication;
 import com.taobao.tao.BaselineInfoProvider;

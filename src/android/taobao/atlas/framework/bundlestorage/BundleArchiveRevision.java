@@ -51,9 +51,7 @@ import android.taobao.atlas.util.ApkUtils;
 import android.taobao.atlas.util.AtlasFileLock;
 import android.taobao.atlas.util.StringUtils;
 import android.text.TextUtils;
-
-import com.alipay.mobile.quinox.classloader.InitExecutor;
-
+import blue.stack.openAtlas.dexopt.InitExecutor;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
