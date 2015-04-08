@@ -33,125 +33,114 @@ import com.taobao.taobao.R;
 
 public class Welcome extends PanguActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loader_tesst);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_loader_tesst);
 
-        // Bundle-SymbolicName="com.taobao.scan.bundledemostartactivity1"
-        // Bundle-Version="1.0.0"
-        // date="2012.11.28"
-        // provider-name="插件开发商的名称"
-        // provider-url=""
-        // Bundle-Activator="com.taobao.scan.SimpleBundle"
-        // Bundle-Activity="com.taobao.scan.MainActivity"
+		// Bundle-SymbolicName="com.taobao.scan.bundledemostartactivity1"
+		// Bundle-Version="1.0.0"
+		// date="2012.11.28"
+		// provider-name="插件开发商的名称"
+		// provider-url=""
+		// Bundle-Activator="com.taobao.scan.SimpleBundle"
+		// Bundle-Activity="com.taobao.scan.MainActivity"
 
-        Button btn = (Button) findViewById(R.id.btn);
-        // btn.setOnClickListener(new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        //
-        // Intent mIntent = null;
-        // try {
-        // mIntent = new
-        // Intent(Welcome.this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
-        // } catch (ClassNotFoundException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-        //
-        // mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // RuntimeVariables.androidApplication.startActivity(mIntent);
-        //
-        //
-        //
-        // }
-        // });
+		Button btn = (Button) findViewById(R.id.btn);
+		// btn.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		//
+		// Intent mIntent = null;
+		// try {
+		// mIntent = new
+		// Intent(Welcome.this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
+		// } catch (ClassNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
+		// mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		// RuntimeVariables.androidApplication.startActivity(mIntent);
+		//
+		//
+		//
+		// }
+		// });
 
-    }
+	}
+	boolean  bootApp=true;
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction()==MotionEvent.ACTION_UP) {
+			if (bootApp) {
+				Intent mIntent = new Intent(Intent.ACTION_VIEW);
+				// mIntent.setPackage("com.taobao.taobao");
+				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
+				//            "com.taobao.scan.MainActivity"));
+				mIntent.setClassName(this, "com.taobao.android.gamecenter.main.GcContainerActivity");
+		
+				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// mIntent.setClassName("com.taobao.scan",
+				// "com.taobao.scan.MainActivity");
+				startActivity(mIntent);
+				bootApp=false;
+			}else {
+				Intent mIntent = new Intent(Intent.ACTION_VIEW);
+				// mIntent.setPackage("com.taobao.taobao");
+				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
+				//            "com.taobao.scan.MainActivity"));
+				mIntent.setClassName(this, "com.taobao.android.game2.main.GcContainerActivity");
+		
+				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// mIntent.setClassName("com.taobao.scan",
+				// "com.taobao.scan.MainActivity");
+				startActivity(mIntent);
+				bootApp=true;
+			}
+		
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-if (event.getAction()==MotionEvent.ACTION_UP) {
-    Intent mIntent = new Intent(Intent.ACTION_VIEW);
-   // mIntent.setPackage("com.taobao.taobao");
-//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
-//            "com.taobao.scan.MainActivity"));
-    mIntent.setClassName(this, "com.taobao.android.gamecenter.main.GcContainerActivity");
-//try {
-//Class<?> cls=RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity");
-//mIntent.setClass(this, cls);
-//} catch (ClassNotFoundException e) {
-//// TODO Auto-generated catch block
-//e.printStackTrace();
-//}
+		}
+		return super.onTouchEvent(event);
+	}
 
-    // mComponent = {ComponentName@6742}
-    // "ComponentInfo{com.taobao.taobao/com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity}"
-    // mClass = {String@6750}
-    // "com.taobao.taobao.scancode.gateway.activityFXXK.ScancodeGatewayActivity"
-    // mPackage = {String@6751} "com.taobao.taobao"
-    // shadow$_klass_ = {Class@700} "class android.content.ComponentName"
-    // shadow$_monitor_ = -1442943439
-    // mData = {Uri$StringUri@6743} "http://tb.cn/n/scancode"
-    // mExtras = {Bundle@6744}
-    // "Bundle[{callback_action=null, referrer=http://m.taobao.com/index.htm}]"
-    // mPackage = {String@6745} "com.taobao.taobao"
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.loader_tesst, menu);
+		return true;
+	}
 
-    // try {
-    // mIntent = new
-    // Intent(this,RuntimeVariables.delegateClassLoader.loadClass("com.taobao.scan.MainActivity"));
-    // } catch (ClassNotFoundException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify Component parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
 
-    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    // mIntent.setClassName("com.taobao.scan",
-    // "com.taobao.scan.MainActivity");
-    startActivity(mIntent);
-  
-}
-        return super.onTouchEvent(event);
-    }
+			{
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.loader_tesst, menu);
-        return true;
-    }
+				Intent mIntent = null;
+				mIntent = new Intent("com.taobao.scan.MainActivity");
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify Component parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
+				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// mIntent.setClassName("com.taobao.scan",
+				// "com.taobao.scan.MainActivity");
+				App.instaceApp.startActivity(mIntent);
 
-            {
+			}
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
-                Intent mIntent = null;
-                mIntent = new Intent("com.taobao.scan.MainActivity");
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		//libcom_taobao_scan.so
 
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // mIntent.setClassName("com.taobao.scan",
-                // "com.taobao.scan.MainActivity");
-                App.instaceApp.startActivity(mIntent);
-
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    
-    @Override
-    protected void onResume() {
-    	// TODO Auto-generated method stub
-    	super.onResume();
-    	//libcom_taobao_scan.so
-  
-    }
+	}
 }
