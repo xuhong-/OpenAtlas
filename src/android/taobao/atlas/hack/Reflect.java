@@ -32,8 +32,7 @@ public class Reflect {
 	}
 
 
-	public static java.lang.reflect.Method getMethod(Class<?> cls,
-			String name, Class<?>... parameterTypes) {
+	public static Method getMethod(Class<?> cls,String name, Class<?>... parameterTypes) {
 		try {
 			Method method = cls.getDeclaredMethod(name, parameterTypes);
 			method.setAccessible(true);
