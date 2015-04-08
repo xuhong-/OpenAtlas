@@ -18,38 +18,60 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
-package com.alipay.mobile.quinox.classloader;
+package blue.stack.openAtlas.dexopt.util;
 
-import android.os.Build.VERSION;
-import android.taobao.atlas.log.Logger;
-import android.taobao.atlas.log.LoggerFactory;
 
-public class InitExecutor {
-    static final Logger log;
-    private static boolean sDexOptLoaded;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-    private static native void dexopt(String str, String str2, String str3);
+import android.os.Process;
 
-    static {
-        log = LoggerFactory.getInstance("InitExecutor");
-        sDexOptLoaded = false;
-        try {
-            System.loadLibrary("dexopt");
-            sDexOptLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-        }
-    }
+public class Utils {
+	/*****
+	 * read thread name，i think this faster
+	 * *****/
+	public static String getProcessName() {
+		InputStreamReader reader = null;
+		BufferedReader br=null;
+		try {
+			reader = new InputStreamReader(new FileInputStream("/proc/"+Process.myPid()+"/cmdline"));
+			br = new BufferedReader(reader);
+			char[] data=new char[64];//定义数组  进程名字最长64
+			br.read(data);
+			int len=0;
+			for (char c : data) {
+				if (c==0) {
+					break;
+				}
+				len++;
+			}
+			return  new String(data,0,len);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}finally{
+			if (reader!=null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (br!=null){
+				try{
+					br.close();
+				}catch (IOException e){}
+			}
 
-    public static boolean optDexFile(String str, String str2) {
-        try {
-            if (sDexOptLoaded && VERSION.SDK_INT <= 18) {
-                dexopt(str, str2, "v=n,o=v");
-                return true;
-            }
-        } catch (Throwable e) {
-            log.error("Exception while try to call native dexopt >>>", e);
-        }
-        return false;
-    }
+		}
+		return "";
+
+
+
+	}
 }
