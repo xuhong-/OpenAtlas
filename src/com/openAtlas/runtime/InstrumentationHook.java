@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -25,6 +25,17 @@ import java.util.List;
 
 import org.osgi.framework.BundleException;
 
+import com.openAtlas.framework.BundleClassLoader;
+import com.openAtlas.framework.Framework;
+import com.openAtlas.hack.AtlasHacks;
+import com.openAtlas.hack.Hack;
+import com.openAtlas.hack.Hack.HackedClass;
+import com.openAtlas.hack.Hack.HackedMethod;
+import com.openAtlas.hack.Hack.HackDeclaration.HackAssertionException;
+import com.openAtlas.log.Logger;
+import com.openAtlas.log.LoggerFactory;
+import com.openAtlas.util.StringUtils;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -45,18 +56,6 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import blue.stack.openAtlas.PlatformConfig;
-
-import com.openAtlas.framework.BundleClassLoader;
-import com.openAtlas.framework.Framework;
-import com.openAtlas.hack.AtlasHacks;
-import com.openAtlas.hack.Hack;
-import com.openAtlas.hack.Hack.HackDeclaration.HackAssertionException;
-import com.openAtlas.hack.Hack.HackedClass;
-import com.openAtlas.hack.Hack.HackedMethod;
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
-import com.openAtlas.util.StringUtils;
 
 public class InstrumentationHook extends Instrumentation {
 	static final Logger log;
@@ -428,9 +427,9 @@ public class InstrumentationHook extends Instrumentation {
 		} catch (ClassNotFoundException e) {
 			ClassNotFoundException classNotFoundException = e;
 			CharSequence property = Framework.getProperty("com.openAtlas.welcome",
-					PlatformConfig.BOOT_ACTIVITY);
+					"blue.stack.openAtlas.welcome.Welcome");
 			if (TextUtils.isEmpty(property)) {
-				str2 = PlatformConfig.BOOT_ACTIVITY;
+				str2 = "blue.stack.openAtlas.welcome.Welcome";
 			} else {
 				CharSequence charSequence = property;
 			}
@@ -480,9 +479,9 @@ public class InstrumentationHook extends Instrumentation {
 					log.error(e.getMessage() + " Caused by: ", e.getNestedException());
 				}
 			}
-			String property = Framework.getProperty("com.openAtlas.welcome", PlatformConfig.BOOT_ACTIVITY);
+			String property = Framework.getProperty("com.openAtlas.welcome", "blue.stack.openAtlas.welcome.Welcome");
 			if (TextUtils.isEmpty(property)) {
-				property =PlatformConfig.BOOT_ACTIVITY;
+				property = "blue.stack.openAtlas.welcome.Welcome";
 			}
 			if (activity.getClass().getName().equals(property)) {
 				this.mBase.callActivityOnCreate(activity, null);
@@ -641,7 +640,7 @@ public class InstrumentationHook extends Instrumentation {
 	}
     /**
      * A convenience wrapper for {@link #addMonitor(ActivityMonitor)} that 
-     * creates IdleHandlerImpl class matching {@link ActivityMonitor} for you and returns it.
+     * creates a class matching {@link ActivityMonitor} for you and returns it.
      *  
      * @param cls The activity class this monitor is responsible for.
      * @param result A canned result to return if the monitor is hit; can 
@@ -685,7 +684,7 @@ public class InstrumentationHook extends Instrumentation {
      * Wait for an existing {@link ActivityMonitor} to be hit till the timeout
      * expires.  Once the monitor has been hit, it is removed from the activity 
      * monitor list and the first created Activity object that matched it is 
-     * returned.  If the timeout expires, IdleHandlerImpl null object is returned. 
+     * returned.  If the timeout expires, a null object is returned. 
      *
      * @param monitor The ActivityMonitor to wait for.
      * @param timeOut The timeout value in secs.
@@ -702,7 +701,7 @@ public class InstrumentationHook extends Instrumentation {
 		this.mBase.removeMonitor(monitor);
 	}
     /**
-     * Execute IdleHandlerImpl particular menu item.
+     * Execute a particular menu item.
      * 
      * @param targetActivity The activity in question.
      * @param id The identifier associated with the menu item.
@@ -715,7 +714,7 @@ public class InstrumentationHook extends Instrumentation {
 		return this.mBase.invokeMenuActionSync(targetActivity, id, flag);
 	}
     /**
-     * Show the context menu for the currently focused view and executes IdleHandlerImpl
+     * Show the context menu for the currently focused view and executes a
      * particular context menu item.
      * 
      * @param targetActivity The activity in question.
@@ -753,7 +752,7 @@ public class InstrumentationHook extends Instrumentation {
 		this.mBase.sendKeyDownUpSync(key);
 	}
     /**
-     * Higher-level method for sending both the down and up key events for IdleHandlerImpl
+     * Higher-level method for sending both the down and up key events for a
      * particular character key code.  Equivalent to creating both KeyEvent
      * objects by hand and calling {@link #sendKeySync}.  The event appears
      * as if it came from keyboard 0, the built in one.
