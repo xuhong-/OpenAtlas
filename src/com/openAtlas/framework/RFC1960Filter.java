@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -31,12 +31,11 @@ import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
 import org.osgi.framework.GetUserInfoRequest;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
-
-import blue.stack.openAtlas.Constants;
 
 final class RFC1960Filter implements Filter {
     private static final int AND_OPERATOR = 1;

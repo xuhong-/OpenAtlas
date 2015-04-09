@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -30,15 +30,15 @@ import java.security.cert.Certificate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-
 import com.openAtlas.hack.AssertionArrayException;
 import com.openAtlas.hack.AtlasHacks;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 import com.openAtlas.runtime.PackageLite;
+
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 
 public class ApkUtils {
     static final int SYSTEM_ROOT_STATE_DISABLE = 0;
@@ -85,8 +85,7 @@ public class ApkUtils {
         return null;
     }
 
-    @SuppressWarnings("unused")
-	private static Certificate[] loadCertificates(JarFile jarFile,
+    private static Certificate[] loadCertificates(JarFile jarFile,
             JarEntry jarEntry, byte[] bArr) {
 
         // TODO impl

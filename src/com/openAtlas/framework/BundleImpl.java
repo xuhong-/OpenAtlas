@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -41,11 +41,10 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
+import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
-
-import blue.stack.openAtlas.Constants;
 
 import com.openAtlas.framework.bundlestorage.Archive;
 import com.openAtlas.framework.bundlestorage.BundleArchive;

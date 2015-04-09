@@ -1,7 +1,7 @@
 package org.osgi.framework;
 
 //import com.taobao.business.orderManage.OrderListBusiness;
-//import blue.stack.util.Constants;
+//import blue.stack.openAtlas.util.Constants;
 //import com.taobao.wireless.security.sdk.staticdataencrypt.IStaticDataEncryptComponent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,8 +9,6 @@ import java.io.ObjectOutputStream;
 import java.security.BasicPermission;
 import java.security.Permission;
 import java.security.PermissionCollection;
-
-import blue.stack.openAtlas.Constants;
 
 public final class ServicePermission extends BasicPermission {
     private static final int ACTION_ALL = 3;

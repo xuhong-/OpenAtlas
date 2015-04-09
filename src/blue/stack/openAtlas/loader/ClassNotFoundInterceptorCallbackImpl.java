@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -23,10 +23,9 @@ package blue.stack.openAtlas.loader;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
-import blue.stack.openAtlas.PlatformConfig;
-
 import com.openAtlas.runtime.ClassNotFoundInterceptorCallback;
+
+import android.content.Intent;
 
 
 public class ClassNotFoundInterceptorCallbackImpl implements ClassNotFoundInterceptorCallback {
@@ -54,10 +53,10 @@ public class ClassNotFoundInterceptorCallbackImpl implements ClassNotFoundInterc
     @Override
 	public Intent returnIntent(Intent intent) {
         String className = intent.getComponent().getClassName();
-        String dataString = intent.getDataString();
+        CharSequence dataString = intent.getDataString();
         //TODO implement 
         if (className == null
-                || !className.equals(PlatformConfig.BOOT_ACTIVITY)) {
+                || !className.equals("blue.stack.openAtlas.welcome.Welcome")) {
             // if (Globals.isMiniPackage()) {
             // Component findBundleByActivity =
             // BundlesInstaller.instance().findBundleByActivity(className);
