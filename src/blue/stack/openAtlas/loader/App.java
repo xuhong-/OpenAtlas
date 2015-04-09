@@ -44,7 +44,7 @@ import android.util.Log;
 import blue.stack.BaselineInfoProvider;
 import blue.stack.Globals;
 import blue.stack.atlaswrapper.AtlasInitializer;
-import blue.stack.openAtlas.dexopt.util.Utils;
+import blue.stack.openAtlas.util.Utils;
 
 import com.openAtlas.android.lifecycle.PanguApplication;
 import com.openAtlas.runtime.ContextImplHook;
