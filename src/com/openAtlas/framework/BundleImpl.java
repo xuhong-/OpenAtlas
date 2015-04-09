@@ -41,10 +41,11 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
-import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+
+import blue.stack.openAtlas.Constants;
 
 import com.openAtlas.framework.bundlestorage.Archive;
 import com.openAtlas.framework.bundlestorage.BundleArchive;

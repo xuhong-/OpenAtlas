@@ -30,15 +30,15 @@ import java.security.cert.Certificate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+
 import com.openAtlas.hack.AssertionArrayException;
 import com.openAtlas.hack.AtlasHacks;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 import com.openAtlas.runtime.PackageLite;
-
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 
 public class ApkUtils {
     static final int SYSTEM_ROOT_STATE_DISABLE = 0;
@@ -85,7 +85,8 @@ public class ApkUtils {
         return null;
     }
 
-    private static Certificate[] loadCertificates(JarFile jarFile,
+    @SuppressWarnings("unused")
+	private static Certificate[] loadCertificates(JarFile jarFile,
             JarEntry jarEntry, byte[] bArr) {
 
         // TODO impl

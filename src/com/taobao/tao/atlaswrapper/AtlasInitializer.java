@@ -31,6 +31,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.text.TextUtils;
 import android.util.Log;
+import blue.stack.openAtlas.PlatformConfig;
 
 import com.openAtlas.framework.Atlas;
 import com.taobao.android.task.Coordinator;
@@ -72,7 +73,7 @@ public class AtlasInitializer {
         a = System.currentTimeMillis();
         Properties properties = new Properties();
         properties.put("com.openAtlas.welcome",
-                "com.taobao.tao.welcome.Welcome");
+        		PlatformConfig.BOOT_ACTIVITY);
         properties.put("com.openAtlas.debug.bundles", "true");
         properties.put("com.openAtlas.AppDirectory", this.mApplication
                 .getFilesDir().getParent());
