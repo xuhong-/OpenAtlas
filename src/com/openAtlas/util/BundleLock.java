@@ -18,39 +18,45 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
-package blue.stack.openAtlas.dexopt;
+package com.openAtlas.util;
 
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import android.os.Build.VERSION;
-
-public class InitExecutor {
-    static final Logger log;
-    private static boolean sDexOptLoaded;
-
-    private static native void dexopt(String str, String str2, String str3);
+public class BundleLock {
+    static ReentrantReadWriteLock[] mLock;
 
     static {
-        log = LoggerFactory.getInstance("InitExecutor");
-        sDexOptLoaded = false;
-        try {
-            System.loadLibrary("dexopt");
-            sDexOptLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
+        mLock = new ReentrantReadWriteLock[10];
+        for (int i = 0; i < 10; i++) {
+            mLock[i] = new ReentrantReadWriteLock();
         }
     }
 
-    public static boolean optDexFile(String str, String str2) {
-        try {
-            if (sDexOptLoaded && VERSION.SDK_INT <= 18) {
-                dexopt(str, str2, "v=n,o=v");
-                return true;
-            }
-        } catch (Throwable e) {
-            log.error("Exception while try to call native dexopt >>>", e);
+    public static void WriteLock(String str) {
+        mLock[hash(str)].writeLock().lock();
+    }
+
+    public static void WriteUnLock(String str) {
+        mLock[hash(str)].writeLock().unlock();
+    }
+
+    public static void ReadLock(String str) {
+        mLock[hash(str)].readLock().lock();
+    }
+
+    public static void ReadUnLock(String str) {
+        mLock[hash(str)].readLock().unlock();
+    }
+
+    private static int hash(String str) {
+        int i = 0;
+        int length = str.length();
+        byte[] bytes = str.getBytes();
+        int i2 = 0;
+        while (i < length) {
+            i2 += bytes[i];
+            i++;
         }
-        return false;
+        return i2 % 10;
     }
 }

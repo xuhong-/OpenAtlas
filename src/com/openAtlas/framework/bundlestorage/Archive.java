@@ -18,39 +18,44 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
-package blue.stack.openAtlas.dexopt;
+package com.openAtlas.framework.bundlestorage;
 
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.jar.Manifest;
 
-import android.os.Build.VERSION;
+public interface Archive {
+    void close();
 
-public class InitExecutor {
-    static final Logger log;
-    private static boolean sDexOptLoaded;
+    Class<?> findClass(String str, ClassLoader classLoader)
+            throws ClassNotFoundException;
 
-    private static native void dexopt(String str, String str2, String str3);
+    File findLibrary(String str);
 
-    static {
-        log = LoggerFactory.getInstance("InitExecutor");
-        sDexOptLoaded = false;
-        try {
-            System.loadLibrary("dexopt");
-            sDexOptLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-        }
-    }
+    File getArchiveFile();
 
-    public static boolean optDexFile(String str, String str2) {
-        try {
-            if (sDexOptLoaded && VERSION.SDK_INT <= 18) {
-                dexopt(str, str2, "v=n,o=v");
-                return true;
-            }
-        } catch (Throwable e) {
-            log.error("Exception while try to call native dexopt >>>", e);
-        }
-        return false;
-    }
+    BundleArchiveRevision getCurrentRevision();
+
+    Manifest getManifest() throws IOException;
+
+    List<URL> getResources(String str) throws IOException;
+
+    boolean isDexOpted();
+
+    BundleArchiveRevision newRevision(String str, File file, File file2)
+            throws IOException;
+
+    BundleArchiveRevision newRevision(String str, File file,
+            InputStream inputStream) throws IOException;
+
+    InputStream openAssetInputStream(String str) throws IOException;
+
+    InputStream openNonAssetInputStream(String str) throws IOException;
+
+    void optDexFile();
+
+    void purge() throws Exception;
 }

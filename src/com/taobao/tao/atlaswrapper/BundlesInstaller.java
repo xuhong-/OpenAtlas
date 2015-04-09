@@ -30,6 +30,9 @@ import java.util.zip.ZipFile;
 
 import org.osgi.framework.Bundle;
 
+import com.openAtlas.framework.Atlas;
+import com.openAtlas.runtime.RuntimeVariables;
+
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -38,8 +41,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StatFs;
-import android.taobao.atlas.framework.Atlas;
-import android.taobao.atlas.runtime.RuntimeVariables;
 import android.util.Log;
 import android.widget.Toast;
 

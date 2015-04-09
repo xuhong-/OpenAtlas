@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.taobao.atlas.bundleInfo.BundleInfoList;
-import android.taobao.atlas.runtime.ClassNotFoundInterceptorCallback;
 
+import com.openAtlas.bundleInfo.BundleInfoList;
+import com.openAtlas.runtime.ClassNotFoundInterceptorCallback;
 import com.taobao.lightapk.BundleListing.Component;
 
 public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallback {

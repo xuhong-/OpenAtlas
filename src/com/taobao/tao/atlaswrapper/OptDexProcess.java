@@ -22,11 +22,12 @@ package com.taobao.tao.atlaswrapper;
 
 import org.osgi.framework.Bundle;
 
+import com.openAtlas.framework.Atlas;
+import com.openAtlas.framework.BundleImpl;
+import com.openAtlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
+
 import android.app.Application;
 import android.content.Intent;
-import android.taobao.atlas.framework.Atlas;
-import android.taobao.atlas.framework.BundleImpl;
-import android.taobao.atlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
 import android.util.Log;
 
 

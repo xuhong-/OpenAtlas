@@ -18,39 +18,47 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
-package blue.stack.openAtlas.dexopt;
+package com.openAtlas.runtime;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 
-import android.os.Build.VERSION;
+import android.app.Application;
 
-public class InitExecutor {
+public class DelegateComponent {
+    static Map<String, Application> apkApplications;
+    private static Map<String, PackageLite> apkPackages;
     static final Logger log;
-    private static boolean sDexOptLoaded;
-
-    private static native void dexopt(String str, String str2, String str3);
 
     static {
-        log = LoggerFactory.getInstance("InitExecutor");
-        sDexOptLoaded = false;
-        try {
-            System.loadLibrary("dexopt");
-            sDexOptLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-        }
+        log = LoggerFactory.getInstance("DelegateComponent");
+        apkPackages = new ConcurrentHashMap();
+        apkApplications = new HashMap();
     }
 
-    public static boolean optDexFile(String str, String str2) {
-        try {
-            if (sDexOptLoaded && VERSION.SDK_INT <= 18) {
-                dexopt(str, str2, "v=n,o=v");
-                return true;
+    public static PackageLite getPackage(String str) {
+        return apkPackages.get(str);
+    }
+
+    public static void putPackage(String str, PackageLite packageLite) {
+        apkPackages.put(str, packageLite);
+    }
+
+    public static void removePackage(String str) {
+        apkPackages.remove(str);
+    }
+
+    public static String locateComponent(String str) {
+        for (Entry entry : apkPackages.entrySet()) {
+            if (((PackageLite) entry.getValue()).components.contains(str)) {
+                return (String) entry.getKey();
             }
-        } catch (Throwable e) {
-            log.error("Exception while try to call native dexopt >>>", e);
         }
-        return false;
+        return null;
     }
 }

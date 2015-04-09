@@ -24,8 +24,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.openAtlas.framework.Atlas;
+
 import android.os.Environment;
-import android.taobao.atlas.framework.Atlas;
 import android.util.Log;
 
 
