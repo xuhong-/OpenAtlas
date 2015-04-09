@@ -20,22 +20,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
  * **/
 package com.taobao.android.task;
 
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
+import android.os.MessageQueue.IdleHandler;
 
-/* compiled from: SaturativeExecutor.java */
-final class d implements ThreadFactory {
-    private final AtomicInteger a;
+import com.taobao.android.task.Coordinator.TaggedRunnable;
 
-    d() {
-        this.a = new AtomicInteger(1);
+final class IdleHandlerImpl implements IdleHandler {
+    IdleHandlerImpl() {
     }
 
     @Override
-	public Thread newThread(Runnable runnable) {
-        Thread thread = new Thread(runnable, "SaturativeThread #"
-                + this.a.getAndIncrement());
-        SaturativeExecutor.collectThread(thread);
-        return thread;
+	public boolean queueIdle() {
+        TaggedRunnable taggedRunnable = Coordinator.mIdleTasks
+                .poll();
+        if (taggedRunnable == null) {
+            return false;
+        }
+        Coordinator.postTask(taggedRunnable);
+        return !Coordinator.mIdleTasks.isEmpty();
     }
 }

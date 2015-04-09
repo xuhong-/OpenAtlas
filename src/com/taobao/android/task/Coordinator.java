@@ -28,8 +28,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.TargetApi;
 import android.os.AsyncTask;
@@ -155,7 +157,7 @@ public class Coordinator {
     }
 
     public static void scheduleIdleTasks() {
-        Looper.myQueue().addIdleHandler(new a());
+        Looper.myQueue().addIdleHandler(new IdleHandlerImpl());
     }
 
     private static void runWithTiming(TaggedRunnable taggedRunnable) {
@@ -193,9 +195,7 @@ public class Coordinator {
                         + "ms (real)");
             }
         } catch (Throwable th) {
-            Throwable th2 = th;
             int i = 1;
-            Throwable th3 = th2;
             if (isDebug) {
                 System.out.println("Timing - "
                         + Thread.currentThread().getName() + " "
@@ -228,10 +228,19 @@ public class Coordinator {
     }
 
     static {
-        mIdleTasks = new LinkedList();
-        mPoolWorkQueue = new LinkedBlockingQueue(128);
+        mIdleTasks = new LinkedList<TaggedRunnable>();
+        mPoolWorkQueue = new LinkedBlockingQueue<Runnable>(128);
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(8, 16,
-                1, TimeUnit.SECONDS, mPoolWorkQueue, new b(),
+                1, TimeUnit.SECONDS, mPoolWorkQueue, new ThreadFactory() {
+            private  AtomicInteger mAtomicInteger=new AtomicInteger(1);
+					@Override
+					public Thread newThread(Runnable r) {
+
+				        return new Thread(r, "CoordTask #" + this.mAtomicInteger.getAndIncrement());
+				    
+					
+					}
+				},
                 new CoordinatorRejectHandler());
         mExecutor = threadPoolExecutor;
         SaturativeExecutor

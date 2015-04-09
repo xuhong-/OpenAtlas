@@ -28,7 +28,7 @@ import android.os.Build;
 import android.util.Base64;
 
 /**
- * Represents the manifest digest for a package. This is suitable for comparison
+ * Represents the manifest digest for IdleHandlerImpl package. This is suitable for comparison
  * of two packages to know whether the manifests are identical.
  *
  * @hide
