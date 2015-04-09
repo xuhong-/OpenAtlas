@@ -27,6 +27,11 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 
+import com.openAtlas.framework.Atlas;
+import com.openAtlas.runtime.RuntimeVariables;
+import com.openAtlas.util.ApkUtils;
+import com.openAtlas.util.StringUtils;
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
@@ -34,10 +39,6 @@ import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
-import android.taobao.atlas.framework.Atlas;
-import android.taobao.atlas.runtime.RuntimeVariables;
-import android.taobao.atlas.util.ApkUtils;
-import android.taobao.atlas.util.StringUtils;
 import android.util.Log;
 import android.widget.Toast;
 

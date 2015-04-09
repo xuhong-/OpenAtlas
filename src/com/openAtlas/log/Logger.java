@@ -18,39 +18,40 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
-package blue.stack.openAtlas.dexopt;
+package com.openAtlas.log;
 
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
+public interface Logger {
+    void debug(String str);
 
-import android.os.Build.VERSION;
+    void error(String str);
 
-public class InitExecutor {
-    static final Logger log;
-    private static boolean sDexOptLoaded;
+    void error(String str, Throwable th);
 
-    private static native void dexopt(String str, String str2, String str3);
+    void error(StringBuffer stringBuffer, Throwable th);
 
-    static {
-        log = LoggerFactory.getInstance("InitExecutor");
-        sDexOptLoaded = false;
-        try {
-            System.loadLibrary("dexopt");
-            sDexOptLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-        }
-    }
+    void fatal(String str);
 
-    public static boolean optDexFile(String str, String str2) {
-        try {
-            if (sDexOptLoaded && VERSION.SDK_INT <= 18) {
-                dexopt(str, str2, "v=n,o=v");
-                return true;
-            }
-        } catch (Throwable e) {
-            log.error("Exception while try to call native dexopt >>>", e);
-        }
-        return false;
-    }
+    void fatal(String str, Throwable th);
+
+    void info(String str);
+
+    boolean isDebugEnabled();
+
+    boolean isErrorEnabled();
+
+    boolean isFatalEnabled();
+
+    boolean isInfoEnabled();
+
+    boolean isVerboseEnabled();
+
+    boolean isWarnEnabled();
+
+    void verbose(String str);
+
+    void warn(String str);
+
+    void warn(String str, Throwable th);
+
+    void warn(StringBuffer stringBuffer, Throwable th);
 }

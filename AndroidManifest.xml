@@ -9,7 +9,7 @@
         android:targetSdkVersion="21" />
 
     <application
-        android:name="test.blue.stack.loader.App"
+        android:name="blue.stack.openAtlas.loader.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"

@@ -18,39 +18,24 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
-package blue.stack.openAtlas.dexopt;
+package com.openAtlas.runtime;
 
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
+import android.app.Application;
+import android.content.res.Resources;
+import android.util.Log;
 
-import android.os.Build.VERSION;
+public class RuntimeVariables {
+    public static Application androidApplication;
+    public static DelegateClassLoader delegateClassLoader;
+    private static Resources delegateResources;
 
-public class InitExecutor {
-    static final Logger log;
-    private static boolean sDexOptLoaded;
-
-    private static native void dexopt(String str, String str2, String str3);
-
-    static {
-        log = LoggerFactory.getInstance("InitExecutor");
-        sDexOptLoaded = false;
-        try {
-            System.loadLibrary("dexopt");
-            sDexOptLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-        }
+    public static Resources getDelegateResources() {
+        return delegateResources;
     }
 
-    public static boolean optDexFile(String str, String str2) {
-        try {
-            if (sDexOptLoaded && VERSION.SDK_INT <= 18) {
-                dexopt(str, str2, "v=n,o=v");
-                return true;
-            }
-        } catch (Throwable e) {
-            log.error("Exception while try to call native dexopt >>>", e);
-        }
-        return false;
+    public static void setDelegateResources(Resources delegateResources) {
+ 
+        Log.e("bunny", "setDelegateResources" + delegateResources.toString());
+        RuntimeVariables.delegateResources = delegateResources;
     }
 }

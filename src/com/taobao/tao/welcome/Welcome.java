@@ -20,13 +20,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
  * **/
 package com.taobao.tao.welcome;
 
-import test.blue.stack.loader.App;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Button;
+import blue.stack.openAtlas.loader.App;
 
 import com.taobao.android.lifecycle.PanguActivity;
 import com.taobao.taobao.R;

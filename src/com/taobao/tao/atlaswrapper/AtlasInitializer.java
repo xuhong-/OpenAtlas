@@ -29,10 +29,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
-import android.taobao.atlas.framework.Atlas;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.openAtlas.framework.Atlas;
 import com.taobao.android.task.Coordinator;
 import com.taobao.tao.ClassNotFoundInterceptor;
 import com.taobao.tao.Globals;
@@ -71,10 +71,10 @@ public class AtlasInitializer {
     public void init() {
         a = System.currentTimeMillis();
         Properties properties = new Properties();
-        properties.put("android.taobao.atlas.welcome",
+        properties.put("com.openAtlas.welcome",
                 "com.taobao.tao.welcome.Welcome");
-        properties.put("android.taobao.atlas.debug.bundles", "true");
-        properties.put("android.taobao.atlas.AppDirectory", this.mApplication
+        properties.put("com.openAtlas.debug.bundles", "true");
+        properties.put("com.openAtlas.AppDirectory", this.mApplication
                 .getFilesDir().getParent());
         this.miniPackage = new MiniPackage(this.mApplication);
         this.miniPackage.init(properties);
@@ -106,7 +106,7 @@ public class AtlasInitializer {
                     if (this.mApplication.getPackageName().equals(this.mPkgName)) {
                         // if (!(Versions.isDebug() || mOptDexProcess() ||
                         // !ApkUtils.isRootSystem())) {
-                        // properties.put("android.taobao.atlas.publickey",
+                        // properties.put("com.openAtlas.publickey",
                         // SecurityFrameListener.PUBLIC_KEY);
                         // Atlas.getInstance().addFrameworkListener(new SecurityFrameListener());
                         // }
