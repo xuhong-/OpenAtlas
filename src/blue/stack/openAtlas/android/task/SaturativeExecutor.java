@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -21,6 +21,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package blue.stack.openAtlas.android.task;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.lang.Thread.State;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -113,7 +114,22 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
 
     static {
         PATTERN_CPU_ENTRIES = Pattern.compile("cpu[0-9]+");
-        sThreadFactory = new d();
+        sThreadFactory = new ThreadFactory() {
+			
+
+            private final AtomicInteger a= new AtomicInteger(1);;
+
+      
+
+            @Override
+        	public Thread newThread(Runnable runnable) {
+                Thread thread = new Thread(runnable, "SaturativeThread #"
+                        + this.a.getAndIncrement());
+                SaturativeExecutor.collectThread(thread);
+                return thread;
+            }
+
+		};
         mThreads = new HashSet();
     }
 
@@ -233,7 +249,14 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
 
     private static int countCpuCores() {
         try {
-            return new File("/sys/devices/system/cpu/").listFiles(new c()).length;
+            return new File("/sys/devices/system/cpu/").listFiles(new FileFilter() {
+				
+                @Override
+            	public boolean accept(File file) {
+                    return SaturativeExecutor.PATTERN_CPU_ENTRIES.matcher(file.getName())
+                            .matches();
+                }
+			}).length;
         } catch (Exception e) {
             return 0;
         }

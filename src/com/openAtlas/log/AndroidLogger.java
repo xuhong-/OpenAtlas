@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -35,27 +35,27 @@ public class AndroidLogger implements Logger {
 
     @Override
 	public void verbose(String str) {
-        String str2 = this.category;
+       Log.v(category, str);
     }
 
     @Override
 	public void debug(String str) {
-        String str2 = this.category;
+        Log.d(category, str);
     }
 
     @Override
 	public void info(String str) {
-        Log.i(this.category, str);
+        Log.i(category, str);
     }
 
     @Override
 	public void warn(String str) {
-        String str2 = this.category;
+    	   Log.w(category, str);
     }
 
     @Override
 	public void warn(String str, Throwable th) {
-        String str2 = this.category;
+      Log.w(str, th);
     }
 
     @Override

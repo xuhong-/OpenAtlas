@@ -2,7 +2,7 @@
  *  OpenAtlasForAndroid Project
 The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
-Permission is hereby granted, free of charge, to any person obtaining mApp copy of this software
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, 
 merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
@@ -28,14 +28,17 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build.VERSION;
 import android.os.Debug;
 import android.os.Looper;
+import android.os.MessageQueue.IdleHandler;
 import android.util.Log;
 
 public class Coordinator {
@@ -155,7 +158,19 @@ public class Coordinator {
     }
 
     public static void scheduleIdleTasks() {
-        Looper.myQueue().addIdleHandler(new a());
+        Looper.myQueue().addIdleHandler(new  IdleHandler() {
+			
+			@Override
+			public boolean queueIdle() {
+		        TaggedRunnable taggedRunnable = Coordinator.mIdleTasks
+		                .poll();
+		        if (taggedRunnable == null) {
+		            return false;
+		        }
+		        Coordinator.postTask(taggedRunnable);
+		        return !Coordinator.mIdleTasks.isEmpty();
+		    }
+		});
     }
 
     private static void runWithTiming(TaggedRunnable taggedRunnable) {
@@ -231,7 +246,21 @@ public class Coordinator {
         mIdleTasks = new LinkedList();
         mPoolWorkQueue = new LinkedBlockingQueue(128);
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(8, 16,
-                1, TimeUnit.SECONDS, mPoolWorkQueue, new b(),
+                1, TimeUnit.SECONDS, mPoolWorkQueue, new ThreadFactory() {
+        	
+            private final AtomicInteger a= new AtomicInteger(1);
+
+          
+
+     
+        	
+					
+					@Override
+					public Thread newThread(Runnable r) {
+						
+						  return new Thread(r, "CoordTask #" + this.a.getAndIncrement());
+					}
+				},
                 new CoordinatorRejectHandler());
         mExecutor = threadPoolExecutor;
         SaturativeExecutor
