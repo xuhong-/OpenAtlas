@@ -1,7 +1,6 @@
-/**OpenAtlasForAndroid Project
-
-The MIT License (MIT) 
-Copyright (c) 2015 Bunny Blue
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
@@ -18,15 +17,27 @@ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
-* **/
-package blue.stack.openAtlas;
+ * **/
+package blue.stack.atlaswrapper;
 
-/**
- * @author BunnyBlue
- *
- */
-public class PlatformConfig {
-	/***boot activity blue.stack.welcome.Welcome*******/
-	public static final String BOOT_ACTIVITY="blue.stack.welcome.Welcome";
+import com.openAtlas.android.task.Coordinator.TaggedRunnable;
 
+class StartupRunnable extends TaggedRunnable {
+    final BundlesInstaller mInstaller;
+    final OptDexProcess mOptDexProcess;
+    final AtlasInitializer mAtlasInitializer;
+
+    StartupRunnable(AtlasInitializer mAtlasInitializer, String tag, BundlesInstaller mInstaller,
+            OptDexProcess mOptDexProcess) {
+        super(tag);
+        this.mAtlasInitializer = mAtlasInitializer;
+        this.mInstaller = mInstaller;
+        this.mOptDexProcess = mOptDexProcess;
+
+    }
+
+    @Override
+	public void run() {
+        this.mAtlasInitializer.process(this.mInstaller, this.mOptDexProcess);
+    }
 }

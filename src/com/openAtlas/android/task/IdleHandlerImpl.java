@@ -1,7 +1,6 @@
-/**OpenAtlasForAndroid Project
-
-The MIT License (MIT) 
-Copyright (c) 2015 Bunny Blue
+/**
+ *  OpenAtlasForAndroid Project
+The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
@@ -18,15 +17,25 @@ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
-* **/
-package blue.stack.openAtlas;
+ * **/
+package com.openAtlas.android.task;
 
-/**
- * @author BunnyBlue
- *
- */
-public class PlatformConfig {
-	/***boot activity blue.stack.welcome.Welcome*******/
-	public static final String BOOT_ACTIVITY="blue.stack.welcome.Welcome";
+import android.os.MessageQueue.IdleHandler;
 
+import com.openAtlas.android.task.Coordinator.TaggedRunnable;
+
+final class IdleHandlerImpl implements IdleHandler {
+    IdleHandlerImpl() {
+    }
+
+    @Override
+	public boolean queueIdle() {
+        TaggedRunnable taggedRunnable = Coordinator.mIdleTasks
+                .poll();
+        if (taggedRunnable == null) {
+            return false;
+        }
+        Coordinator.postTask(taggedRunnable);
+        return !Coordinator.mIdleTasks.isEmpty();
+    }
 }
