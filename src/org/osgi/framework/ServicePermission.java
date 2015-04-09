@@ -1,7 +1,7 @@
 package org.osgi.framework;
 
 //import com.taobao.business.orderManage.OrderListBusiness;
-//import com.taobao.tao.util.Constants;
+//import blue.stack.util.Constants;
 //import com.taobao.wireless.security.sdk.staticdataencrypt.IStaticDataEncryptComponent;
 import java.io.IOException;
 import java.io.ObjectInputStream;

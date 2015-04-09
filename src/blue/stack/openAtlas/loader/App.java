@@ -41,14 +41,14 @@ import android.os.Build.VERSION;
 import android.os.Process;
 import android.text.TextUtils;
 import android.util.Log;
+import blue.stack.BaselineInfoProvider;
+import blue.stack.Globals;
+import blue.stack.atlaswrapper.AtlasInitializer;
 import blue.stack.openAtlas.dexopt.util.Utils;
 
+import com.openAtlas.android.lifecycle.PanguApplication;
 import com.openAtlas.runtime.ContextImplHook;
 import com.openAtlas.runtime.RuntimeVariables;
-import com.taobao.android.lifecycle.PanguApplication;
-import com.taobao.tao.BaselineInfoProvider;
-import com.taobao.tao.Globals;
-import com.taobao.tao.atlaswrapper.AtlasInitializer;
 
 public class App extends PanguApplication {
 

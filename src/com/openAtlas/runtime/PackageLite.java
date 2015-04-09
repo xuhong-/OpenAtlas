@@ -38,8 +38,8 @@ import android.util.Log;
 
 
 public class PackageLite {
-	private static final String XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AlipayAuthenticationService";
-	private static final String XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE = "com.taobao.android.sso.internal.AuthenticationService";
+	private static final String XMLDISABLECOMPONENT_SSO_ALIPAY_AUTHENTICATION_SERVICE = "com.openAtlas.android.sso.internal.AlipayAuthenticationService";
+	private static final String XMLDISABLECOMPONENT_SSO_AUTHENTICATION_SERVICE = "com.openAtlas.android.sso.internal.AuthenticationService";
 
 	public String applicationClassName;
 	public int applicationDescription;

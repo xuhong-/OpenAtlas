@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.taobao.tao.welcome.Welcome"
+            android:name="blue.stack.welcome.Welcome"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,7 +70,7 @@
             android:exported="false" >
         </provider> -->
         <provider
-            android:name="com.taobao.tao.proxy.TBLocationContentProviderProxy"
+            android:name="blue.stack.openAtlas.mirrorProvider.TBLocationContentProviderProxy"
             android:authorities="appcenter"
             android:enabled="true"
             android:exported="true" >
