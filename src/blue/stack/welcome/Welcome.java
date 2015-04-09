@@ -29,7 +29,7 @@ import android.widget.Button;
 import blue.stack.openAtlas.loader.App;
 
 import com.openAtlas.android.lifecycle.PanguActivity;
-import com.taobao.taobao.R;
+import com.openAtlas.sdk.R;
 
 public class Welcome extends PanguActivity {
 

@@ -27,7 +27,7 @@ import android.app.Application;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
 
-import com.taobao.taobao.R;
+import com.openAtlas.sdk.R;
 
 public class Globals {
     private static Application sApplication;
