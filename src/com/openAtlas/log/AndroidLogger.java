@@ -35,27 +35,27 @@ public class AndroidLogger implements Logger {
 
     @Override
 	public void verbose(String str) {
-        String str2 = this.category;
+       Log.v(category, str);
     }
 
     @Override
 	public void debug(String str) {
-        String str2 = this.category;
+        Log.d(category, str);
     }
 
     @Override
 	public void info(String str) {
-        Log.i(this.category, str);
+        Log.i(category, str);
     }
 
     @Override
 	public void warn(String str) {
-        String str2 = this.category;
+    	   Log.w(category, str);
     }
 
     @Override
 	public void warn(String str, Throwable th) {
-        String str2 = this.category;
+      Log.w(str, th);
     }
 
     @Override
