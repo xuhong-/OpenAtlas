@@ -64,7 +64,7 @@ public interface Constants {
     public static final String COMMEND_TMALL = "commend_tmall";
     public static final String COMPLAINFAILED = "抱歉，您的反馈发送失败，请重新发送！";
     public static final String COMPLAININVALIDSID = "抱歉，请重新登录！";
-    public static final String COMPLAINSUCCESS = "您的反馈我们已收到，感谢您对淘宝网客户端的关注和支持！";
+ 
     public static final String COOLNAVIGATION_FLAG_SHARED = "coolnavigation_flag_shared";
     public static final String COOLNAVIGATION_SHARED = "coolnavigation_shared";
     public static final String COSHOP_SHARED = "coshop_shared";
@@ -81,7 +81,7 @@ public interface Constants {
     public static final int EVENT_ID_EFFECT_TRACK = 23500;
     public static final int EVENT_ID_VIEW_ITEM_LBS = 20001;
     public static final int EVENT_YYZ_EVENT = 2101;
-    public static final String EXITSHOWMESSAGE = "是否退出淘客户端？";
+
     public static int EventID_ATLAS_BLADE = 0;
     public static int EventID_ATLAS_DD_INSTALLERR = 0;
     public static int EventID_ATLAS_DD_LOADERR = 0;
