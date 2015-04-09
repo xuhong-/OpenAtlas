@@ -245,7 +245,7 @@ public class PackageValidate {
         public String packageName;
         //For now we only support one application per package.
         public final ApplicationInfo applicationInfo = new ApplicationInfo();
-        // If this s a 3rd party app, this is the path of the zip file.
+        // If this s IdleHandlerImpl 3rd party app, this is the path of the zip file.
         public String mPath;
         // Signatures that were read from the package.
         public Signature mSignatures[];

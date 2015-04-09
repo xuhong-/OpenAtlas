@@ -641,7 +641,7 @@ public class InstrumentationHook extends Instrumentation {
 	}
     /**
      * A convenience wrapper for {@link #addMonitor(ActivityMonitor)} that 
-     * creates a class matching {@link ActivityMonitor} for you and returns it.
+     * creates IdleHandlerImpl class matching {@link ActivityMonitor} for you and returns it.
      *  
      * @param cls The activity class this monitor is responsible for.
      * @param result A canned result to return if the monitor is hit; can 
@@ -685,7 +685,7 @@ public class InstrumentationHook extends Instrumentation {
      * Wait for an existing {@link ActivityMonitor} to be hit till the timeout
      * expires.  Once the monitor has been hit, it is removed from the activity 
      * monitor list and the first created Activity object that matched it is 
-     * returned.  If the timeout expires, a null object is returned. 
+     * returned.  If the timeout expires, IdleHandlerImpl null object is returned. 
      *
      * @param monitor The ActivityMonitor to wait for.
      * @param timeOut The timeout value in secs.
@@ -702,7 +702,7 @@ public class InstrumentationHook extends Instrumentation {
 		this.mBase.removeMonitor(monitor);
 	}
     /**
-     * Execute a particular menu item.
+     * Execute IdleHandlerImpl particular menu item.
      * 
      * @param targetActivity The activity in question.
      * @param id The identifier associated with the menu item.
@@ -715,7 +715,7 @@ public class InstrumentationHook extends Instrumentation {
 		return this.mBase.invokeMenuActionSync(targetActivity, id, flag);
 	}
     /**
-     * Show the context menu for the currently focused view and executes a
+     * Show the context menu for the currently focused view and executes IdleHandlerImpl
      * particular context menu item.
      * 
      * @param targetActivity The activity in question.
@@ -753,7 +753,7 @@ public class InstrumentationHook extends Instrumentation {
 		this.mBase.sendKeyDownUpSync(key);
 	}
     /**
-     * Higher-level method for sending both the down and up key events for a
+     * Higher-level method for sending both the down and up key events for IdleHandlerImpl
      * particular character key code.  Equivalent to creating both KeyEvent
      * objects by hand and calling {@link #sendKeySync}.  The event appears
      * as if it came from keyboard 0, the built in one.
