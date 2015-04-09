@@ -10,6 +10,8 @@ import java.security.BasicPermission;
 import java.security.Permission;
 import java.security.PermissionCollection;
 
+import blue.stack.openAtlas.Constants;
+
 public final class ServicePermission extends BasicPermission {
     private static final int ACTION_ALL = 3;
     private static final int ACTION_ERROR = Integer.MIN_VALUE;

@@ -43,7 +43,8 @@ import java.util.jar.Manifest;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleException;
-import org.osgi.framework.Constants;
+
+import blue.stack.openAtlas.Constants;
 
 import com.openAtlas.framework.bundlestorage.Archive;
 import com.openAtlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;

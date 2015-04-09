@@ -1,4 +1,4 @@
-package org.osgi.framework;
+package blue.stack.openAtlas;
 
 public interface Constants {
     public static final int ACTIVITY_ID_ALIPAY = 12;

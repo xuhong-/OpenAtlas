@@ -25,17 +25,6 @@ import java.util.List;
 
 import org.osgi.framework.BundleException;
 
-import com.openAtlas.framework.BundleClassLoader;
-import com.openAtlas.framework.Framework;
-import com.openAtlas.hack.AtlasHacks;
-import com.openAtlas.hack.Hack;
-import com.openAtlas.hack.Hack.HackedClass;
-import com.openAtlas.hack.Hack.HackedMethod;
-import com.openAtlas.hack.Hack.HackDeclaration.HackAssertionException;
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
-import com.openAtlas.util.StringUtils;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -56,6 +45,18 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import blue.stack.openAtlas.PlatformConfig;
+
+import com.openAtlas.framework.BundleClassLoader;
+import com.openAtlas.framework.Framework;
+import com.openAtlas.hack.AtlasHacks;
+import com.openAtlas.hack.Hack;
+import com.openAtlas.hack.Hack.HackDeclaration.HackAssertionException;
+import com.openAtlas.hack.Hack.HackedClass;
+import com.openAtlas.hack.Hack.HackedMethod;
+import com.openAtlas.log.Logger;
+import com.openAtlas.log.LoggerFactory;
+import com.openAtlas.util.StringUtils;
 
 public class InstrumentationHook extends Instrumentation {
 	static final Logger log;
@@ -427,9 +428,9 @@ public class InstrumentationHook extends Instrumentation {
 		} catch (ClassNotFoundException e) {
 			ClassNotFoundException classNotFoundException = e;
 			CharSequence property = Framework.getProperty("com.openAtlas.welcome",
-					"com.taobao.tao.welcome.Welcome");
+					PlatformConfig.BOOT_ACTIVITY);
 			if (TextUtils.isEmpty(property)) {
-				str2 = "com.taobao.tao.welcome.Welcome";
+				str2 = PlatformConfig.BOOT_ACTIVITY;
 			} else {
 				CharSequence charSequence = property;
 			}
@@ -479,9 +480,9 @@ public class InstrumentationHook extends Instrumentation {
 					log.error(e.getMessage() + " Caused by: ", e.getNestedException());
 				}
 			}
-			String property = Framework.getProperty("com.openAtlas.welcome", "com.taobao.tao.welcome.Welcome");
+			String property = Framework.getProperty("com.openAtlas.welcome", PlatformConfig.BOOT_ACTIVITY);
 			if (TextUtils.isEmpty(property)) {
-				property = "com.taobao.tao.welcome.Welcome";
+				property =PlatformConfig.BOOT_ACTIVITY;
 			}
 			if (activity.getClass().getName().equals(property)) {
 				this.mBase.callActivityOnCreate(activity, null);

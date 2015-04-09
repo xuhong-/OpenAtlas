@@ -28,7 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.osgi.framework.Constants;
+import blue.stack.openAtlas.Constants;
 
 public class ClassUtils {
     public static final String INNER_CLASS_SEPARATOR;

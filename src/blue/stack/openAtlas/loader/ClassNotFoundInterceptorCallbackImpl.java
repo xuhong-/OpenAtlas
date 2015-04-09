@@ -23,9 +23,10 @@ package blue.stack.openAtlas.loader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.openAtlas.runtime.ClassNotFoundInterceptorCallback;
-
 import android.content.Intent;
+import blue.stack.openAtlas.PlatformConfig;
+
+import com.openAtlas.runtime.ClassNotFoundInterceptorCallback;
 
 
 public class ClassNotFoundInterceptorCallbackImpl implements ClassNotFoundInterceptorCallback {
@@ -56,7 +57,7 @@ public class ClassNotFoundInterceptorCallbackImpl implements ClassNotFoundInterc
         String dataString = intent.getDataString();
         //TODO implement 
         if (className == null
-                || !className.equals("com.taobao.tao.welcome.Welcome")) {
+                || !className.equals(PlatformConfig.BOOT_ACTIVITY)) {
             // if (Globals.isMiniPackage()) {
             // Component findBundleByActivity =
             // BundlesInstaller.instance().findBundleByActivity(className);
