@@ -44,7 +44,7 @@ public class PanguActivity extends Activity {
     }
 
     public PanguActivity() {
-        this.mIndividualActivityLifecycleCallbacks = new CopyOnWriteArrayList();
+        this.mIndividualActivityLifecycleCallbacks = new CopyOnWriteArrayList<IndividualActivityLifecycleCallback>();
     }
 
     @Override

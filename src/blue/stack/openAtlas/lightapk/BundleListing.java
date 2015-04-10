@@ -43,7 +43,7 @@ public class BundleListing  {
         private List<String> mServiceList;
         private List<String> msetReceiverList;
         private List<String> mProviderList;
-        private boolean m;
+        private boolean isHasSO;
 
         public List<String> getReceivers() {
             return this.msetReceiverList;
@@ -62,68 +62,68 @@ public class BundleListing  {
         }
 
         public boolean isHasSO() {
-            return this.m;
+            return this.isHasSO;
         }
 
-        public void setHasSO(boolean z) {
-            this.m = z;
+        public void setHasSO(boolean isHasSO) {
+            this.isHasSO = isHasSO;
         }
 
         public String getMd5() {
             return this.md5;
         }
 
-        public void setMd5(String str) {
-            this.md5 = str;
+        public void setMd5(String md5) {
+            this.md5 = md5;
         }
 
         public String getUrl() {
             return this.mUrl;
         }
 
-        public void setUrl(String str) {
+        public void setUrl(String mUrl) {
      
-            this.mUrl = str;
+            this.mUrl = mUrl;
         }
 
         public String getDesc() {
             return this.desc;
         }
 
-        public void setDesc(String str) {
-            this.desc = str;
+        public void setDesc(String desc) {
+            this.desc = desc;
         }
 
         public String getName() {
             return this.name;
         }
 
-        public void setName(String str) {
-            this.name = str;
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getPkgName() {
             return this.pkgName;
         }
 
-        public void setPkgName(String str) {
-            this.pkgName = str;
+        public void setPkgName(String pkgName) {
+            this.pkgName = pkgName;
         }
 
         public long getSize() {
             return this.size;
         }
 
-        public void setSize(long j) {
-            this.size = j;
+        public void setSize(long size) {
+            this.size = size;
         }
 
         public String getVersion() {
             return this.version;
         }
 
-        public void setVersion(String str) {
-            this.version = str;
+        public void setVersion(String version) {
+            this.version = version;
         }
 
         public List<String> getDependency() {

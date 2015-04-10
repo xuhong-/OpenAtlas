@@ -85,7 +85,7 @@ public class PanguApplication extends ApplicationCompat {
 
         @Override
 		public void onActivityCreated(Activity activity,  Bundle bundle) {
-            this.mApplication.mWeakActivity = new WeakReference(activity);
+            this.mApplication.mWeakActivity = new WeakReference<Activity>(activity);
             if (this.mApplication.mCreationCount.getAndIncrement() == 0 && !this.mApplication.mCrossActivityLifecycleCallbacks.isEmpty()) {
                 for (CrossActivityLifecycleCallback onCreated : this.mApplication.mCrossActivityLifecycleCallbacks) {
                     onCreated.onCreated(activity);
@@ -134,7 +134,7 @@ public class PanguApplication extends ApplicationCompat {
     }
 
     public PanguApplication() {
-        this.mCrossActivityLifecycleCallbacks = new CopyOnWriteArrayList();
+        this.mCrossActivityLifecycleCallbacks = new CopyOnWriteArrayList<CrossActivityLifecycleCallback>();
         this.mCreationCount = new AtomicInteger();
         this.mStartCount = new AtomicInteger();
     }

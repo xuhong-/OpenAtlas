@@ -44,9 +44,9 @@ public class ProviderProxy extends ContentProvider {
 			return this.mContentProvider;
 		}
 		try {
-			Class loadClass = Globals.getClassLoader().loadClass(mTargetProvider);
+			Class<?> loadClass = Globals.getClassLoader().loadClass(mTargetProvider);
 			if (loadClass != null) {
-				Constructor constructor = loadClass.getConstructor(new Class[0]);
+				Constructor<?> constructor = loadClass.getConstructor(new Class[0]);
 				constructor.setAccessible(true);
 				this.mContentProvider = (ContentProvider) constructor.newInstance(new Object[0]);
 				Field declaredField = ContentProvider.class.getDeclaredField("mContext");

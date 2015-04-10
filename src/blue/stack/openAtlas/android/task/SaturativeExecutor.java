@@ -130,7 +130,7 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
             }
 
 		};
-        mThreads = new HashSet();
+        mThreads = new HashSet<Thread>();
     }
 
     @Override
@@ -189,7 +189,8 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
         // SaturationAwareBlockingQueue(1024);
         // mQueue = saturationAwareBlockingQueue;
         mQueue = (SaturationAwareBlockingQueue<Runnable>) getQueue();
-        ((SaturationAwareBlockingQueue) getQueue()).setExecutor(this);
+       
+        ((SaturationAwareBlockingQueue<?>) getQueue()).setExecutor(this);
     }
 
     protected boolean isReallyUnsaturated() {
@@ -212,10 +213,10 @@ public class SaturativeExecutor extends ThreadPoolExecutor {
         }
         boolean z;
         synchronized (mThreads) {
-            Iterator it = mThreads.iterator();
+            Iterator<Thread> it = mThreads.iterator();
             size = 0;
             while (it.hasNext()) {
-                State state = ((Thread) it.next()).getState();
+                State state = it.next().getState();
                 if (state == State.RUNNABLE || state == State.NEW) {
                     i = size + 1;
                 } else {

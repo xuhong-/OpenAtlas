@@ -29,13 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Bundle;
 
-import com.openAtlas.framework.BundleImpl;
-import com.openAtlas.framework.Framework;
-import com.openAtlas.hack.AndroidHack;
-import com.openAtlas.hack.AtlasHacks;
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
-
 import android.app.Application;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
@@ -43,6 +36,13 @@ import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+
+import com.openAtlas.framework.BundleImpl;
+import com.openAtlas.framework.Framework;
+import com.openAtlas.hack.AndroidHack;
+import com.openAtlas.hack.AtlasHacks;
+import com.openAtlas.log.Logger;
+import com.openAtlas.log.LoggerFactory;
 
 public class DelegateResources extends Resources {
     static final Logger log;
@@ -55,7 +55,7 @@ public class DelegateResources extends Resources {
     public DelegateResources(AssetManager assetManager, Resources resources) {
         super(assetManager, resources.getDisplayMetrics(), resources
                 .getConfiguration());
-        this.resIdentifierMap = new ConcurrentHashMap();
+        this.resIdentifierMap = new ConcurrentHashMap<String, Integer>();
     }
 
     public static void newDelegateResources(Application application,
@@ -63,7 +63,7 @@ public class DelegateResources extends Resources {
         List<Bundle> bundles = Framework.getBundles();
         if (bundles != null && !bundles.isEmpty()) {
             Resources delegateResources;
-            List<String> arrayList = new ArrayList();
+            List<String> arrayList = new ArrayList<String>();
             arrayList.add(application.getApplicationInfo().sourceDir);
             for (Bundle bundle : bundles) {
                 arrayList.add(((BundleImpl) bundle).getArchive()
@@ -80,7 +80,7 @@ public class DelegateResources extends Resources {
                 delegateResources = new DelegateResources(assetManager,
                         resources);
             } else {
-                Constructor declaredConstructor = Class.forName(
+                Constructor<?> declaredConstructor = Class.forName(
                         "android.content.res.MiuiResources")
                         .getDeclaredConstructor(
                                 new Class[] { AssetManager.class,
@@ -128,7 +128,7 @@ public class DelegateResources extends Resources {
         if (TextUtils.isEmpty(str) || TextUtils.isEmpty(str2)) {
             return 0;
         }
-        List bundles = Framework.getBundles();
+        List<Bundle> bundles = Framework.getBundles();
         if (!(bundles == null || bundles.isEmpty())) {
             for (Bundle bundle : Framework.getBundles()) {
                 String location = bundle.getLocation();

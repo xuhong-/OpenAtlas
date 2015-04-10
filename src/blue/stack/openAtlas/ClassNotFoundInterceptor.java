@@ -38,7 +38,7 @@ public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallbac
     }
 
     static {
-        GO_H5_BUNDLES_IF_NOT_EXISTS = new ArrayList();
+        GO_H5_BUNDLES_IF_NOT_EXISTS = new ArrayList<String>();
     }
 
     public static void addGoH5BundlesIfNotExists(String str) {
@@ -51,13 +51,14 @@ public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallbac
         GO_H5_BUNDLES_IF_NOT_EXISTS.clear();
     }
 
-    @Override
+    @SuppressWarnings("unused")
+	@Override
 	public Intent returnIntent(Intent intent) {
         Object obj = 1;
         Object obj2 = null;
         String className = intent.getComponent().getClassName();
         CharSequence dataString = intent.getDataString();
-        if (className == null || !className.equals("blue.stack.openAtlas.welcome.Welcome")) {
+        if (className == null || !className.equals(PlatformConfigure.BOOT_ACTIVITY)) {
             String bundleForComponet = BundleInfoList.getInstance().getBundleForComponet(className);
          //   Atlas.getInstance().getBundle(intent.get)
 //            if (mOptDexProcess.sInternalBundles == null) {
