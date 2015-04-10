@@ -5,4 +5,4 @@
  * @author BunnyBlue
  *
  */
-package blue.stack.openAtlas.dexopt.util;
+package com.openAtlas.util;

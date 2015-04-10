@@ -45,10 +45,10 @@ import blue.stack.openAtlas.BaselineInfoProvider;
 import blue.stack.openAtlas.Globals;
 import blue.stack.openAtlas.android.lifecycle.PanguApplication;
 import blue.stack.openAtlas.atlaswrapper.AtlasInitializer;
-import blue.stack.openAtlas.dexopt.util.Utils;
 
 import com.openAtlas.runtime.ContextImplHook;
 import com.openAtlas.runtime.RuntimeVariables;
+import com.openAtlas.util.Utils;
 
 public class App extends PanguApplication {
 
