@@ -33,12 +33,16 @@ import android.view.View;
 import blue.stack.openAtlas.android.lifecycle.PanguActivity;
 
 public class BaseActivity extends PanguActivity {
+    @SuppressWarnings("unused")
     private final String TAG;
-    private boolean disablefinishAnimation;
-    private boolean isNaviActivity;
+    @SuppressWarnings("unused")
+	private boolean disablefinishAnimation;
+    @SuppressWarnings("unused")
+	private boolean isNaviActivity;
     private View mPanelTopView;
-
+    @SuppressWarnings("unused")
     private long resumeUptime;
+    @SuppressWarnings("unused")
     private List<Integer> sMenuItemId;
 
     public BaseActivity() {

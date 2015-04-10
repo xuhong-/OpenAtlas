@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.app.Application;
+
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
-
-import android.app.Application;
 
 public class DelegateComponent {
     static Map<String, Application> apkApplications;
@@ -37,8 +37,8 @@ public class DelegateComponent {
 
     static {
         log = LoggerFactory.getInstance("DelegateComponent");
-        apkPackages = new ConcurrentHashMap();
-        apkApplications = new HashMap();
+        apkPackages = new ConcurrentHashMap<String, PackageLite>();
+        apkApplications = new HashMap<String, Application>();
     }
 
     public static PackageLite getPackage(String str) {
@@ -54,9 +54,9 @@ public class DelegateComponent {
     }
 
     public static String locateComponent(String str) {
-        for (Entry entry : apkPackages.entrySet()) {
-            if (((PackageLite) entry.getValue()).components.contains(str)) {
-                return (String) entry.getKey();
+        for (Entry<String, PackageLite> entry : apkPackages.entrySet()) {
+            if (entry.getValue().components.contains(str)) {
+                return entry.getKey();
             }
         }
         return null;

@@ -68,10 +68,10 @@ public class BundleContextImpl implements BundleContext {
     @Override
 	public void addBundleListener(BundleListener bundleListener) {
         checkValid();
-        List list = bundleListener instanceof SynchronousBundleListener ? Framework.syncBundleListeners
+        List<BundleListener> list = bundleListener instanceof SynchronousBundleListener ? Framework.syncBundleListeners
                 : Framework.bundleListeners;
         if (this.bundle.registeredBundleListeners == null) {
-            this.bundle.registeredBundleListeners = new ArrayList();
+            this.bundle.registeredBundleListeners = new ArrayList<BundleListener>();
         }
         if (!this.bundle.registeredBundleListeners.contains(bundleListener)) {
             list.add(bundleListener);
@@ -83,7 +83,7 @@ public class BundleContextImpl implements BundleContext {
 	public void addFrameworkListener(FrameworkListener frameworkListener) {
         checkValid();
         if (this.bundle.registeredFrameworkListeners == null) {
-            this.bundle.registeredFrameworkListeners = new ArrayList();
+            this.bundle.registeredFrameworkListeners = new ArrayList<FrameworkListener>();
         }
         if (!this.bundle.registeredFrameworkListeners
                 .contains(frameworkListener)) {
@@ -99,7 +99,7 @@ public class BundleContextImpl implements BundleContext {
         ServiceListenerEntry serviceListenerEntry = new ServiceListenerEntry(
                 serviceListener, str);
         if (this.bundle.registeredServiceListeners == null) {
-            this.bundle.registeredServiceListeners = new ArrayList();
+            this.bundle.registeredServiceListeners = new ArrayList<ServiceListener>();
         }
         if (isServiceListenerRegistered(serviceListener)) {
             Framework.serviceListeners.remove(serviceListenerEntry);
@@ -152,8 +152,8 @@ public class BundleContextImpl implements BundleContext {
     @Override
 	public Bundle[] getBundles() {
         checkValid();
-        List bundles = Framework.getBundles();
-        Bundle[] bundleArr = (Bundle[]) bundles.toArray(new Bundle[bundles
+        List<Bundle> bundles = Framework.getBundles();
+        Bundle[] bundleArr = bundles.toArray(new Bundle[bundles
                 .size()]);
         Bundle[] obj = new Bundle[(bundleArr.length + 1)];
         obj[0] = Framework.systemBundle;
@@ -198,7 +198,7 @@ public class BundleContextImpl implements BundleContext {
         if (str == null) {
             collection = Framework.services;
         } else {
-            List list = Framework.classes_services.get(str);
+            List<ServiceReference> list = Framework.classes_services.get(str);
             if (list == null) {
                 return null;
             }

@@ -27,11 +27,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 
-import com.openAtlas.framework.Atlas;
-import com.openAtlas.runtime.RuntimeVariables;
-import com.openAtlas.util.ApkUtils;
-import com.openAtlas.util.StringUtils;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
@@ -41,6 +36,11 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.openAtlas.framework.Atlas;
+import com.openAtlas.runtime.RuntimeVariables;
+import com.openAtlas.util.ApkUtils;
+import com.openAtlas.util.StringUtils;
 
 public class SecurityFrameListener implements FrameworkListener {
 	public static final String PUBLIC_KEY = "30819f300d06092a864886f70d010101050003818d00308189028181008406125f369fde2720f7264923a63dc48e1243c1d9783ed44d8c276602d2d570073d92c155b81d5899e9a8a97e06353ac4b044d07ca3e2333677d199e0969c96489f6323ed5368e1760731704402d0112c002ccd09a06d27946269a438fe4b0216b718b658eed9d165023f24c6ddaec0af6f47ada8306ad0c4f0fcd80d9b69110203010001";

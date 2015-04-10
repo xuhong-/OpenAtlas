@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import blue.stack.openAtlas.ClassNotFoundInterceptor;
 import blue.stack.openAtlas.Globals;
+import blue.stack.openAtlas.PlatformConfigure;
 import blue.stack.openAtlas.android.task.Coordinator;
 
 import com.openAtlas.framework.Atlas;
@@ -237,12 +238,12 @@ public class AtlasInitializer {
             }
             System.setProperty("BUNDLES_INSTALLED", "true");
             this.mApplication.sendBroadcast(new Intent(
-                    "com.taobao.taobao.action.BUNDLES_INSTALLED"));
+                    PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
             dVar.UpdatePackageVersion();
         } else if (!this.i && this.mApplication.getPackageName().equals(this.mPkgName)) {
             System.setProperty("BUNDLES_INSTALLED", "true");
             this.mApplication.sendBroadcast(new Intent(
-                    "com.taobao.taobao.action.BUNDLES_INSTALLED"));
+            		PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
         }
     }
 }

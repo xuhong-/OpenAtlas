@@ -31,6 +31,11 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.FrameworkListener;
 
+import android.app.Application;
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+
 import com.openAtlas.hack.AndroidHack;
 import com.openAtlas.hack.AssertionArrayException;
 import com.openAtlas.hack.AtlasHacks;
@@ -44,11 +49,6 @@ import com.openAtlas.runtime.FrameworkLifecycleHandler;
 import com.openAtlas.runtime.InstrumentationHook;
 import com.openAtlas.runtime.PackageLite;
 import com.openAtlas.runtime.RuntimeVariables;
-
-import android.app.Application;
-import android.content.ComponentName;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 
 public class Atlas {
     protected static Atlas instance;
@@ -190,7 +190,7 @@ public class Atlas {
         return RuntimeVariables.delegateClassLoader;
     }
 
-    public Class getComponentClass(String str) throws ClassNotFoundException {
+    public Class<?> getComponentClass(String str) throws ClassNotFoundException {
         return RuntimeVariables.delegateClassLoader.loadClass(str);
     }
 

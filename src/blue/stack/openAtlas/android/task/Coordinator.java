@@ -208,9 +208,8 @@ public class Coordinator {
                         + "ms (real)");
             }
         } catch (Throwable th) {
-            Throwable th2 = th;
+        	th.printStackTrace();
             int i = 1;
-            Throwable th3 = th2;
             if (isDebug) {
                 System.out.println("Timing - "
                         + Thread.currentThread().getName() + " "
@@ -243,8 +242,8 @@ public class Coordinator {
     }
 
     static {
-        mIdleTasks = new LinkedList();
-        mPoolWorkQueue = new LinkedBlockingQueue(128);
+        mIdleTasks = new LinkedList<TaggedRunnable>();
+        mPoolWorkQueue = new LinkedBlockingQueue<Runnable>(128);
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(8, 16,
                 1, TimeUnit.SECONDS, mPoolWorkQueue, new ThreadFactory() {
         	

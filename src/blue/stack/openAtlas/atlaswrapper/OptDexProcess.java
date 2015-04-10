@@ -22,13 +22,14 @@ package blue.stack.openAtlas.atlaswrapper;
 
 import org.osgi.framework.Bundle;
 
-import com.openAtlas.framework.Atlas;
-import com.openAtlas.framework.BundleImpl;
-import com.openAtlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
-
 import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
+import blue.stack.openAtlas.PlatformConfigure;
+
+import com.openAtlas.framework.Atlas;
+import com.openAtlas.framework.BundleImpl;
+import com.openAtlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
 
 
 public class OptDexProcess {
@@ -64,7 +65,8 @@ public class OptDexProcess {
             Log.i("OptDexProcess",
                     "Bundle install already executed, just return");
         } else {
-            long currentTimeMillis = System.currentTimeMillis();
+            @SuppressWarnings("unused")
+			long currentTimeMillis = System.currentTimeMillis();
             install();
             // .. "Install bundles not delayed cost time = " +
             // (System.currentTimeMillis() - currentTimeMillis) + " ms";
@@ -97,7 +99,7 @@ public class OptDexProcess {
 
     private void notifyInstalled() {
         this.mApplication.sendBroadcast(new Intent(
-                "com.taobao.taobao.action.BUNDLES_INSTALLED"));
+                PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
     }
 
     private void installDely() {

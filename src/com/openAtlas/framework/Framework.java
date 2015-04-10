@@ -62,6 +62,10 @@ import org.osgi.service.packageadmin.ExportedPackage;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.service.startlevel.StartLevel;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
+import android.os.Build.VERSION;
+
 import com.openAtlas.framework.bundlestorage.BundleArchive;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
@@ -70,10 +74,6 @@ import com.openAtlas.runtime.RuntimeVariables;
 import com.openAtlas.util.AtlasFileLock;
 import com.openAtlas.util.BundleLock;
 import com.openAtlas.util.StringUtils;
-
-import android.annotation.SuppressLint;
-import android.os.Build;
-import android.os.Build.VERSION;
 
 public final class Framework {
     private static final AdminPermission ADMIN_PERMISSION;
@@ -87,7 +87,8 @@ public final class Framework {
     static final String FRAMEWORK_VERSION = "0.9.0";
     static int LOG_LEVEL;
     static String STORAGE_LOCATION;
-    private static boolean STRICT_STARTUP;
+    @SuppressWarnings("unused")
+	private static boolean STRICT_STARTUP;
     static List<BundleListener> bundleListeners;
     static Map<String, Bundle> bundles;
     private static ClassNotFoundInterceptorCallback classNotFoundCallback;

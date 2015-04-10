@@ -54,7 +54,7 @@ public class DelegateClassLoader extends ClassLoader {
 
     private String printExceptionInfo() {
         StringBuilder stringBuilder = new StringBuilder("installed bundles: ");
-        List bundles = Framework.getBundles();
+        List<Bundle> bundles = Framework.getBundles();
         if (!(bundles == null || bundles.isEmpty())) {
             for (Bundle bundle : Framework.getBundles()) {
                 if (bundle.getLocation().contains("com.ut")) {

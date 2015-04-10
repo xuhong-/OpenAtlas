@@ -31,23 +31,23 @@ import java.util.zip.ZipFile;
 
 import org.osgi.framework.Bundle;
 
+import android.content.pm.PackageInfo;
+import android.util.Log;
+
 import com.openAtlas.bundleInfo.BundleInfoList;
 import com.openAtlas.framework.Atlas;
 import com.openAtlas.framework.BundleImpl;
 import com.openAtlas.framework.Framework;
 import com.openAtlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
 
-import android.content.pm.PackageInfo;
-import android.util.Log;
-
 public class ClassLoadFromBundle {
     private static final String TAG = "ClassLoadFromBundle";
-    private static Hashtable classNotFoundReason;
+    private static Hashtable<Integer, String> classNotFoundReason;
     private static int reasonCnt;
     public static List<String> sInternalBundles;
 
     static {
-        classNotFoundReason = new Hashtable();
+        classNotFoundReason = new Hashtable<Integer, String>();
         reasonCnt = 0;
     }
 
@@ -80,11 +80,12 @@ public class ClassLoadFromBundle {
             if (sInternalBundles == null || sInternalBundles.size() == 0) {
                 String str = "lib/armeabi/libcom_";
                 String str2 = ".so";
-                List arrayList = new ArrayList();
+                List<String> arrayList = new ArrayList<String>();
                 try {
-                    Enumeration entries = new ZipFile(
+                	ZipFile apkFile=new ZipFile(
                             RuntimeVariables.androidApplication
-                                    .getApplicationInfo().sourceDir).entries();
+                            .getApplicationInfo().sourceDir);
+                    Enumeration<?> entries = apkFile.entries();
                     while (entries.hasMoreElements()) {
                         String name = ((ZipEntry) entries.nextElement())
                                 .getName();
@@ -92,6 +93,7 @@ public class ClassLoadFromBundle {
                             arrayList.add(getPackageNameFromEntryName(name));
                         }
                     }
+                    apkFile.close();
                     sInternalBundles = arrayList;
                 } catch (Throwable e) {
                     Log.e(TAG, "Exception while get bundles in assets or lib",
@@ -119,7 +121,7 @@ public class ClassLoadFromBundle {
             return null;
         } else {
             Bundle installBundle;
-            List<String> linkedList = new LinkedList();
+            List<String> linkedList = new LinkedList<String>();
             if (instance.getDependencyForBundle(bundleForComponet) != null) {
                 linkedList.addAll(instance
                         .getDependencyForBundle(bundleForComponet));

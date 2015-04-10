@@ -25,17 +25,6 @@ import java.util.List;
 
 import org.osgi.framework.BundleException;
 
-import com.openAtlas.framework.BundleClassLoader;
-import com.openAtlas.framework.Framework;
-import com.openAtlas.hack.AtlasHacks;
-import com.openAtlas.hack.Hack;
-import com.openAtlas.hack.Hack.HackedClass;
-import com.openAtlas.hack.Hack.HackedMethod;
-import com.openAtlas.hack.Hack.HackDeclaration.HackAssertionException;
-import com.openAtlas.log.Logger;
-import com.openAtlas.log.LoggerFactory;
-import com.openAtlas.util.StringUtils;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -56,6 +45,17 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+
+import com.openAtlas.framework.BundleClassLoader;
+import com.openAtlas.framework.Framework;
+import com.openAtlas.hack.AtlasHacks;
+import com.openAtlas.hack.Hack;
+import com.openAtlas.hack.Hack.HackDeclaration.HackAssertionException;
+import com.openAtlas.hack.Hack.HackedClass;
+import com.openAtlas.hack.Hack.HackedMethod;
+import com.openAtlas.log.Logger;
+import com.openAtlas.log.LoggerFactory;
+import com.openAtlas.util.StringUtils;
 
 public class InstrumentationHook extends Instrumentation {
 	static final Logger log;
@@ -324,6 +324,7 @@ public class InstrumentationHook extends Instrumentation {
 	private ActivityResult execStartActivityInternal(Context context, Intent intent,
 			ExecStartActivityCallback execStartActivityCallback) {
 		String packageName;
+		@SuppressWarnings("unused")
 		String tmpString = context.getPackageName();
 		String className;
 		if (intent.getComponent() != null) {
@@ -431,15 +432,17 @@ public class InstrumentationHook extends Instrumentation {
 			if (TextUtils.isEmpty(property)) {
 				str2 = "blue.stack.openAtlas.welcome.Welcome";
 			} else {
+				@SuppressWarnings("unused")
 				CharSequence charSequence = property;
 			}
 			if (TextUtils.isEmpty(str2)) {
 				throw classNotFoundException;
 			}
-			List runningTasks = ((ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE))
+			@SuppressWarnings("deprecation")
+			List<RunningTaskInfo> runningTasks = ((ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE))
 					.getRunningTasks(1);
 			if (runningTasks != null && runningTasks.size() > 0
-					&& ((RunningTaskInfo) runningTasks.get(0)).numActivities > 1
+					&& runningTasks.get(0).numActivities > 1
 					&& Framework.getClassNotFoundCallback() != null) {
 				if (intent.getComponent() == null) {
 					intent.setClassName(this.context, className);

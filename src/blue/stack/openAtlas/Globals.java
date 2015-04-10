@@ -59,7 +59,7 @@ public class Globals {
 
     private static Application getSystemApp() {
         try {
-            Class cls = Class.forName("android.app.ActivityThread");
+            Class<?> cls = Class.forName("android.app.ActivityThread");
             Method declaredMethod = cls.getDeclaredMethod(
                     "currentActivityThread", new Class[0]);
             Field declaredField = cls.getDeclaredField("mInitialApplication");
