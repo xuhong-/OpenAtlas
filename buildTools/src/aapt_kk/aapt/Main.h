@@ -21,7 +21,7 @@
 #if BENCHMARK
     #include <time.h>
 #endif /* BENCHMARK */
-
+extern int resOffset;
 extern int doVersion(Bundle* bundle);
 extern int doList(Bundle* bundle);
 extern int doDump(Bundle* bundle);

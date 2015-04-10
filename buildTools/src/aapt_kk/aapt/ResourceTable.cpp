@@ -3814,7 +3814,7 @@ sp<ResourceTable::Package> ResourceTable::getPackage(const String16& package)
                 return NULL;
             }
             mHaveAppPackage = true;
-            p = new Package(package, 0x7f);
+            p = new Package(package, resOffset);
         } else {
             p = new Package(package, mNextPackageId);
         }

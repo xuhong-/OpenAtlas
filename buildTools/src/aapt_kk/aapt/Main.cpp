@@ -135,6 +135,8 @@ void usage(void)
         "   -0  specifies an additional extension for which such files will not\n"
         "       be stored compressed in the .apk.  An empty string means to not\n"
         "       compress any files at all.\n"
+        "   --res-offset\n"
+        "        hack resooure offset ,hack default value 0x7f.\n"
         "   --debug-mode\n"
         "       inserts android:debuggable=\"true\" in to the application node of the\n"
         "       manifest, making the application debuggable even on production devices.\n"
@@ -226,7 +228,7 @@ int handleCommand(Bundle* bundle)
  * Parse args.
  */
 int main(int argc, char* const argv[])
-{
+{ resOffset=0x7f;
     char *prog = argv[0];
     Bundle bundle;
     bool wantUsage = false;
@@ -474,6 +476,18 @@ int main(int argc, char* const argv[])
             case '-':
                 if (strcmp(cp, "-debug-mode") == 0) {
                     bundle.setDebugMode(true);
+                } else if (strcmp(cp, "-res-offset") == 0) {
+                    argc--;
+                    argv++;
+                    if (!argc) {
+                        fprintf(stderr, "ERROR: No argument supplied for '--res-offset' 0x2f-0x7e option\n");
+                        wantUsage = true;
+                        goto bail;
+                    }
+
+                    /* strtol converts string to long integer */
+                    resOffset = strtol(argv[0], NULL, 16);
+
                 } else if (strcmp(cp, "-min-sdk-version") == 0) {
                     argc--;
                     argv++;
@@ -483,7 +497,7 @@ int main(int argc, char* const argv[])
                         goto bail;
                     }
                     bundle.setMinSdkVersion(argv[0]);
-                } else if (strcmp(cp, "-target-sdk-version") == 0) {
+                }else if (strcmp(cp, "-target-sdk-version") == 0) {
                     argc--;
                     argv++;
                     if (!argc) {
