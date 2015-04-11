@@ -30,9 +30,6 @@ import java.util.zip.ZipFile;
 
 import org.osgi.framework.Bundle;
 
-import com.openAtlas.framework.Atlas;
-import com.openAtlas.runtime.RuntimeVariables;
-
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -44,9 +41,12 @@ import android.os.StatFs;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.openAtlas.framework.Atlas;
+import com.openAtlas.runtime.RuntimeVariables;
+
 
 public class BundlesInstaller {
-    private static boolean isAppPkg;
+    private boolean isAppPkg;
     private static BundlesInstaller mBundlesInstaller;
     AwbDebug a;
     private Application mApplication;
@@ -62,7 +62,7 @@ public class BundlesInstaller {
         this.mApplication = application;
         this.miniPackage = miniPackage;
         this.a = cVar;
-        isAppPkg = isAppPkg;
+        this.isAppPkg = isAppPkg;
         this.mPackageInfo = Utils.getPackageInfo(application);
         this.isInited = true;
     }
@@ -90,7 +90,7 @@ public class BundlesInstaller {
         } else {
             try {
                 zipFile = new ZipFile(this.mApplication.getApplicationInfo().sourceDir);
-                List mFileList = getFileList(zipFile, "lib/armeabi/libcom_", ".so");
+                List<String> mFileList = getFileList(zipFile, "lib/armeabi/libcom_", ".so");
                 if (mFileList != null && mFileList.size() > 0
                         && getSpace() < (((mFileList.size() * 2) * 1024) * 1024)) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -101,7 +101,7 @@ public class BundlesInstaller {
                             Toast.makeText(
                                     RuntimeVariables.androidApplication,
                                     "检测到手机存储空间不足，为不影响您的使用请清理！",
-                                    1).show();
+                                    Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -146,9 +146,9 @@ public class BundlesInstaller {
     }
 
     private List<String> getFileList(ZipFile zipFile, String mPref, String mSuffix) {
-        List<String> arrayList = new ArrayList();
+        List<String> arrayList = new ArrayList<String>();
         try {
-            Enumeration entries = zipFile.entries();
+            Enumeration<?> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 String name = ((ZipEntry) entries.nextElement()).getName();
                 if (name.startsWith(mPref) && name.endsWith(mSuffix)) {
@@ -162,7 +162,8 @@ public class BundlesInstaller {
         return arrayList;
     }
 
-    private long getSpace() {
+    @SuppressWarnings("deprecation")
+	private long getSpace() {
         StatFs statFs = new StatFs(Environment.getDataDirectory().getPath());
         return ((long) statFs.getAvailableBlocks())
                 * ((long) statFs.getBlockSize());
