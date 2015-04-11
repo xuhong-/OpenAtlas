@@ -78,7 +78,7 @@ public class ApplicationCompat extends Application {
     }
 
     public ApplicationCompat() {
-        this.mActivityLifecycleCallbacks = new ArrayList();
+        this.mActivityLifecycleCallbacks = new ArrayList<ActivityLifecycleCallbacksCompat>();
     }
 
     @TargetApi(14)
