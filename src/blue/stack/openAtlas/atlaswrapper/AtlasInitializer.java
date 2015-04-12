@@ -73,7 +73,7 @@ public class AtlasInitializer {
         a = System.currentTimeMillis();
         Properties properties = new Properties();
         properties.put("com.openAtlas.welcome",
-                "blue.stack.openAtlas.welcome.Welcome");
+                PlatformConfigure.BOOT_ACTIVITY);
         properties.put("com.openAtlas.debug.bundles", "true");
         properties.put("com.openAtlas.AppDirectory", this.mApplication
                 .getFilesDir().getParent());
