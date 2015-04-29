@@ -33,6 +33,7 @@ import org.osgi.framework.Bundle;
 
 import android.content.pm.PackageInfo;
 import android.util.Log;
+import blue.stack.openAtlas.PlatformConfigure;
 
 import com.openAtlas.bundleInfo.BundleInfoList;
 import com.openAtlas.framework.Atlas;
@@ -266,7 +267,24 @@ public class ClassLoadFromBundle {
         }
         return cls;
     }
-
+    public static void checkInstallBundleAndDependency(String str) {
+        List dependencyForBundle = BundleInfoList.getInstance().getDependencyForBundle(str);
+        if (dependencyForBundle != null && dependencyForBundle.size() > 0) {
+            for (int i = 0; i < dependencyForBundle.size(); i++) {
+                checkInstallBundleAndDependency((String) dependencyForBundle.get(i));
+            }
+        }
+        if (Atlas.getInstance().getBundle(str) == null) {
+            File file = new File(new File(Framework.getProperty(PlatformConfigure.ATLAS_APP_DIRECTORY), "lib"), "lib".concat(str.replace(".", "_")).concat(".so"));
+            if (file.exists()) {
+                try {
+                    Atlas.getInstance().installBundle(str, file);
+                } catch (Throwable e) {
+                    throw new RuntimeException("failed to install bundle " + str, e);
+                }
+            }
+        }
+    }
     private static int getPackageVersion() {
         PackageInfo packageInfo;
         try {
