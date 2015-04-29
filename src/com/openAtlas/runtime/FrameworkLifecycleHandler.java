@@ -23,14 +23,14 @@ package com.openAtlas.runtime;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 
+import android.app.Application;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+
 import com.openAtlas.framework.Framework;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 import com.openAtlas.util.StringUtils;
-
-import android.app.Application;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Bundle;
 
 public class FrameworkLifecycleHandler implements FrameworkListener {
     static final Logger log;
@@ -98,7 +98,7 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
         try {
             DelegateResources.newDelegateResources(
                     RuntimeVariables.androidApplication,
-                    RuntimeVariables.getDelegateResources());
+                    RuntimeVariables.getDelegateResources(),null);
         } catch (Throwable e) {
             log.error("Failed to newDelegateResources", e);
         }
