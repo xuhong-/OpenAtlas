@@ -42,6 +42,7 @@ import com.openAtlas.hack.AtlasHacks;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 import com.openAtlas.runtime.BundleLifecycleHandler;
+import com.openAtlas.runtime.ClassLoadFromBundle;
 import com.openAtlas.runtime.ClassNotFoundInterceptorCallback;
 import com.openAtlas.runtime.DelegateClassLoader;
 import com.openAtlas.runtime.DelegateComponent;
@@ -113,6 +114,15 @@ public class Atlas {
     }
 
     public Bundle getBundle(String str) {
+        return Framework.getBundle(str);
+    }
+    public Bundle getBundleOnDemand(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
+        if (Framework.getBundle(str) == null) {
+            ClassLoadFromBundle.checkInstallBundleAndDependency(str);
+        }
         return Framework.getBundle(str);
     }
 
