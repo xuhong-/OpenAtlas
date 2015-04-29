@@ -25,18 +25,18 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.ServicePermission;
 import org.osgi.framework.SynchronousBundleListener;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
+import android.os.AsyncTask;
+import android.os.Build.VERSION;
+import android.os.Looper;
+
 import com.openAtlas.framework.BundleImpl;
 import com.openAtlas.framework.Framework;
 import com.openAtlas.hack.AtlasHacks;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 import com.openAtlas.util.StringUtils;
-
-import android.annotation.SuppressLint;
-import android.app.Application;
-import android.os.AsyncTask;
-import android.os.Build.VERSION;
-import android.os.Looper;
 
 public class BundleLifecycleHandler implements SynchronousBundleListener {
     static final Logger log;
@@ -109,7 +109,7 @@ public class BundleLifecycleHandler implements SynchronousBundleListener {
         try {
             DelegateResources.newDelegateResources(
                     RuntimeVariables.androidApplication,
-                    RuntimeVariables.getDelegateResources());
+                    RuntimeVariables.getDelegateResources(),bundleImpl.getArchive().getArchiveFile().getAbsolutePath());
         } catch (Throwable e) {
             log.error(
                     "Could not load resource in bundle "

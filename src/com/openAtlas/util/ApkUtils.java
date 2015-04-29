@@ -30,15 +30,15 @@ import java.security.cert.Certificate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+
 import com.openAtlas.hack.AssertionArrayException;
 import com.openAtlas.hack.AtlasHacks;
 import com.openAtlas.log.Logger;
 import com.openAtlas.log.LoggerFactory;
 import com.openAtlas.runtime.PackageLite;
-
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 
 public class ApkUtils {
     static final int SYSTEM_ROOT_STATE_DISABLE = 0;
@@ -80,17 +80,53 @@ public class ApkUtils {
         }
     }
 
-    public static final String[] getApkPublicKey(String str) {
-        // TODO impl
+    public static final String[] getApkPublicKey(String apkPath) {
+        JarFile jarFile = null;
+       
+        try {
+            jarFile = new JarFile(apkPath);
+            JarEntry jarEntry = jarFile.getJarEntry("classes.dex");
+			if (jarEntry != null) {
+			    Certificate[] loadCertificates = PackageValidate.loadCertificates(jarFile, jarEntry, new byte[4096]);
+			    if (loadCertificates != null) {
+			        String[] strArr = new String[loadCertificates.length];
+			        for (int i = SYSTEM_ROOT_STATE_DISABLE; i < loadCertificates.length; i += SYSTEM_ROOT_STATE_ENABLE) {
+			            strArr[i] = bytesToHexString(loadCertificates[i].getPublicKey().getEncoded());
+			        }
+			        try {
+			            jarFile.close();
+			            return strArr;
+			        } catch (IOException e2) {
+			            e2.printStackTrace();
+			            return strArr;
+			        }
+			    }
+			}
+
+        } catch (IOException e) {
+           
+            jarFile = null;
+            log.warn("Exception reading public key from apk file " + apkPath, e);
+     
+            return null;
+        } catch (Throwable e) {
+           e.printStackTrace();
+            jarFile = null;
+       
+        }finally{
+        	
+            if (jarFile != null) {
+                try {
+					jarFile.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        }
         return null;
     }
 
-    private static Certificate[] loadCertificates(JarFile jarFile,
-            JarEntry jarEntry, byte[] bArr) {
-
-        // TODO impl
-        return null;
-    }
 
     private static final String bytesToHexString(byte[] bArr) {
         StringBuilder stringBuilder = new StringBuilder();
