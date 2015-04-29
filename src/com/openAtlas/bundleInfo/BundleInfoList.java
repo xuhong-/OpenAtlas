@@ -66,19 +66,17 @@ public class BundleInfoList {
         return initilized;
     }
 
+
     public List<String> getDependencyForBundle(String str) {
         if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
             return null;
         }
         for (BundleInfo bundleInfo : this.mBundleInfoList) {
             if (bundleInfo.bundleName.equals(str)) {
-            	List<String> arrayList = null;
+                List<String> arrayList = new ArrayList<String>();
                 if (!(bundleInfo == null || bundleInfo.DependentBundles == null)) {
-                	arrayList = new ArrayList<String>();
-                    for (int i = 0; i < bundleInfo.DependentBundles.size(); ++i) {
-                        if (!TextUtils
-                                .isEmpty(bundleInfo.DependentBundles
-                                        .get(i))) {
+                    for (int i = 0; i < bundleInfo.DependentBundles.size(); i++) {
+                        if (!TextUtils.isEmpty(bundleInfo.DependentBundles.get(i))) {
                             arrayList.add(bundleInfo.DependentBundles.get(i));
                         }
                     }
@@ -102,6 +100,20 @@ public class BundleInfoList {
         return false;
     }
 
+    public String getBundleNameForComponet(String str) {
+        if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
+            return null;
+        }
+        for (BundleInfo bundleInfo : this.mBundleInfoList) {
+            for (String equals : bundleInfo.Components) {
+                if (equals.equals(str)) {
+                    return bundleInfo.bundleName;
+                }
+            }
+        }
+        return null;
+    }
+@Deprecated
     public String getBundleForComponet(String str) {
         if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return null;

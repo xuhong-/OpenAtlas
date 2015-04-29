@@ -32,6 +32,7 @@ import java.util.zip.ZipFile;
 import org.osgi.framework.Bundle;
 
 import android.content.pm.PackageInfo;
+import android.text.TextUtils;
 import android.util.Log;
 import blue.stack.openAtlas.PlatformConfigure;
 
@@ -110,7 +111,7 @@ public class ClassLoadFromBundle {
             resolveInternalBundles();
         }
         BundleInfoList instance = BundleInfoList.getInstance();
-        String bundleForComponet = instance.getBundleForComponet(str);
+        String bundleForComponet = instance.getBundleNameForComponet(str);
         if (bundleForComponet == null) {
             Log.e("me",
                     "Failed to find the bundle in BundleInfoList for component "
@@ -285,6 +286,23 @@ public class ClassLoadFromBundle {
             }
         }
     }
+    public static void checkInstallBundleIfNeed(String str) {
+        synchronized (str) {
+            if (sInternalBundles == null) {
+                resolveInternalBundles();
+            }
+            String bundleForComponet = BundleInfoList.getInstance().getBundleNameForComponet(str);
+            if (TextUtils.isEmpty(bundleForComponet)) {
+               // "Failed to find the bundle in BundleInfoList for component " + str;
+                insertToReasonList(str, "not found in BundleInfoList!");
+            }
+            if (sInternalBundles == null || sInternalBundles.contains(bundleForComponet)) {
+                checkInstallBundleAndDependency(bundleForComponet);
+                return;
+            }
+        }
+    }
+
     private static int getPackageVersion() {
         PackageInfo packageInfo;
         try {

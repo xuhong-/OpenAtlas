@@ -59,7 +59,7 @@ public class ClassNotFoundInterceptor implements ClassNotFoundInterceptorCallbac
         String className = intent.getComponent().getClassName();
         CharSequence dataString = intent.getDataString();
         if (className == null || !className.equals(PlatformConfigure.BOOT_ACTIVITY)) {
-            String bundleForComponet = BundleInfoList.getInstance().getBundleForComponet(className);
+            String bundleForComponet = BundleInfoList.getInstance().getBundleNameForComponet(className);
          //   Atlas.getInstance().getBundle(intent.get)
 //            if (mOptDexProcess.sInternalBundles == null) {
 //                mOptDexProcess.instance().resolveInternalBundles();
