@@ -50,48 +50,38 @@ public class FrameworkLifecycleHandler implements FrameworkListener {
         }
     }
 
-    private void starting() {
-        Bundle bundle;
-        long currentTimeMillis = System.currentTimeMillis();
-        try {
-            bundle = RuntimeVariables.androidApplication
-                    .getPackageManager()
-                    .getApplicationInfo(
-                            RuntimeVariables.androidApplication
-                                    .getPackageName(),
-                            128).metaData;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-            bundle = null;
-        }
-        if (bundle != null) {
-            String string = bundle.getString("application");
-            if (StringUtils.isNotEmpty(string)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Found extra application: " + string);
-                }
-                String[] split = StringUtils.split(string, ",");
-                if (split == null || split.length == 0) {
-                    split = new String[] { string };
-                }
-                for (String str : split) {
-                    try {
-                        Application newApplication = BundleLifecycleHandler
-                                .newApplication(str,
-                                        Framework.getSystemClassLoader());
-                        newApplication.onCreate();
-                        DelegateComponent.apkApplications.put("system:" + str,
-                                newApplication);
-                    } catch (Throwable e2) {
-                        log.error("Error to start application", e2);
-                    }
-                }
-            }
-        }
-        log.info("starting() spend "
-                + (System.currentTimeMillis() - currentTimeMillis)
-                + " milliseconds");
-    }
+	private void starting() {
+		Bundle bundle;
+		long currentTimeMillis = System.currentTimeMillis();
+		try {
+			bundle = RuntimeVariables.androidApplication.getPackageManager().getApplicationInfo(RuntimeVariables.androidApplication.getPackageName(), 128).metaData;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			bundle = null;
+		}
+		if (bundle != null) {
+			String string = bundle.getString("application");
+			if (StringUtils.isNotEmpty(string)) {
+				if (log.isDebugEnabled()) {
+					log.debug("Found extra application: " + string);
+				}
+				String[] split = StringUtils.split(string, ",");
+				if (split == null || split.length == 0) {
+					split = new String[] { string };
+				}
+				for (String str : split) {
+					try {
+						Application newApplication = BundleLifecycleHandler.newApplication(str, Framework.getSystemClassLoader());
+						newApplication.onCreate();
+						DelegateComponent.apkApplications.put("system:" + str, newApplication);
+					} catch (Throwable e2) {
+						log.error("Error to start application", e2);
+					}
+				}
+			}
+		}
+		log.info("starting() spend " + (System.currentTimeMillis() - currentTimeMillis) + " milliseconds");
+	}
 
     private void started() {
         long currentTimeMillis = System.currentTimeMillis();
