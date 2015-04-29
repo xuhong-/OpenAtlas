@@ -32,25 +32,33 @@ public class DelegateClassLoader extends ClassLoader {
     }
 
     @Override
-	public Class<?> loadClass(String str) throws ClassNotFoundException {
-        return super.loadClass(str);
+	public Class<?> loadClass(String className) throws ClassNotFoundException {
+        return super.loadClass(className);
     }
-
     @Override
-	protected Class<?> findClass(String str) throws ClassNotFoundException {
-        Class<?> loadFromInstalledBundles = ClassLoadFromBundle
-                .loadFromInstalledBundles(str);
-        if (loadFromInstalledBundles == null) {
-            loadFromInstalledBundles = ClassLoadFromBundle
-                    .loadFromUninstalledBundles(str);
-        }
+	protected Class<?> findClass(String className) throws ClassNotFoundException {
+        ClassLoadFromBundle.checkInstallBundleIfNeed(className);
+        Class<?> loadFromInstalledBundles = ClassLoadFromBundle.loadFromInstalledBundles(className);
         if (loadFromInstalledBundles != null) {
             return loadFromInstalledBundles;
         }
-        throw new ClassNotFoundException("Can't find class " + str
-                + printExceptionInfo() + " "
-                + ClassLoadFromBundle.getClassNotFoundReason(str));
+        throw new ClassNotFoundException("Can't find class " + className + printExceptionInfo() + " " + ClassLoadFromBundle.getClassNotFoundReason(className));
     }
+ //   @Override
+//	protected Class<?> findClass(String str) throws ClassNotFoundException {
+//        Class<?> loadFromInstalledBundles = ClassLoadFromBundle
+//                .loadFromInstalledBundles(str);
+//        if (loadFromInstalledBundles == null) {
+//            loadFromInstalledBundles = ClassLoadFromBundle
+//                    .loadFromUninstalledBundles(str);
+//        }
+//        if (loadFromInstalledBundles != null) {
+//            return loadFromInstalledBundles;
+//        }
+//        throw new ClassNotFoundException("Can't find class " + str
+//                + printExceptionInfo() + " "
+//                + ClassLoadFromBundle.getClassNotFoundReason(str));
+//    }
 
     private String printExceptionInfo() {
         StringBuilder stringBuilder = new StringBuilder("installed bundles: ");
