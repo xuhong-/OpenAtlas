@@ -111,7 +111,7 @@ public class ClassLoadFromBundle {
             resolveInternalBundles();
         }
         BundleInfoList instance = BundleInfoList.getInstance();
-        String bundleForComponet = instance.getBundleForComponet(str);
+        String bundleForComponet = instance.getBundleNameForComponet(str);
         if (bundleForComponet == null) {
             Log.e("me",
                     "Failed to find the bundle in BundleInfoList for component "
@@ -291,7 +291,7 @@ public class ClassLoadFromBundle {
             if (sInternalBundles == null) {
                 resolveInternalBundles();
             }
-            String bundleForComponet = BundleInfoList.getInstance().getBundleForComponet(str);
+            String bundleForComponet = BundleInfoList.getInstance().getBundleNameForComponet(str);
             if (TextUtils.isEmpty(bundleForComponet)) {
                // "Failed to find the bundle in BundleInfoList for component " + str;
                 insertToReasonList(str, "not found in BundleInfoList!");
