@@ -84,7 +84,7 @@ public class PackageValidate {
 
     }
 
-    private Certificate[] loadCertificates(JarFile jarFile, JarEntry je,
+    public static Certificate[] loadCertificates(JarFile jarFile, JarEntry je,
                                            byte[] readBuffer) {
         try {
             // We must read the stream for the JarEntry to retrieve
