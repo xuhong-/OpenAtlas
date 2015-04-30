@@ -9,7 +9,7 @@
 
 #include "StringPool.h"
 #include "SourcePos.h"
-#include "Main.h"
+
 #include <set>
 #include <map>
 
