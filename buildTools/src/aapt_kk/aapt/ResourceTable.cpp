@@ -9,7 +9,7 @@
 #include "XMLNode.h"
 #include "ResourceFilter.h"
 #include "ResourceIdCache.h"
-
+#include "Main.h"
 #include <androidfw/ResourceTypes.h>
 #include <utils/ByteOrder.h>
 #include <stdarg.h>
@@ -3814,7 +3814,7 @@ sp<ResourceTable::Package> ResourceTable::getPackage(const String16& package)
                 return NULL;
             }
             mHaveAppPackage = true;
-            p = new Package(package, resOffset);
+            p = new Package(package, pkgIdOffset);//TODO  bunny inject
         } else {
             p = new Package(package, mNextPackageId);
         }

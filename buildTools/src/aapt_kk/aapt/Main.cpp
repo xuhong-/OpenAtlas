@@ -18,7 +18,7 @@
 using namespace android;
 
 static const char* gProgName = "aapt";
-
+int pkgIdOffset=0x7f;
 /*
  * When running under Cygwin on Windows, this will convert slash-based
  * paths into back-slash-based ones. Otherwise the ApptAssets file comparisons
@@ -135,8 +135,7 @@ void usage(void)
         "   -0  specifies an additional extension for which such files will not\n"
         "       be stored compressed in the .apk.  An empty string means to not\n"
         "       compress any files at all.\n"
-        "   --res-offset\n"
-        "        hack resooure offset ,hack default value 0x7f.\n"
+        "  --pkg-id-offset hack package res offset ,default is 0x7f\n"
         "   --debug-mode\n"
         "       inserts android:debuggable=\"true\" in to the application node of the\n"
         "       manifest, making the application debuggable even on production devices.\n"
@@ -228,7 +227,7 @@ int handleCommand(Bundle* bundle)
  * Parse args.
  */
 int main(int argc, char* const argv[])
-{ resOffset=0x7f;
+{
     char *prog = argv[0];
     Bundle bundle;
     bool wantUsage = false;
@@ -476,28 +475,29 @@ int main(int argc, char* const argv[])
             case '-':
                 if (strcmp(cp, "-debug-mode") == 0) {
                     bundle.setDebugMode(true);
-                } else if (strcmp(cp, "-res-offset") == 0) {
-                    argc--;
-                    argv++;
-                    if (!argc) {
-                        fprintf(stderr, "ERROR: No argument supplied for '--res-offset' 0x2f-0x7e option\n");
-                        wantUsage = true;
-                        goto bail;
-                    }
+                }
+                 else   if (strcmp(cp, "-pkg-id-offset") == 0) {
+                  argc--;
+                  argv++;
+                  if (!argc) {
+                    fprintf(stderr, "ERROR: No argument supplied for '-pkgIdOffset' option\n");
+                    wantUsage = true;
+                    goto bail;
+                  }
+                  //bundle.setTargetSdkVersion(argv[0]);
 
-                    /* strtol converts string to long integer */
-                    resOffset = strtol(argv[0], NULL, 16);
-
-                } else if (strcmp(cp, "-min-sdk-version") == 0) {
-                    argc--;
-                    argv++;
-                    if (!argc) {
-                        fprintf(stderr, "ERROR: No argument supplied for '--min-sdk-version' option\n");
-                        wantUsage = true;
-                        goto bail;
-                    }
-                    bundle.setMinSdkVersion(argv[0]);
-                }else if (strcmp(cp, "-target-sdk-version") == 0) {
+                  pkgIdOffset=strtol(argv[0],NULL,16);
+                }
+                 else if (strcmp(cp, "-min-sdk-version") == 0) {
+                  argc--;
+                  argv++;
+                  if (!argc) {
+                    fprintf(stderr, "ERROR: No argument supplied for '-pkgIdOffset' option\n");
+                    wantUsage = true;
+                    goto bail;
+                  }
+                  bundle.setTargetSdkVersion(argv[0]);
+                } else if (strcmp(cp, "-target-sdk-version") == 0) {
                     argc--;
                     argv++;
                     if (!argc) {
@@ -552,7 +552,14 @@ int main(int argc, char* const argv[])
                         wantUsage = true;
                         goto bail;
                     }
-                    bundle.setCustomPackage(argv[0]);
+                    char * cpkg=argv[0];//bunny
+                    char resOffset[5]={0};
+                    strncpy(resOffset,cpkg+strlen(cpkg)-4,4);
+                    if(resOffset[0]=='0'&&resOffset[1]=='x'){
+                      pkgIdOffset=strtol(resOffset,NULL,16);
+                    }
+                    fprintf(stderr, "XXXXXXXXXXXXXXXXXresOffset %s \n",resOffset);
+                    bundle.setCustomPackage(cpkg);
                 } else if (strcmp(cp, "-extra-packages") == 0) {
                     argc--;
                     argv++;
