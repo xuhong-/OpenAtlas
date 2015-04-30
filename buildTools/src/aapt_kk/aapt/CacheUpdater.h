@@ -77,7 +77,7 @@ public:
                 existsPath.appendPath(toCreate.walkPath(&remains));
                 toCreate = remains;
 #ifdef HAVE_MS_C_RUNTIME
-                _mkdir(existsPath.string());
+                mkdir(existsPath.string());
 #else
                 mkdir(existsPath.string(), S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP);
 #endif

@@ -2187,7 +2187,7 @@ status_t writeResourceSymbols(Bundle* bundle, const sp<AaptAssets>& assets,
                     String8 part(last, s-last);
                     dest.appendPath(part);
 #ifdef HAVE_MS_C_RUNTIME
-                    _mkdir(dest.string());
+                    mkdir(dest.string());
 #else
                     mkdir(dest.string(), S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP);
 #endif
