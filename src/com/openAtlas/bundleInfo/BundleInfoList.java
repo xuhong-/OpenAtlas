@@ -67,12 +67,12 @@ public class BundleInfoList {
     }
 
 
-    public List<String> getDependencyForBundle(String str) {
+    public List<String> getDependencyForBundle(String mBundleName) {
         if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
             return null;
         }
         for (BundleInfo bundleInfo : this.mBundleInfoList) {
-            if (bundleInfo.bundleName.equals(str)) {
+            if (bundleInfo.bundleName.equals(mBundleName)) {
                 List<String> arrayList = new ArrayList<String>();
                 if (!(bundleInfo == null || bundleInfo.DependentBundles == null)) {
                     for (int i = 0; i < bundleInfo.DependentBundles.size(); i++) {
@@ -87,26 +87,26 @@ public class BundleInfoList {
         return null;
     }
 
-    public boolean getHasSO(String str) {
+    public boolean getHasSO(String mBundleName) {
         if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return false;
         }
         for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
         	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
-            if (bundleInfo.bundleName.equals(str)) {
+            if (bundleInfo.bundleName.equals(mBundleName)) {
                 return bundleInfo.hasSO;
             }
         }
         return false;
     }
 
-    public String getBundleNameForComponet(String str) {
+    public String getBundleNameForComponet(String mComponentName) {
         if (this.mBundleInfoList == null || this.mBundleInfoList.size() == 0) {
             return null;
         }
         for (BundleInfo bundleInfo : this.mBundleInfoList) {
             for (String equals : bundleInfo.Components) {
-                if (equals.equals(str)) {
+                if (equals.equals(mComponentName)) {
                     return bundleInfo.bundleName;
                 }
             }
@@ -141,13 +141,13 @@ public class BundleInfoList {
         return linkedList;
     }
 
-    public BundleInfo getBundleInfo(String str) {
+    public BundleInfo getBundleInfo(String mBundleName) {
         if (this.mBundleInfoList == null || this.mBundleInfoList.isEmpty()) {
             return null;
         }
         for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
         	BundleInfo bundleInfo = this.mBundleInfoList.get(index);
-            if (bundleInfo.bundleName.equals(str)) {
+            if (bundleInfo.bundleName.equals(mBundleName)) {
                 return bundleInfo;
             }
         }

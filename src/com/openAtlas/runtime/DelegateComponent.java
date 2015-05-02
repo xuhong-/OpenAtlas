@@ -41,21 +41,21 @@ public class DelegateComponent {
         apkApplications = new HashMap<String, Application>();
     }
 
-    public static PackageLite getPackage(String str) {
-        return apkPackages.get(str);
+    public static PackageLite getPackage(String mLocation) {
+        return apkPackages.get(mLocation);
     }
 
-    public static void putPackage(String str, PackageLite packageLite) {
-        apkPackages.put(str, packageLite);
+    public static void putPackage(String mLocation, PackageLite packageLite) {
+        apkPackages.put(mLocation, packageLite);
     }
 
-    public static void removePackage(String str) {
-        apkPackages.remove(str);
+    public static void removePackage(String mLocation) {
+        apkPackages.remove(mLocation);
     }
 
-    public static String locateComponent(String str) {
+    public static String locateComponent(String mComponent) {
         for (Entry<String, PackageLite> entry : apkPackages.entrySet()) {
-            if (entry.getValue().components.contains(str)) {
+            if (entry.getValue().components.contains(mComponent)) {
                 return entry.getKey();
             }
         }
