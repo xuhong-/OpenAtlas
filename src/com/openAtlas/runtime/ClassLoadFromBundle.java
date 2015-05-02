@@ -53,9 +53,9 @@ public class ClassLoadFromBundle {
         reasonCnt = 0;
     }
 
-    public static String getClassNotFoundReason(String str) {
+    public static String getClassNotFoundReason(String className) {
         for (int i = 0; i < classNotFoundReason.size(); i++) {
-            if ((classNotFoundReason.get(Integer.valueOf(i)) + "").contains(str
+            if ((classNotFoundReason.get(Integer.valueOf(i)) + "").contains(className
                     + "")) {
                 return classNotFoundReason.get(Integer.valueOf(i)) + "";
             }
@@ -63,18 +63,18 @@ public class ClassLoadFromBundle {
         return "";
     }
 
-    private static void insertToReasonList(String str, String str2) {
+    private static void insertToReasonList(String className, String reason) {
         classNotFoundReason.put(Integer.valueOf(reasonCnt), " Not found class "
-                + str + " because " + str2);
+                + className + " because " + reason);
         int i = reasonCnt + 1;
         reasonCnt = i;
         reasonCnt = i % 10;
     }
 
-    public static String getPackageNameFromEntryName(String str) {
-        return str.substring(
-                str.indexOf("lib/armeabi/lib") + "lib/armeabi/lib".length(),
-                str.indexOf(".so")).replace("_", ".");
+    public static String getPackageNameFromEntryName(String pkgName) {
+        return pkgName.substring(
+                pkgName.indexOf("lib/armeabi/lib") + "lib/armeabi/lib".length(),
+                pkgName.indexOf(".so")).replace("_", ".");
     }
 
     public static synchronized void resolveInternalBundles() {

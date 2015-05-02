@@ -117,14 +117,14 @@ public class ContextImplHook extends ContextWrapper {
     }
 
     @Override
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+    public boolean bindService(Intent service, ServiceConnection conn, int flags) {
         String packageName;
         String str = null;
-        if (intent.getComponent() != null) {
-            packageName = intent.getComponent().getPackageName();
-            str = intent.getComponent().getClassName();
+        if (service.getComponent() != null) {
+            packageName = service.getComponent().getPackageName();
+            str = service.getComponent().getClassName();
         } else {
-            ResolveInfo resolveService = getBaseContext().getPackageManager().resolveService(intent, 0);
+            ResolveInfo resolveService = getBaseContext().getPackageManager().resolveService(service, 0);
             if (resolveService == null || resolveService.serviceInfo == null) {
                 packageName = null;
             } else {
@@ -133,7 +133,7 @@ public class ContextImplHook extends ContextWrapper {
             }
         }
         if (!StringUtils.equals(getBaseContext().getPackageName(), packageName)) {
-            return super.bindService(intent, serviceConnection, i);
+            return super.bindService(service, conn, flags);
         }
         ClassLoadFromBundle.checkInstallBundleIfNeed(str);
         packageName = DelegateComponent.locateComponent(str);
@@ -146,11 +146,11 @@ public class ContextImplHook extends ContextWrapper {
                     log.error(e.getMessage() + " Caused by: ", e.getNestedException());
                 }
             }
-            return super.bindService(intent, serviceConnection, i);
+            return super.bindService(service, conn, flags);
         }
         try {
             if (Framework.getSystemClassLoader().loadClass(str) != null) {
-                return super.bindService(intent, serviceConnection, i);
+                return super.bindService(service, conn, flags);
             }
         } catch (ClassNotFoundException e2) {
             log.error("Can't find class " + str);
@@ -160,14 +160,14 @@ public class ContextImplHook extends ContextWrapper {
 
 
 @Override
-public ComponentName startService(Intent intent) {
+public ComponentName startService(Intent service) {
     String packageName;
     String className;
-    if (intent.getComponent() != null) {
-        packageName = intent.getComponent().getPackageName();
-        className = intent.getComponent().getClassName();
+    if (service.getComponent() != null) {
+        packageName = service.getComponent().getPackageName();
+        className = service.getComponent().getClassName();
     } else {
-        ResolveInfo resolveService = getBaseContext().getPackageManager().resolveService(intent, 0);
+        ResolveInfo resolveService = getBaseContext().getPackageManager().resolveService(service, 0);
         if (resolveService == null || resolveService.serviceInfo == null) {
             className = null;
             packageName = null;
@@ -177,7 +177,7 @@ public ComponentName startService(Intent intent) {
         }
     }
     if (!StringUtils.equals(getBaseContext().getPackageName(), packageName)) {
-        return super.startService(intent);
+        return super.startService(service);
     }
     ClassLoadFromBundle.checkInstallBundleIfNeed(className);
     packageName = DelegateComponent.locateComponent(className);
@@ -190,11 +190,11 @@ public ComponentName startService(Intent intent) {
                 log.error(e.getMessage() + " Caused by: ", e.getNestedException());
             }
         }
-        return super.startService(intent);
+        return super.startService(service);
     }
     try {
         if (Framework.getSystemClassLoader().loadClass(className) != null) {
-            return super.startService(intent);
+            return super.startService(service);
         }
         return null;
     } catch (ClassNotFoundException e2) {
