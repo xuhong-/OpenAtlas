@@ -22,9 +22,9 @@ public interface BundleContext {
 
     Bundle[] getBundles();
 
-    File getDataFile(String str);
+    File getDataFile(String bundleName);
 
-    String getProperty(String str);
+    String getProperty(String key);
 
     Object getService(ServiceReference serviceReference);
 
@@ -33,7 +33,7 @@ public interface BundleContext {
     ServiceReference[] getServiceReferences(String str, String str2)
             throws InvalidSyntaxException;
 
-    Bundle installBundle(String str) throws BundleException;
+    Bundle installBundle(String bundleName) throws BundleException;
 
     Bundle installBundle(String str, InputStream inputStream)
             throws BundleException;
