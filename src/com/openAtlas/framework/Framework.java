@@ -1113,14 +1113,14 @@ public final class Framework {
         AccessController.checkPermission(ADMIN_PERMISSION);
     }
 
-    static BundleImpl installNewBundle(String str) throws BundleException {
+    static BundleImpl installNewBundle(String bundleName) throws BundleException {
         try {
-            String str2 = str.indexOf(":") > -1 ? str : BUNDLE_LOCATION
-                    + File.separatorChar + str;
+            String str2 = bundleName.indexOf(":") > -1 ? bundleName : BUNDLE_LOCATION
+                    + File.separatorChar + bundleName;
             return installNewBundle(str2, new URL(str2).openConnection()
                     .getInputStream());
         } catch (Throwable e) {
-            throw new BundleException("Cannot retrieve bundle from " + str, e);
+            throw new BundleException("Cannot retrieve bundle from " + bundleName, e);
         }
     }
 

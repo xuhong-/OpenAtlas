@@ -463,8 +463,8 @@ public final class BundleClassLoader extends ClassLoader {
 	}
 
 	@Override
-	protected String findLibrary(String str) {
-		String mapLibraryName = System.mapLibraryName(str);
+	protected String findLibrary(String nickname) {
+		String mapLibraryName = System.mapLibraryName(nickname);
 		if (this.nativeLibraryDirectories != null) {
 			for (File file : this.nativeLibraryDirectories) {
 				File file2 = new File(file, mapLibraryName);
@@ -479,7 +479,7 @@ public final class BundleClassLoader extends ClassLoader {
 		}
 		try {
 			return (String) AtlasHacks.ClassLoader_findLibrary.invoke(
-					Framework.systemClassLoader, str);
+					Framework.systemClassLoader, nickname);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -491,9 +491,9 @@ public final class BundleClassLoader extends ClassLoader {
 		return "BundleClassLoader[Bundle" + this.bundle + "]";
 	}
 
-	private static String[] readProperty(Attributes attributes, String str)
+	private static String[] readProperty(Attributes attributes, String name)
 			throws BundleException {
-		String value = attributes.getValue(str);
+		String value = attributes.getValue(name);
 		if (value == null || !value.equals("")) {
 			return splitString(value);
 		}

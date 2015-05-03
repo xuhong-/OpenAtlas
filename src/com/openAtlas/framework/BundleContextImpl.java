@@ -162,10 +162,10 @@ public class BundleContextImpl implements BundleContext {
     }
 
     @Override
-	public File getDataFile(String str) {
+	public File getDataFile(String bundleName) {
         checkValid();
         try {
-            File file = new File(new File(this.bundle.bundleDir, "/data/"), str);
+            File file = new File(new File(this.bundle.bundleDir, "/data/"), bundleName);
             file.getParentFile().mkdirs();
             return file;
         } catch (Exception e) {
@@ -175,8 +175,8 @@ public class BundleContextImpl implements BundleContext {
     }
 
     @Override
-	public String getProperty(String str) {
-        return (String) Framework.properties.get(str);
+	public String getProperty(String key) {
+        return (String) Framework.properties.get(key);
     }
 
     @Override
@@ -265,12 +265,12 @@ public class BundleContextImpl implements BundleContext {
     }
 
     @Override
-	public Bundle installBundle(String str) throws BundleException {
-        if (str == null) {
+	public Bundle installBundle(String bundleName) throws BundleException {
+        if (bundleName == null) {
             throw new IllegalArgumentException("Location must not be null");
         }
         checkValid();
-        return Framework.installNewBundle(str);
+        return Framework.installNewBundle(bundleName);
     }
 
     @Override
