@@ -48,7 +48,7 @@ public class Utils {
                 "com.taobao.taobao.home", "com.taobao.mytaobao",
                 "com.taobao.wangxin", "com.taobao.passivelocation",
                 "com.taobao.allspark" };
-        STORE = new String[] { "blue.stack.openAtlas.android.game2","com.taobao.scan",
+        STORE = new String[] { "com.taobao.android.game20x6f","com.taobao.scan",
                 "com.taobao.taobao.pluginservice", "com.taobao.legacy",
                 "com.ut.share", "com.taobao.taobao.map",
                 "blue.stack.openAtlas.android.gamecenter", "com.taobao.tongxue",
