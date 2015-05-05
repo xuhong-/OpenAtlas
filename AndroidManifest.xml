@@ -112,6 +112,35 @@
             android:enabled="true"
             android:exported="false" >
         </provider> -->
+        
+        
+        
+        
+        
+                <activity
+            android:name="com.nostra13.universalimageloader.sample.activity.HomeActivity"
+          >
+
+        </activity>
+        <activity
+            android:name="com.nostra13.universalimageloader.sample.activity.SimpleImageActivity"
+            />
+        <activity
+            android:name="com.nostra13.universalimageloader.sample.activity.ComplexImageActivity"
+        />
+
+        <!-- Widget -->
+<!--         <receiver android:name="com.nostra13.universalimageloader.sample.widget.UILWidgetProvider" >
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver> -->
+        
+        
     </application>
 
 </manifest>

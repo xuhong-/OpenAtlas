@@ -91,7 +91,7 @@ public class Welcome extends PanguActivity {
 				// mIntent.setPackage("com.taobao.taobao");
 				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
 				//            "com.taobao.scan.MainActivity"));
-				mIntent.setClassName(this, "com.taobao.android.game2.main.GcContainerActivity");
+				mIntent.setClassName(this, "com.nostra13.universalimageloader.sample.activity.HomeActivity");
 		
 				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				// mIntent.setClassName("com.taobao.scan",
