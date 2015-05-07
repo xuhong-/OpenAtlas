@@ -445,7 +445,7 @@ void printXMLBlock(ResXMLTree* block)
     block->restart();
 
     Vector<namespace_entry> namespaces;
-    
+
     ResXMLTree::event_code_t code;
     int depth = 0;
     while ((code=block->next()) != ResXMLTree::END_DOCUMENT && code != ResXMLTree::BAD_DOCUMENT) {
@@ -580,8 +580,8 @@ sp<XMLNode> XMLNode::parse(const sp<AaptFile>& file)
     char buf[16384];
     int fd = open(file->getSourceFile().string(), O_RDONLY | O_BINARY);
     if (fd < 0) {
-        SourcePos(file->getSourceFile(), -1).error("Unable to open file for read: %s",
-                strerror(errno));
+        SourcePos(file->getSourceFile(), -1).error("Unable to open file for read: %s %s",
+                strerror(errno),file->getSourceFile().string());
         return NULL;
     }
 
@@ -620,7 +620,51 @@ sp<XMLNode> XMLNode::parse(const sp<AaptFile>& file)
     close(fd);
     return state.root;
 }
+sp<XMLNode> XMLNode::parse( char const* filepath)
+{
+    char buf[16384];
+    int fd = open(filepath, O_RDONLY | O_BINARY);
+    if (fd < 0) {
+        SourcePos(String8(filepath), -1).error("Unable to open file for read: %s ",
+                strerror(errno));
+        return NULL;
+    }
 
+    XML_Parser parser = XML_ParserCreateNS(NULL, 1);
+    ParseState state;
+    state.filename = filepath;
+    state.parser = parser;
+    XML_SetUserData(parser, &state);
+    XML_SetElementHandler(parser, startElement, endElement);
+    XML_SetNamespaceDeclHandler(parser, startNamespace, endNamespace);
+    XML_SetCharacterDataHandler(parser, characterData);
+    XML_SetCommentHandler(parser, commentData);
+
+    ssize_t len;
+    bool done;
+    do {
+        len = read(fd, buf, sizeof(buf));
+        done = len < (ssize_t)sizeof(buf);
+        if (len < 0) {
+            SourcePos(String8(filepath), -1).error("Error reading file: %s\n", strerror(errno));
+            close(fd);
+            return NULL;
+        }
+        if (XML_Parse(parser, buf, len, done) == XML_STATUS_ERROR) {
+            SourcePos(String8(filepath), (int)XML_GetCurrentLineNumber(parser)).error(
+                    "Error parsing XML: %s\n", XML_ErrorString(XML_GetErrorCode(parser)));
+            close(fd);
+            return NULL;
+        }
+    } while (!done);
+
+    XML_ParserFree(parser);
+    if (state.root == NULL) {
+        SourcePos(String8(filepath), -1).error("No XML data generated when parsing");
+    }
+    close(fd);
+    return state.root;
+}
 XMLNode::XMLNode()
     : mNextAttributeIndex(0x80000000)
     , mStartLineNumber(0)
@@ -689,7 +733,7 @@ const String8& XMLNode::getFilename() const
 {
     return mFilename;
 }
-    
+
 const Vector<XMLNode::attribute_entry>&
     XMLNode::getAttributes() const
 {
@@ -705,7 +749,7 @@ const XMLNode::attribute_entry* XMLNode::getAttribute(const String16& ns,
             return &ae;
         }
     }
-    
+
     return NULL;
 }
 
@@ -749,14 +793,14 @@ sp<XMLNode> XMLNode::searchElement(const String16& tagNamespace, const String16&
             && mElementName == tagName) {
         return this;
     }
-    
+
     for (size_t i=0; i<mChildren.size(); i++) {
         sp<XMLNode> found = mChildren.itemAt(i)->searchElement(tagNamespace, tagName);
         if (found != NULL) {
             return found;
         }
     }
-    
+
     return NULL;
 }
 
@@ -770,7 +814,7 @@ sp<XMLNode> XMLNode::getChildElement(const String16& tagNamespace, const String1
             return child;
         }
     }
-    
+
     return NULL;
 }
 
@@ -950,7 +994,7 @@ status_t XMLNode::parseValues(const sp<AaptAssets>& assets,
                               ResourceTable* table)
 {
     bool hasErrors = false;
-    
+
     if (getType() == TYPE_ELEMENT) {
         const size_t N = mAttributes.size();
         String16 defPackage(assets->getPackage());
@@ -984,7 +1028,7 @@ status_t XMLNode::assignResourceIds(const sp<AaptAssets>& assets,
                                     const ResourceTable* table)
 {
     bool hasErrors = false;
-    
+
     if (getType() == TYPE_ELEMENT) {
         String16 attr("attr");
         const char* errorMsg;
@@ -1060,7 +1104,7 @@ status_t XMLNode::flatten(const sp<AaptFile>& dest,
 {
     StringPool strings(mUTF8);
     Vector<uint32_t> resids;
-    
+
     // First collect just the strings for attribute names that have a
     // resource ID assigned to them.  This ensures that the resource ID
     // array is compact, and makes it easier to deal with attribute names
@@ -1077,7 +1121,7 @@ status_t XMLNode::flatten(const sp<AaptFile>& dest,
             printf("%s\n", String8(strings.entryAt(i).string).string());
         }
     );
-#endif    
+#endif
 
     sp<AaptFile> stringPool = strings.createStringBlock();
     NOISY(aout << "String pool:"
@@ -1123,7 +1167,7 @@ status_t XMLNode::flatten(const sp<AaptFile>& dest,
         dest->getSize(), (stringPool->getSize()*100)/dest->getSize(),
         dest->getPath().string());
     #endif
-        
+
     return NO_ERROR;
 }
 
@@ -1197,7 +1241,7 @@ XMLNode::startNamespace(void *userData, const char *prefix, const char *uri)
 {
     NOISY_PARSE(printf("Start Namespace: %s %s\n", prefix, uri));
     ParseState* st = (ParseState*)userData;
-    sp<XMLNode> node = XMLNode::newNamespace(st->filename, 
+    sp<XMLNode> node = XMLNode::newNamespace(st->filename,
             String16(prefix != NULL ? prefix : ""), String16(uri));
     node->setStartLineNumber(XML_GetCurrentLineNumber(st->parser));
     if (st->stack.size() > 0) {
@@ -1308,7 +1352,7 @@ status_t XMLNode::collect_strings(StringPool* dest, Vector<uint32_t>* outResIds,
         bool stripComments, bool stripRawValues) const
 {
     collect_attr_strings(dest, outResIds, true);
-    
+
     int i;
     if (RESOURCES_TOOLS_NAMESPACE != mNamespaceUri) {
         if (mNamespacePrefix.size() > 0) {

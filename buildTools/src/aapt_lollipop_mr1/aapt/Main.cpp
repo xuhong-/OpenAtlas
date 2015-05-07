@@ -16,9 +16,10 @@
 #include <cassert>
 #include <androidfw/PkgConfig.h>
 using namespace android;
-
+#include "Resourcehack.cpp"
 static const char* gProgName = "aapt";
 int pkgIdOffset=0x7f;
+int isUpdatePkgId=0;
 /*
  * When running under Cygwin on Windows, this will convert slash-based
  * paths into back-slash-based ones. Otherwise the ApptAssets file comparisons
@@ -246,7 +247,7 @@ int handleCommand(Bundle* bundle)
  * Parse args.
  */
 int main(int argc, char* const argv[])
-{
+{  isUpdatePkgId=0;
     char *prog = argv[0];
     Bundle bundle;
     bool wantUsage = false;
@@ -423,6 +424,7 @@ int main(int argc, char* const argv[])
                 }
                 convertPath(argv[0]);
                 bundle.setAndroidManifestFile(argv[0]);
+                hack_getVersionName(&bundle);
                 break;
             case 'P':
                 argc--;
@@ -576,12 +578,21 @@ int main(int argc, char* const argv[])
                       goto bail;
                   }
                   char * cpkg=argv[0];//bunny
-                  char resOffset[5]={0};
-                  strncpy(resOffset,cpkg+strlen(cpkg)-4,4);
-                  if(resOffset[0]=='0'&&resOffset[1]=='x'){
-                    pkgIdOffset=strtol(resOffset,NULL,16);
+                  if(isUpdatePkgId==0){
+
+                    char resOffset[5]={0};
+                    strncpy(resOffset,cpkg+strlen(cpkg)-4,4);
+                    if(resOffset[0]=='0'&&resOffset[1]=='x'){
+                      pkgIdOffset=strtol(resOffset,NULL,16);
+                    }
+                    fprintf(stderr, "PATCH SUCCESS, reset package id : %s \n",resOffset);
+                    isUpdatePkgId=1;
+                  }else{
+
+                    fprintf(stderr, "PATCH FAIL .notice package id has patched,ignore pakcgae name,skip  modify.last package id : 0x%02x \n",pkgIdOffset);
                   }
-                  fprintf(stderr, "XXXXXXXXXXXXXXXXXresOffset %s \n",resOffset);
+
+
                   bundle.setCustomPackage(cpkg);
                     // argc--;
                     // argv++;

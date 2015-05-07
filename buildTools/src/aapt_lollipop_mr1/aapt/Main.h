@@ -18,7 +18,7 @@
 #include "ResourceFilter.h"
 #include "ZipFile.h"
 
-
+#include <androidfw/PkgConfig.h>
 /* Benchmarking Flag */
 //#define BENCHMARK 1
 
@@ -27,7 +27,7 @@
 #endif /* BENCHMARK */
 
 class OutputSet;
-
+//extern int isUpdatePkgId;//patch package id,0 == no modify 1==modify
 extern int doVersion(Bundle* bundle);
 extern int doList(Bundle* bundle);
 extern int doDump(Bundle* bundle);
