@@ -18,18 +18,9 @@ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
-* **/
-package blue.stack.openAtlas;
-
+ * **/
 /**
- * App  Platform configuration
  * @author BunnyBlue
  *
  */
-public class PlatformConfigure {
-	/****闪屏activity****/
-	public static final String BOOT_ACTIVITY="blue.stack.openAtlas.welcome.Welcome";
-	public static final String ACTION_BROADCAST_BUNDLES_INSTALLED="com.taobao.taobao.action.BUNDLES_INSTALLED";
-	public static final String ATLAS_APP_DIRECTORY="com.openAtlas.AppDirectory";
-	
-}
+package com.openAtlas.boot;
