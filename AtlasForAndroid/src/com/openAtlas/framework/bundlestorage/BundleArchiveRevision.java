@@ -40,6 +40,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.openAtlas.bundleInfo.BundleInfoList;
+import com.openAtlas.dexopt.InitExecutor;
 import com.openAtlas.framework.Framework;
 import com.openAtlas.hack.AtlasHacks;
 import com.openAtlas.log.Logger;
@@ -52,7 +53,6 @@ import com.openAtlas.util.StringUtils;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.text.TextUtils;
-import blue.stack.openAtlas.dexopt.InitExecutor;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
