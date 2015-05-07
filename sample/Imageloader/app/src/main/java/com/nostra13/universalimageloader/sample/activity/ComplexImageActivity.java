@@ -24,7 +24,8 @@ import android.support.v4.view.ViewPager;
 
 import com.nostra13.universalimageloader.sample.fragment.ImageGridFragment;
 import com.nostra13.universalimageloader.sample.fragment.ImageListFragment;
-import com.taobao.universalimageloader.sample0x6a.R;
+import com.taobao.universalimageloader.sample.R;
+
 
 /**
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
