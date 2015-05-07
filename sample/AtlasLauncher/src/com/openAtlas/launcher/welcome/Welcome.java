@@ -21,23 +21,47 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package com.openAtlas.launcher.welcome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.Button;
+import blue.stack.openAtlas.Globals;
 
 import com.openAtlas.launcher.BootApp;
+import com.openAtlas.launcher.R;
 import com.openAtlas.launcher.android.lifecycle.PanguActivity;
-import com.openAtlas.sdk.R;
+
 
 public class Welcome extends PanguActivity {
-
+	WelcomeFragment mFragment;
+    public static boolean isAtlasDexopted() {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = Globals.getApplication().getPackageManager().getPackageInfo(Globals.getApplication().getPackageName(), 0);
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        SharedPreferences sharedPreferences = Globals.getApplication().getSharedPreferences("atlas_configs", 0);
+        if (packageInfo == null || !"dexopt".equals(sharedPreferences.getString(packageInfo.versionName, ""))) {
+            return false;
+        }
+        return false;
+    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_loader_tesst);
-
+//		setContentView(R.layout.activity_loader_tesst);
+        setContentView(R.layout.welcome_frame);
+        this.mFragment = new WelcomeFragment();
+        getFragmentManager().beginTransaction().add(R.id.frame, this.mFragment).commitAllowingStateLoss();
+//        if (AppPreference.getString("last_install_or_update_time", l.devicever).equals(Globals.getVersionName())) {
+//            FIRST = false;
+//        } else {
+//            AppPreference.putString("last_install_or_update_time", Globals.getVersionName());
+//            FIRST = true;
+//        }
 		// Bundle-SymbolicName="com.taobao.scan.bundledemostartactivity1"
 		// Bundle-Version="1.0.0"
 		// date="2012.11.28"
@@ -46,7 +70,7 @@ public class Welcome extends PanguActivity {
 		// Bundle-Activator="com.taobao.scan.SimpleBundle"
 		// Bundle-Activity="com.taobao.scan.MainActivity"
 
-		Button btn = (Button) findViewById(R.id.btn);
+//		Button btn = (Button) findViewById(R.id.btn);
 		// btn.setOnClickListener(new OnClickListener() {
 		//
 		// @Override
