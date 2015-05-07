@@ -101,12 +101,38 @@ public class WelcomeFragment extends Fragment implements Callback {
        // super.onCreate(bundle);
         this.mHandler = new Handler(this);
         ViewGroup viewGroup2 = (ViewGroup) layoutInflater.inflate(R.layout.welcome, viewGroup, false);
-        final PathView pathView = (PathView) viewGroup2.findViewById(R.id.pathView);
+        final PathView pathView = (PathView) viewGroup2.findViewById(R.id.pathViewS);
+        PathView pathViewJ = (PathView) viewGroup2.findViewById(R.id.pathViewJ);
+        PathView pathViewT = (PathView) viewGroup2.findViewById(R.id.pathViewT);
+        PathView pathViewB = (PathView) viewGroup2.findViewById(R.id.pathViewB);
 //      final Path path = makeConvexArrow(50, 100);
 //      pathView.setPath(path);
       pathView.setFillAfter(true);
       pathView.useNaturalColors();
       pathView.getPathAnimator().
+      delay(100).
+      duration(1500).
+      interpolator(new AccelerateDecelerateInterpolator()).
+      start();
+      pathViewJ.setFillAfter(true);
+      pathViewJ.useNaturalColors();
+      pathViewJ.getPathAnimator().
+      delay(100).
+      duration(1500).
+      interpolator(new AccelerateDecelerateInterpolator()).
+      start();
+      
+      pathViewT.setFillAfter(true);
+      pathViewT.useNaturalColors();
+      pathViewT.getPathAnimator().
+      delay(100).
+      duration(1500).
+      interpolator(new AccelerateDecelerateInterpolator()).
+      start();
+      
+      pathViewB.setFillAfter(true);
+      pathViewB.useNaturalColors();
+      pathViewB.getPathAnimator().
       delay(100).
       duration(1500).
       interpolator(new AccelerateDecelerateInterpolator()).

@@ -487,6 +487,8 @@ public class PathView extends View {
             anim.setDuration(duration);
             anim.setInterpolator(interpolator);
             anim.setStartDelay(delay);
+            anim.setRepeatMode(ObjectAnimator.RESTART);
+            anim.setRepeatCount(ObjectAnimator.INFINITE);
             anim.start();
         }
 
