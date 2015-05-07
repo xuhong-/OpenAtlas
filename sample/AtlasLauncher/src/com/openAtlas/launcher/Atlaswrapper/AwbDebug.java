@@ -27,6 +27,8 @@ import java.util.Iterator;
 import android.os.Environment;
 import android.util.Log;
 
+import com.openAtlas.framework.Atlas;
+
 
 class AwbDebug {
     boolean a;
