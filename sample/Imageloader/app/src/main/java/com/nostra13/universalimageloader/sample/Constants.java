@@ -15,7 +15,9 @@
  *******************************************************************************/
 package com.nostra13.universalimageloader.sample;
 
-import com.taobao.universalimageloader.sample0x6a.R;
+import com.taobao.universalimageloader.sample.R;
+
+
 
 /**
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)

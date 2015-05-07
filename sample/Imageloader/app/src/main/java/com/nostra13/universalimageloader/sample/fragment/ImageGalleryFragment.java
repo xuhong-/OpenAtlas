@@ -32,7 +32,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.sample.Constants;
 import com.nostra13.universalimageloader.sample.activity.SimpleImageActivity;
-import com.taobao.universalimageloader.sample0x6a.R;
+import com.taobao.universalimageloader.sample.R;
+
 
 /**
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)

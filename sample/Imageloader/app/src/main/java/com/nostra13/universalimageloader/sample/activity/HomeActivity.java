@@ -29,7 +29,7 @@ import com.nostra13.universalimageloader.sample.fragment.ImageGridFragment;
 import com.nostra13.universalimageloader.sample.fragment.ImageListFragment;
 import com.nostra13.universalimageloader.sample.fragment.ImagePagerFragment;
 import com.nostra13.universalimageloader.utils.L;
-import com.taobao.universalimageloader.sample0x6a.R;
+import com.taobao.universalimageloader.sample.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

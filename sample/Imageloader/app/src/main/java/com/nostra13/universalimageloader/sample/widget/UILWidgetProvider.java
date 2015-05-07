@@ -27,7 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.sample.UILApplication;
-import com.taobao.universalimageloader.sample0x6a.R;
+import com.taobao.universalimageloader.sample.R;
 
 import static com.nostra13.universalimageloader.sample.Constants.IMAGES;
 

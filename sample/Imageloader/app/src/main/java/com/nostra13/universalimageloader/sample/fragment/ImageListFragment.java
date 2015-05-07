@@ -35,7 +35,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.sample.Constants;
-import com.taobao.universalimageloader.sample0x6a.R;
+import com.taobao.universalimageloader.sample.R;
 
 import java.util.Collections;
 import java.util.LinkedList;
