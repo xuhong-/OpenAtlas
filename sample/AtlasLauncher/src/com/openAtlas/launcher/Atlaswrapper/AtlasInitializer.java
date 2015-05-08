@@ -32,10 +32,10 @@ import android.content.pm.PackageInfo;
 import android.text.TextUtils;
 import android.util.Log;
 import blue.stack.openAtlas.Globals;
+import blue.stack.openAtlas.PlatformConfigure;
 
 import com.openAtlas.framework.Atlas;
 import com.openAtlas.launcher.ClassNotFoundInterceptor;
-import com.openAtlas.launcher.PlatformConfigure;
 import com.openAtlas.launcher.android.task.Coordinator;
 
 public class AtlasInitializer {

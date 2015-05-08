@@ -25,6 +25,7 @@ import java.util.List;
 
 import android.content.Intent;
 import blue.stack.openAtlas.Globals;
+import blue.stack.openAtlas.PlatformConfigure;
 
 import com.openAtlas.bundleInfo.BundleInfoList;
 import com.openAtlas.launcher.lightapk.BundleListing.Component;
