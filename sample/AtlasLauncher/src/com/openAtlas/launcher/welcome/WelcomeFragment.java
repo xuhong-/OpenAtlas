@@ -46,6 +46,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import blue.stack.openAtlas.Globals;
+import blue.stack.openAtlas.PlatformConfigure;
 
 import com.eftimoff.androipathview.PathView;
 import com.openAtlas.launcher.R;
@@ -137,6 +138,7 @@ public class WelcomeFragment extends Fragment implements Callback {
       duration(1500).
       interpolator(new AccelerateDecelerateInterpolator()).
       start();
+      init();
         return viewGroup2;
  //  this.mBmStart = a.getInstance().getBootBitmap();
 //        if ((!Welcome.isAtlasDexopted()) ) {
@@ -295,7 +297,7 @@ public class WelcomeFragment extends Fragment implements Callback {
       
         if ("flase".equals(System.getProperty("BUNDLES_INSTALLED", "flase"))) {
             this.atlasBroadCast = new BundlesInstallBroadcastReceiver(this);
-            getActivity().registerReceiver(this.atlasBroadCast, new IntentFilter("com.taobao.taobao.action.BUNDLES_INSTALLED"));
+            getActivity().registerReceiver(this.atlasBroadCast, new IntentFilter(PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
             this.bundlestart = System.currentTimeMillis();
            // com.taobao.android.e.a.a.start(65177, "Page_Welcome", "InstallBundle");
             this.mHandler.sendEmptyMessageDelayed(MSG_CONSUME_TIMEOUT, 4000);
@@ -315,8 +317,9 @@ public class WelcomeFragment extends Fragment implements Callback {
     }
 
     public void gotoMainActivity(boolean z) {
-//        boolean z2 = false;
-//        if (getActivity().getClass() == Welcome.class) {
+    	System.out.println("WelcomeFragment.gotoMainActivity()");
+      //  boolean z2 = false;.//com.openatlas.homelauncher.MainActivity
+        if (getActivity().getClass() == Welcome.class) {
 //            Object stringExtra = getActivity().getIntent().getStringExtra(ShopConstants.PARAM_UID);
 //            Object stringExtra2 = getActivity().getIntent().getStringExtra(Constant.S_SHOP_ID_ATTR);
 //            boolean launchToExplore = l.launchToExplore();
@@ -341,8 +344,11 @@ public class WelcomeFragment extends Fragment implements Callback {
 //                getActivity().overridePendingTransition(a.push_left_in, a.push_left_out);
 //                a.getInstance().startCheckBootImageUpdate();
 //            }
-//            Welcome.doLaunchoverUT();
-//        }
+        	Intent mIntent=new Intent();
+    		mIntent.setClassName(getActivity(), "com.openatlas.homelauncher.MainActivity");
+    		startActivity(mIntent);
+            Welcome.doLaunchoverUT();
+        }
     }
 
 //    private void alertAvailableSizeDialog() {

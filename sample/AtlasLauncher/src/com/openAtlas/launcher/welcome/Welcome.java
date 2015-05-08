@@ -20,16 +20,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
  * **/
 package com.openAtlas.launcher.welcome;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import blue.stack.openAtlas.Globals;
 
-import com.openAtlas.launcher.BootApp;
 import com.openAtlas.launcher.R;
 import com.openAtlas.launcher.android.lifecycle.PanguActivity;
 
@@ -95,39 +91,39 @@ public class Welcome extends PanguActivity {
 
 	}
 	boolean  bootApp=true;
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction()==MotionEvent.ACTION_UP) {
-			if (bootApp) {
-				Intent mIntent = new Intent(Intent.ACTION_VIEW);
-				// mIntent.setPackage("com.taobao.taobao");
-				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
-				//            "com.taobao.scan.MainActivity"));
-				mIntent.setClassName(this, "com.taobao.android.gamecenter.main.GcContainerActivity");
-		
-				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				// mIntent.setClassName("com.taobao.scan",
-				// "com.taobao.scan.MainActivity");
-				startActivity(mIntent);
-				bootApp=false;
-			}else {
-				Intent mIntent = new Intent(Intent.ACTION_VIEW);
-				// mIntent.setPackage("com.taobao.taobao");
-				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
-				//            "com.taobao.scan.MainActivity"));
-				mIntent.setClassName(this, "com.nostra13.universalimageloader.sample.activity.HomeActivity");
-		
-				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				// mIntent.setClassName("com.taobao.scan",
-				// "com.taobao.scan.MainActivity");
-				startActivity(mIntent);
-				bootApp=true;
-			}
-		
-
-		}
-		return super.onTouchEvent(event);
-	}
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		if (event.getAction()==MotionEvent.ACTION_UP) {
+//			if (bootApp) {
+//				Intent mIntent = new Intent(Intent.ACTION_VIEW);
+//				// mIntent.setPackage("com.taobao.taobao");
+//				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
+//				//            "com.taobao.scan.MainActivity"));
+//				mIntent.setClassName(this, "com.taobao.android.gamecenter.main.GcContainerActivity");
+//		
+//				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				// mIntent.setClassName("com.taobao.scan",
+//				// "com.taobao.scan.MainActivity");
+//				startActivity(mIntent);
+//				bootApp=false;
+//			}else {
+//				Intent mIntent = new Intent(Intent.ACTION_VIEW);
+//				// mIntent.setPackage("com.taobao.taobao");
+//				//    mIntent.setComponent(new ComponentName("com.taobao.taobao",
+//				//            "com.taobao.scan.MainActivity"));
+//				mIntent.setClassName(this, "com.nostra13.universalimageloader.sample.activity.HomeActivity");
+//		
+//				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				// mIntent.setClassName("com.taobao.scan",
+//				// "com.taobao.scan.MainActivity");
+//				startActivity(mIntent);
+//				bootApp=true;
+//			}
+//		
+//
+//		}
+//		return super.onTouchEvent(event);
+//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,29 +132,29 @@ public class Welcome extends PanguActivity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify Component parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-
-			{
-
-				Intent mIntent = null;
-				mIntent = new Intent("com.taobao.scan.MainActivity");
-
-				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				// mIntent.setClassName("com.taobao.scan",
-				// "com.taobao.scan.MainActivity");
-				BootApp.instaceApp.startActivity(mIntent);
-
-			}
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+	//@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// Handle action bar item clicks here. The action bar will
+//		// automatically handle clicks on the Home/Up button, so long
+//		// as you specify Component parent activity in AndroidManifest.xml.
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//
+//			{
+//
+//				Intent mIntent = null;
+//				mIntent = new Intent("com.taobao.scan.MainActivity");
+//
+//				mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				// mIntent.setClassName("com.taobao.scan",
+//				// "com.taobao.scan.MainActivity");
+//				BootApp.instaceApp.startActivity(mIntent);
+//
+//			}
+//			return true;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 	@Override
 	protected void onResume() {
@@ -166,5 +162,12 @@ public class Welcome extends PanguActivity {
 		super.onResume();
 		//libcom_taobao_scan.so
 
+	}
+	/**
+	 * 
+	 */
+	public static void doLaunchoverUT() {
+		
+		
 	}
 }
