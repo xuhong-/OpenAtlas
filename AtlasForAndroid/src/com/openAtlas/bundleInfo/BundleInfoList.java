@@ -155,6 +155,7 @@ public class BundleInfoList {
     }
 
     public void print() {
+    	System.out.println("BundleInfoList.print()");
         if (this.mBundleInfoList != null && this.mBundleInfoList.isEmpty()) {
             for (int index = 0; index < this.mBundleInfoList.size(); ++index) {
             	BundleInfo bundleInfo = this.mBundleInfoList.get(index);

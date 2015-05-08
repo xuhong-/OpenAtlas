@@ -39,6 +39,10 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import android.content.res.AssetManager;
+import android.os.Build;
+import android.text.TextUtils;
+
 import com.openAtlas.bundleInfo.BundleInfoList;
 import com.openAtlas.dexopt.InitExecutor;
 import com.openAtlas.framework.Framework;
@@ -50,9 +54,6 @@ import com.openAtlas.util.ApkUtils;
 import com.openAtlas.util.AtlasFileLock;
 import com.openAtlas.util.StringUtils;
 
-import android.content.res.AssetManager;
-import android.os.Build;
-import android.text.TextUtils;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
@@ -112,6 +113,7 @@ public class BundleArchiveRevision {
 
     BundleArchiveRevision(String str, long j, File file, InputStream inputStream)
             throws IOException {
+    	System.out.println("BundleArchiveRevision.BundleArchiveRevision()");
         Object obj = 1;
         this.revisionNum = j;
         this.revisionDir = file;
@@ -122,6 +124,11 @@ public class BundleArchiveRevision {
         this.bundleFile = new File(file, BUNDLE_FILE_NAME);
         ApkUtils.copyInputStreamToFile(inputStream, this.bundleFile);
         BundleInfoList instance = BundleInfoList.getInstance();
+        instance.print();
+        System.out.println("BundleArchiveRevision.BundleArchiveRevision()"+str);
+if (str.contains("qrcode")) {
+	  installSoLib(this.bundleFile);
+}
         if (instance == null || !instance.getHasSO(str)) {
             obj = null;
         }
@@ -131,16 +138,16 @@ public class BundleArchiveRevision {
         updateMetadata();
     }
 
-    BundleArchiveRevision(String str, long j, File file, File file2)
+    BundleArchiveRevision(String packageName, long j, File file, File file2)
             throws IOException {
-        int i;
+        boolean  hasSO=false;;
         this.revisionNum = j;
         this.revisionDir = file;
         BundleInfoList instance = BundleInfoList.getInstance();
-        if (instance == null || !instance.getHasSO(str)) {
-            i = 0;
+        if (instance == null || !instance.getHasSO(packageName)) {
+        	
         } else {
-            i = 1;
+        	hasSO=true;
         }
         if (!this.revisionDir.exists()) {
             this.revisionDir.mkdirs();
@@ -156,7 +163,7 @@ public class BundleArchiveRevision {
                 ApkUtils.copyInputStreamToFile(new FileInputStream(file2),
                         this.bundleFile);
             }
-            if (i != 0) {
+            if (hasSO) {
                 installSoLib(this.bundleFile);
             }
         } else if (Build.HARDWARE.toLowerCase().contains("mt6592")
@@ -167,7 +174,7 @@ public class BundleArchiveRevision {
                     String.format("ln -s %s %s",
                             new Object[] { file2.getAbsolutePath(),
                                     this.bundleFile.getAbsolutePath() }));
-            if (i != 0) {
+            if (hasSO) {
                 installSoLib(file2);
             }
         } else if (AtlasHacks.LexFile == null
@@ -175,7 +182,11 @@ public class BundleArchiveRevision {
             this.revisionLocation = REFERENCE_PROTOCOL
                     + file2.getAbsolutePath();
             this.bundleFile = file2;
-            if (i != 0) {
+            //TODO  update project support so
+//            if (this.revisionLocation.contains("qrcode")) {
+//            	 installSoLib(file2);
+//			}
+            if (hasSO) {
                 installSoLib(file2);
             }
         } else {
@@ -183,7 +194,7 @@ public class BundleArchiveRevision {
             this.bundleFile = new File(file, BUNDLE_FILE_NAME);
             ApkUtils.copyInputStreamToFile(new FileInputStream(file2),
                     this.bundleFile);
-            if (i != 0) {
+            if (hasSO) {
                 installSoLib(this.bundleFile);
             }
         }
