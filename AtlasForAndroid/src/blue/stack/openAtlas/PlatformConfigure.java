@@ -28,8 +28,8 @@ package blue.stack.openAtlas;
  */
 public class PlatformConfigure {
 	/****闪屏activity****/
-	public static final String BOOT_ACTIVITY="blue.stack.openAtlas.welcome.Welcome";
-	public static final String ACTION_BROADCAST_BUNDLES_INSTALLED="com.taobao.taobao.action.BUNDLES_INSTALLED";
+	public static final String BOOT_ACTIVITY="com.openAtlas.welcome.Welcome";
+	public static final String ACTION_BROADCAST_BUNDLES_INSTALLED="com.openAtlas.action.BUNDLES_INSTALLED";
 	public static final String ATLAS_APP_DIRECTORY="com.openAtlas.AppDirectory";
 	
 }

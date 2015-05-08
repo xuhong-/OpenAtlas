@@ -349,6 +349,7 @@ public class WelcomeFragment extends Fragment implements Callback {
     		mIntent.setClassName(getActivity(), "com.openatlas.homelauncher.MainActivity");
     		startActivity(mIntent);
             Welcome.doLaunchoverUT();
+            getActivity().finish();
         }
     }
 
