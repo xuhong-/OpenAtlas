@@ -34,7 +34,6 @@ import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 
 
 public class PackageLite {
@@ -243,28 +242,25 @@ public class PackageLite {
 	 */
 	private static void parserManifestAttribute(
 			XmlResourceParser xmlResourceParser, PackageLite mPackageLite) {
-		mPackageLite.packageName = ((AttributeSet) xmlResourceParser).getAttributeValue(null,"package");
-		if (TextUtils.isEmpty(mPackageLite.packageName)) {
-			Log.e("tag", "packageName is null");
-		}
+ for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
+			String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
 
-		mPackageLite.versionCode = ((AttributeSet) xmlResourceParser).getAttributeIntValue(null, "versionCode", 0);
-		mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
-				.getAttributeValue(null,
-						"versionName");
-		//					for (int i = 0; i <((AttributeSet) xmlResourceParser).getAttributeCount(); i++) {
-		//						String value = ((AttributeSet) xmlResourceParser).getAttributeName(i);
-		//						if (value.equals("versionCode")) {
-		//							mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
-		//									.getAttributeIntValue(i, 0);
-		//
-		//						} else if (value.equals("versionName")) {
-		//							mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
-		//									.getAttributeValue(i);
-		//
-		//						}
-		//
-		//					}
+			if (value.equalsIgnoreCase("package")) {
+				mPackageLite.packageName= ((AttributeSet) xmlResourceParser)
+						.getAttributeValue(i);
+
+			}
+			if (value.equals("versionCode")) {
+				mPackageLite.versionCode = ((AttributeSet) xmlResourceParser)
+						.getAttributeIntValue(i, 0);
+
+			} else if (value.equals("versionName")) {
+				mPackageLite.versionName = ((AttributeSet) xmlResourceParser)
+						.getAttributeValue(i);
+
+			}
+
+		}
 	}
 
 
