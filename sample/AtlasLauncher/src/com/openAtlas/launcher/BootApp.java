@@ -44,6 +44,7 @@ import android.util.Log;
 import blue.stack.openAtlas.Globals;
 
 import com.openAtlas.launcher.Atlaswrapper.AtlasInitializer;
+import com.openAtlas.launcher.Atlaswrapper.BundleParser;
 import com.openAtlas.launcher.android.lifecycle.PanguApplication;
 import com.openAtlas.runtime.ContextImplHook;
 import com.openAtlas.runtime.RuntimeVariables;
@@ -88,6 +89,7 @@ public class BootApp extends PanguApplication {
 		// this.mAtlasInitializer.injectApplication();
 		// initCrashHandlerAndSafeMode(this.mBaseContext);
 		this.mAtlasInitializer.init();
+		BundleParser.parser(getBaseContext());
 	}
 
 	@Override
