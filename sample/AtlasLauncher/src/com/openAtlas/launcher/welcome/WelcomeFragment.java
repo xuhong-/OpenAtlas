@@ -71,17 +71,17 @@ public class WelcomeFragment extends Fragment implements Callback {
     private View welcomSlogan;
 
     private class BundlesInstallBroadcastReceiver extends BroadcastReceiver {
-        final /* synthetic */ WelcomeFragment a;
+       
 
-        private BundlesInstallBroadcastReceiver(WelcomeFragment welcomeFragment) {
-            this.a = welcomeFragment;
+        private BundlesInstallBroadcastReceiver() {
+            
         }
 
         @Override
 		public void onReceive(Context context, Intent intent) {
             try {
-                this.a.consumeFinish();
-                this.a.mHandler.sendEmptyMessage(WelcomeFragment.MSG_CONSUME_FINISH);
+            	WelcomeFragment.this.consumeFinish();
+            	WelcomeFragment.this.mHandler.sendEmptyMessage(WelcomeFragment.MSG_CONSUME_FINISH);
             } catch (Exception e) {
             }
         }
@@ -272,7 +272,7 @@ public class WelcomeFragment extends Fragment implements Callback {
     @Override
 	public void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacks((Runnable) this);
+       
 
     }
 
@@ -295,8 +295,9 @@ public class WelcomeFragment extends Fragment implements Callback {
 
     private void init() {
       
+    	
         if ("flase".equals(System.getProperty("BUNDLES_INSTALLED", "flase"))) {
-            this.atlasBroadCast = new BundlesInstallBroadcastReceiver(this);
+            this.atlasBroadCast = new BundlesInstallBroadcastReceiver();
             getActivity().registerReceiver(this.atlasBroadCast, new IntentFilter(PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
             this.bundlestart = System.currentTimeMillis();
            // com.taobao.android.e.a.a.start(65177, "Page_Welcome", "InstallBundle");
