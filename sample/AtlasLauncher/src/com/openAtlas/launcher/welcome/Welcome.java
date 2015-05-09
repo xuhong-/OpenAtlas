@@ -52,7 +52,7 @@ public class Welcome extends PanguActivity {
         setContentView(R.layout.welcome_frame);
         this.mFragment = new WelcomeFragment();
         getFragmentManager().beginTransaction().add(R.id.frame, this.mFragment).commitAllowingStateLoss();
-//        if (AppPreference.getString("last_install_or_update_time", l.devicever).equals(Globals.getVersionName())) {
+//        if (AppPreference.getString("last_install_or_update_time", SecurityFrameListener.devicever).equals(Globals.getVersionName())) {
 //            FIRST = false;
 //        } else {
 //            AppPreference.putString("last_install_or_update_time", Globals.getVersionName());

@@ -1,6 +1,7 @@
-/**
- *  OpenAtlasForAndroid Project
-The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+/**OpenAtlasForAndroid Project
+
+The MIT License (MIT) 
+Copyright (c) 2015 Bunny Blue
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
@@ -18,6 +19,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
+/**
+ * @author BunnyBlue
+ */
 package com.openAtlas.launcher.Atlaswrapper;
 
 import java.io.File;
@@ -31,9 +35,6 @@ import java.util.zip.ZipFile;
 import org.osgi.framework.Bundle;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,143 +47,166 @@ import com.openAtlas.runtime.RuntimeVariables;
 
 
 public class BundlesInstaller {
-    private boolean isAppPkg;
+    private static boolean autoStart;
     private static BundlesInstaller mBundlesInstaller;
-    AwbDebug a;
+   // AwbDebug a;
     private Application mApplication;
-    private MiniPackage miniPackage;
-    private PackageInfo mPackageInfo;
-    private boolean isInited;
-    private boolean f;
+
+    private boolean isinitialized;
+    private boolean isInstalled;
 
     BundlesInstaller() {
     }
 
-    void init(Application application, MiniPackage miniPackage, AwbDebug cVar, boolean isAppPkg) {
+    void init(Application application,  boolean isAppPkg) {
         this.mApplication = application;
-        this.miniPackage = miniPackage;
-        this.a = cVar;
-        this.isAppPkg = isAppPkg;
-        this.mPackageInfo = Utils.getPackageInfo(application);
-        this.isInited = true;
+    
+       
+        autoStart = isAppPkg;
+        this.isinitialized = true;
     }
 
     static synchronized BundlesInstaller getInstance() {
+    	System.out.println("BundlesInstaller.a()");
    
+        if (mBundlesInstaller!=null) {
+			return mBundlesInstaller;
+		}
         synchronized (BundlesInstaller.class) {
             if (mBundlesInstaller == null) {
                 mBundlesInstaller = new BundlesInstaller();
             }
-           
+            
         }
         return mBundlesInstaller;
     }
 
-    public synchronized void process() {
-        ZipFile zipFile;
-        Throwable e;
-        if (!this.isInited) {
-            Log.e("BundlesInstaller",
-                    "Bundle Installer not initialized yet, process abort!");
-        } else if (this.f) {
-            Log.i("BundlesInstaller",
-                    "Bundle install already executed, just return");
-        } else {
+    public synchronized void process(boolean installAuto, boolean updatePackageVersion) {
+    	
+     
+        if (!this.isinitialized) {
+            Log.e("BundlesInstaller", "Bundle Installer not initialized yet, process abort!");
+        } else if (!this.isInstalled || updatePackageVersion) {
+            ZipFile zipFile = null;
             try {
                 zipFile = new ZipFile(this.mApplication.getApplicationInfo().sourceDir);
-                List<String> mFileList = getFileList(zipFile, "lib/armeabi/libcom_", ".so");
-                if (mFileList != null && mFileList.size() > 0
-                        && getSpace() < (((mFileList.size() * 2) * 1024) * 1024)) {
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                List<String> bundleList = fetchBundleFileList(zipFile, "lib/armeabi/libcom_", ".so");
+				if (bundleList != null && bundleList.size() > 0 && getAvailableSize() < (((bundleList.size() * 2) * 4096) * 4096)) {
+				    new Handler(Looper.getMainLooper()).post(new Runnable() {
+						
+						@Override
+						public void run() {
 
-                        @Override
-                        public void run() {
-
-                            Toast.makeText(
-                                    RuntimeVariables.androidApplication,
-                                    "检测到手机存储空间不足，为不影响您的使用请清理！",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
+					        Toast.makeText(RuntimeVariables.androidApplication, "\u68c0\u6d4b\u5230\u624b\u673a\u5b58\u50a8\u7a7a\u95f4\u4e0d\u8db3\uff0c\u4e3a\u4e0d\u5f71\u54cd\u60a8\u7684\u4f7f\u7528\u8bf7\u6e05\u7406\uff01", 1).show();
+					    
+							
+						}
+					});
+				}
+				if (installAuto) {
+				    List<String> arrayList = new ArrayList<String>();
+				    for (String str : bundleList) {//TODO notice
+				    //	arrayList.add(str.replace(".", "_").replace("_so", ".so"));
+				        for (String replace : Utils.AUTO) {
+				            if (str.contains(replace.replace(".", "_"))) {
+				                arrayList.add(str);
+				            }
+				        }
+				    }
+				    processAutoStartBundles(zipFile, arrayList, this.mApplication);
+				} else {
+				    installDelayBundles(zipFile, bundleList, this.mApplication);
+				}
+				if (!updatePackageVersion) {
+				    Utils.UpdatePackageVersion(this.mApplication);
+				}
+				if (zipFile != null) {
+				    try {
+				        zipFile.close();
+				    } catch (IOException e2) {
+				        e2.printStackTrace();
+				    }
+				}
+            } catch (IOException e5) {
+                //isInstalled = e5;
+                zipFile = null;
+                Log.e("BundlesInstaller", "IOException while processLibsBundles >>>", e5);
+          
+                if (updatePackageVersion) {
+                    this.isInstalled = true;
                 }
-                install(zipFile, mFileList, this.mApplication);
-                UpdatePackageVersion();
+            } catch (Throwable th2) {
+            th2.printStackTrace();
+             
                 if (zipFile != null) {
                     try {
-                        zipFile.close();
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
-                    }
+						zipFile.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
                 }
-            } catch (IOException e5) {
-                e = e5;
-                zipFile = null;
-                Log.e("BundlesInstaller",
-                        "IOException while processLibsBundles >>>", e);
-                this.f = true;
-            } catch (Throwable th2) {
-                e = th2;
-                zipFile = null;
+               
             }
-            this.f = true;
+            if (updatePackageVersion) {
+                this.isInstalled = true;
+            }
         }
     }
 
-    public void UpdatePackageVersion() {
-        if (this.isInited) {
-            SharedPreferences sharedPreferences = this.mApplication.getSharedPreferences(
-                    "atlas_configs", 0);
-            this.miniPackage.a(sharedPreferences, this.mPackageInfo);
-            Editor edit = sharedPreferences.edit();
-            edit.putInt("last_version_code", this.mPackageInfo.versionCode);
-            edit.putString("last_version_name", this.mPackageInfo.versionName);
-            edit.putString(this.mPackageInfo.versionName, "dexopt");
-            edit.commit();
-            return;
-        }
-        Log.e("BundlesInstaller",
-                "Bundle Installer not initialized yet, process abort!");
-    }
-
-    private List<String> getFileList(ZipFile zipFile, String mPref, String mSuffix) {
+    private List<String> fetchBundleFileList(ZipFile zipFile, String prefix, String suffix) {
         List<String> arrayList = new ArrayList<String>();
         try {
             Enumeration<?> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 String name = ((ZipEntry) entries.nextElement()).getName();
-                if (name.startsWith(mPref) && name.endsWith(mSuffix)) {
+                if (name.startsWith(prefix) && name.endsWith(suffix)) {
                     arrayList.add(name);
                 }
             }
         } catch (Throwable e) {
-            Log.e("BundlesInstaller",
-                    "Exception while get bundles in assets or lib", e);
+            Log.e("BundlesInstaller", "Exception while get bundles in assets or lib", e);
         }
         return arrayList;
     }
 
-    @SuppressWarnings("deprecation")
-	private long getSpace() {
+    private long getAvailableSize() {
         StatFs statFs = new StatFs(Environment.getDataDirectory().getPath());
-        return ((long) statFs.getAvailableBlocks())
-                * ((long) statFs.getBlockSize());
+        return ((long) statFs.getAvailableBlocks()) * ((long) statFs.getBlockSize());
     }
 
-    private void install(ZipFile zipFile, List<String> list, Application application) {
-        int i = 0;
-        for (String replace : Utils.DELAY) {
-            String replace2 = isContains(list, replace.replace(".", "_"));
-            if (replace2 != null && replace2.length() > 0) {
-                install(zipFile, replace2, application);
-                list.remove(replace2);
+    public void processAutoStartBundles(ZipFile zipFile, List<String> list, Application application) {
+        for (String a : list) {
+            installBundle(zipFile, a, application);
+        }
+        if (autoStart) {
+            for (String bundle : Utils.AUTO) {
+                Bundle bundle2 = Atlas.getInstance().getBundle(bundle);
+                if (bundle2 != null) {
+                    try {
+                        bundle2.start();
+                    } catch (Throwable e) {
+                        Log.e("BundlesInstaller", "Could not auto start bundle: " + bundle2.getLocation(), e);
+                    }
+                }
             }
         }
-        for (String a : list) {
-            install(zipFile, a, application);
+    }
+
+    private void installDelayBundles(ZipFile zipFile, List<String> bundleList, Application application) {
+        int i = 0;
+        for (String replace : Utils.DELAY) {
+            String replace2 = contains(bundleList, replace.replace(".", "_"));
+            if (replace2 != null && replace2.length() > 0) {
+                installBundle(zipFile, replace2, application);
+                bundleList.remove(replace2);
+            }
         }
-        if (isAppPkg) {
-            String[] strArr = Utils.AUTO;
+        for (String a : bundleList) {
+            installBundle(zipFile, a, application);
+        }
+        if (autoStart) {
+            String[] strArr = Utils.DELAY;
             int length = strArr.length;
             while (i < length) {
                 Bundle bundle = Atlas.getInstance().getBundle(strArr[i]);
@@ -190,9 +214,7 @@ public class BundlesInstaller {
                     try {
                         bundle.start();
                     } catch (Throwable e) {
-                        Log.e("BundlesInstaller",
-                                "Could not auto start bundle: "
-                                        + bundle.getLocation(), e);
+                        Log.e("BundlesInstaller", "Could not auto start bundle: " + bundle.getLocation(), e);
                     }
                 }
                 i++;
@@ -200,42 +222,37 @@ public class BundlesInstaller {
         }
     }
 
-    private String isContains(List<String> list, String str) {
-        if (list == null || str == null) {
+    private String contains(List<String> list, String pkgName) {
+        if (list == null || pkgName == null) {
             return null;
         }
-        for (String str2 : list) {
-            if (str2.contains(str)) {
-                return str2;
+        for (String bundleName : list) {
+            if (bundleName.contains(pkgName)) {
+                return bundleName;
             }
         }
         return null;
     }
 
-    private boolean install(ZipFile zipFile, String str, Application application) {
-        // "processLibsBundle entryName " + str;
-        this.a.installBundle(str);
-        String fileNameFromEntryName = Utils.getFileNameFromEntryName(str);
-        String packageNameFromEntryName = Utils.getPackageNameFromEntryName(str);
-        if (packageNameFromEntryName == null
-                || packageNameFromEntryName.length() <= 0) {
+    private boolean installBundle(ZipFile zipFile, String packageName, Application application) {
+   System.out.println( "processLibsBundle entryName " + packageName);
+        //this.a.a(str);
+        String fileNameFromEntryName = Utils.getFileNameFromEntryName(packageName);
+        String packageNameFromEntryName = Utils.getPackageNameFromEntryName(packageName);
+        if (packageNameFromEntryName == null || packageNameFromEntryName.length() <= 0) {
             return false;
         }
-        File file = new File(new File(
-                application.getFilesDir().getParentFile(), "lib"),
-                fileNameFromEntryName);
+        File file = new File(new File(application.getFilesDir().getParentFile(), "lib"), fileNameFromEntryName);
         if (Atlas.getInstance().getBundle(packageNameFromEntryName) != null) {
             return false;
         }
         try {
             if (file.exists()) {
-                Atlas.getInstance().installBundle(packageNameFromEntryName,
-                        file);
+                Atlas.getInstance().installBundle(packageNameFromEntryName, file);
             } else {
-                Atlas.getInstance().installBundle(packageNameFromEntryName,
-                        zipFile.getInputStream(zipFile.getEntry(str)));
+                Atlas.getInstance().installBundle(packageNameFromEntryName, zipFile.getInputStream(zipFile.getEntry(packageName)));
             }
-            // "Succeed to install bundle " + packageNameFromEntryName;
+           System.out.println("Succeed to install bundle " + packageNameFromEntryName);
             return true;
         } catch (Throwable e) {
             Log.e("BundlesInstaller", "Could not install bundle.", e);

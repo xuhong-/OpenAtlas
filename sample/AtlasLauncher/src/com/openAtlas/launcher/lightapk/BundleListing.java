@@ -21,6 +21,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package com.openAtlas.launcher.lightapk;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.text.TextUtils;
@@ -29,7 +30,12 @@ public class BundleListing  {
     public static final int CLASS_TYPE_ACTIVITY = 1;
     public static final int CLASS_TYPE_SERVICE = 2;
     private List<Component> bundles;
-
+static BundleListing instance=new BundleListing();
+public static BundleListing		 getInstance() {
+	
+	return instance;
+	
+}
     public static class Component {
         private String name;
         private String pkgName;
@@ -39,10 +45,10 @@ public class BundleListing  {
         private String mUrl;
         private String md5;
         private List<String> mdependency;
-        private List<String> mActivitiyList;
-        private List<String> mServiceList;
-        private List<String> msetReceiverList;
-        private List<String> mProviderList;
+        private List<String> mActivitiyList=new ArrayList<String>();
+        private List<String> mServiceList=new ArrayList<String>();
+        private List<String> msetReceiverList=new ArrayList<String>();
+        private List<String> mProviderList=new ArrayList<String>();
         private boolean isHasSO;
 
         public List<String> getReceivers() {

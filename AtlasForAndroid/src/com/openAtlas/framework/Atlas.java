@@ -79,7 +79,7 @@ public class Atlas {
         return instance;
     }
 
-    public void init(Application application, Properties properties)
+    public void init(Application application)
             throws AssertionArrayException, Exception {
         String packageName = application.getPackageName();
         AtlasHacks.defineAndVerify();
@@ -100,13 +100,16 @@ public class Atlas {
         this.frameworkLifecycleHandler = new FrameworkLifecycleHandler();
         Framework.frameworkListeners.add(this.frameworkLifecycleHandler);
         AndroidHack.hackH();
-        Framework.initialize(properties);
+       // Framework.initialize(properties);
     }
 
     public void injectApplication(Application application, String packageName)
             throws Exception {
         AtlasHacks.defineAndVerify();
         AndroidHack.injectApplication(packageName, application);
+    }
+    public void startup(Properties properties) throws BundleException {
+        Framework.startup(properties);
     }
 
     public void startup() throws BundleException {

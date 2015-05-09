@@ -31,5 +31,6 @@ public class PlatformConfigure {
 	public static final String BOOT_ACTIVITY="com.openAtlas.welcome.Welcome";
 	public static final String ACTION_BROADCAST_BUNDLES_INSTALLED="com.openAtlas.action.BUNDLES_INSTALLED";
 	public static final String ATLAS_APP_DIRECTORY="com.openAtlas.AppDirectory";
+	public static final String INSTALL_LOACTION="com.openAtlas.storage";
 	
 }

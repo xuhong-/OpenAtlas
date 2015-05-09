@@ -50,6 +50,7 @@ import com.openAtlas.runtime.ContextImplHook;
 import com.openAtlas.runtime.RuntimeVariables;
 import com.openAtlas.util.Utils;
 
+
 public class BootApp extends PanguApplication {
 
 
@@ -85,7 +86,7 @@ public class BootApp extends PanguApplication {
 				break;
 			}
 		}
-		this.mAtlasInitializer = new AtlasInitializer(this, this.processName);
+		this.mAtlasInitializer = new AtlasInitializer(this,getPackageName(), getApplicationContext());
 		// this.mAtlasInitializer.injectApplication();
 		// initCrashHandlerAndSafeMode(this.mBaseContext);
 		this.mAtlasInitializer.init();
