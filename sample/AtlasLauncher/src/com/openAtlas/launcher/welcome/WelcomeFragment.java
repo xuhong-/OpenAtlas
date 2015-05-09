@@ -323,7 +323,7 @@ public class WelcomeFragment extends Fragment implements Callback {
         if (getActivity().getClass() == Welcome.class) {
 //            Object stringExtra = getActivity().getIntent().getStringExtra(ShopConstants.PARAM_UID);
 //            Object stringExtra2 = getActivity().getIntent().getStringExtra(Constant.S_SHOP_ID_ATTR);
-//            boolean launchToExplore = l.launchToExplore();
+//            boolean launchToExplore = SecurityFrameListener.launchToExplore();
 //            Bundle bundle = new Bundle();
 //            if (!TextUtils.isEmpty(stringExtra)) {
 //                bundle.putString(ShopConstants.PARAM_UID, stringExtra);
@@ -364,7 +364,7 @@ public class WelcomeFragment extends Fragment implements Callback {
 //            textView.setText(e.wl_available_size_msg);
 //            linearLayout.addView(textView);
 //            TBDialog create = new Builder(getActivity()).setTitle(e.wl_available_size_title).setCancelable(false).setPositiveButton(e.wl_AvailableSizeDialogBottonOK, new i(this)).create();
-//            create.setOnKeyListener(new j(this));
+//            create.setOnKeyListener(new OptDexProcess(this));
 //            create.setCustomView(linearLayout);
 //            create.show();
 //            return;

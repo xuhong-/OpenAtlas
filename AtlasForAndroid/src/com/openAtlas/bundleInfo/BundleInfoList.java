@@ -56,8 +56,10 @@ public class BundleInfoList {
 
     public synchronized boolean init(LinkedList<BundleInfo> linkedList) {
         boolean initilized;
+      
         if (this.mBundleInfoList != null || linkedList == null) {
-            Log.i(TAG, "BundleInfoList initialization failed.");
+      
+            Log.i(TAG, "XXXXXBundleInfoList initialization failed.");
             initilized = false;
         } else {
             this.mBundleInfoList = linkedList;

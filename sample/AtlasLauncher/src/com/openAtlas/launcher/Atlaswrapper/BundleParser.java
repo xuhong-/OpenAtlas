@@ -34,6 +34,7 @@ import android.content.Context;
 
 import com.openAtlas.bundleInfo.BundleInfoList;
 import com.openAtlas.bundleInfo.BundleInfoList.BundleInfo;
+import com.openAtlas.launcher.lightapk.BundleListing;
 
 /**
  * @author BunnyBlue
@@ -43,6 +44,8 @@ public class BundleParser {
 	public static void parser(Context mContext) {
 		InputStream is;
 		LinkedList<BundleInfoList.BundleInfo> bundleInfos=new LinkedList<BundleInfoList.BundleInfo>();
+	ArrayList<BundleListing.Component> mComponents=new ArrayList<BundleListing.Component>();
+	
 		try {
 			is = mContext.getAssets().open("bundle-info.json");
 			int size = is.available();  
@@ -55,33 +58,42 @@ public class BundleParser {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject tmp=	jsonArray.optJSONObject(i);
 				BundleInfo mBundleInfo=new BundleInfo();
+				BundleListing.Component mComponent=new BundleListing.Component();
 				mBundleInfo.bundleName=tmp.optString("pkgName");
 				mBundleInfo.hasSO=tmp.optBoolean("hasSO");
+				mComponent.setPkgName(mBundleInfo.bundleName);
+				mComponent.setHasSO(mBundleInfo.hasSO);
 				mBundleInfo.Components=new ArrayList<String>();
 				JSONArray mJsonArray=tmp.optJSONArray("activities");
 				for (int j = 0; j < mJsonArray.length(); j++) {
 					mBundleInfo.Components.add(mJsonArray.optString(i));
+					mComponent.getActivities().add(mJsonArray.optString(i));
 				}
+				
 				JSONArray receivers=tmp.optJSONArray("receivers");
 				for (int j = 0; j < mJsonArray.length(); j++) {
 					mBundleInfo.Components.add(receivers.optString(i));
+					mComponent.getReceivers().add(mJsonArray.optString(i));
 				}
 
 				JSONArray services=tmp.optJSONArray("services");
 				for (int j = 0; j < mJsonArray.length(); j++) {
 					mBundleInfo.Components.add(services.optString(i));
+					mComponent.getServices().add(mJsonArray.optString(i));
 				}
 
 				JSONArray contentProviders=tmp.optJSONArray("contentProviders");
 				for (int j = 0; j < mJsonArray.length(); j++) {
 					mBundleInfo.Components.add(contentProviders.optString(i));
+					mComponent.getContentProviders().add(mJsonArray.optString(i));
 				
 				}
 				bundleInfos.add(mBundleInfo);
-
+				mComponents.add(mComponent);
 				//  BundleInfoList.getInstance().init(;)
 			}
-			BundleInfoList.getInstance().init(bundleInfos);
+			BundleListing.getInstance().setBundles(mComponents);
+			//BundleInfoList.getInstance().init(bundleInfos);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

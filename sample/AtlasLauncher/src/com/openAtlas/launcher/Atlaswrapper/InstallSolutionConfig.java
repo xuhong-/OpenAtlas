@@ -1,6 +1,7 @@
-/**
- *  OpenAtlasForAndroid Project
-The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+/**OpenAtlasForAndroid Project
+
+The MIT License (MIT) 
+Copyright (c) 2015 Bunny Blue
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
@@ -18,16 +19,20 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
+/**
+ * @author BunnyBlue
+ */
 package com.openAtlas.launcher.Atlaswrapper;
+
 
 public class InstallSolutionConfig {
     public static boolean install_when_findclass;
     public static boolean install_when_oncreate;
     public static boolean install_when_onreceive;
-
+    public static boolean install_when_oncreate_auto=true;
     static {
         install_when_oncreate = true;
-        install_when_onreceive = true;
+        install_when_onreceive = false;
         install_when_findclass = true;
     }
 }

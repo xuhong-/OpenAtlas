@@ -155,8 +155,8 @@ public class PathView extends View {
             updatePathsPhaseLocked();
         }
     }
-//    public void setFillTransparency(float f) {
-//        this.mFillTransparency = f;
+//    public void setFillTransparency(float BundlesInstaller) {
+//        this.mFillTransparency = BundlesInstaller;
 //        this.mPinPath = true;
 //        synchronized (this.mLock) {
 //            updatePathsFillTransparencyLocked();

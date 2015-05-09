@@ -65,6 +65,7 @@ import org.osgi.service.startlevel.StartLevel;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Build.VERSION;
+import blue.stack.openAtlas.PlatformConfigure;
 
 import com.openAtlas.framework.bundlestorage.BundleArchive;
 import com.openAtlas.log.Logger;
@@ -696,6 +697,13 @@ public final class Framework {
     private Framework() {
     }
 
+    static void startup(Properties properties) throws BundleException {
+        if (properties == null) {
+            properties = new Properties();
+        }
+        Framework.properties = properties;
+        startup();
+    }
     static void startup() throws BundleException {
         int i;
         int property;
@@ -707,6 +715,8 @@ public final class Framework {
         System.out
                 .println("---------------------------------------------------------");
         long currentTimeMillis = System.currentTimeMillis();
+        initialize();
+        Framework.launch();
         boolean property2 = getProperty("osgi.init", false);
         if (property2) {
             i = -1;
@@ -806,11 +816,8 @@ public final class Framework {
         }
     }
 
-    public static void initialize(Properties properties) {
-        if (properties == null) {
-            properties = new Properties();
-        }
-        properties = properties;
+    public static void initialize() {
+   
         File filesDir = RuntimeVariables.androidApplication.getFilesDir();
         if (filesDir == null || !filesDir.exists()) {
             filesDir = RuntimeVariables.androidApplication.getFilesDir();
@@ -884,7 +891,7 @@ public final class Framework {
         }
         properties2.put(str, property2);
         STORAGE_LOCATION = properties.getProperty(
-                "com.openAtlas.storage",
+               PlatformConfigure.INSTALL_LOACTION,
                 properties.getProperty("org.osgi.framework.dir", BASEDIR
                         + File.separatorChar + "storage"))
                 + File.separatorChar;
@@ -893,6 +900,7 @@ public final class Framework {
     }
 
     private static void launch() {
+    	  STORAGE_LOCATION = properties.getProperty(PlatformConfigure.INSTALL_LOACTION, properties.getProperty("org.osgi.framework.dir", BASEDIR + File.separatorChar + "storage")) + File.separatorChar;
         systemBundle = new SystemBundle();
         systemBundle.state = 8;
     }

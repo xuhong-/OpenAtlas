@@ -1,6 +1,7 @@
-/**
- *  OpenAtlasForAndroid Project
-The MIT License (MIT) Copyright (OpenAtlasForAndroid) 2015 Bunny Blue,achellies
+/**OpenAtlasForAndroid Project
+
+The MIT License (MIT) 
+Copyright (c) 2015 Bunny Blue
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software 
@@ -18,7 +19,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @author BunnyBlue
  * **/
+/**
+ * @author BunnyBlue
+ */
 package com.openAtlas.launcher.Atlaswrapper;
+
 
 import org.osgi.framework.Bundle;
 
@@ -31,103 +36,127 @@ import com.openAtlas.framework.Atlas;
 import com.openAtlas.framework.BundleImpl;
 import com.openAtlas.framework.bundlestorage.BundleArchiveRevision.DexLoadException;
 
-
+/* compiled from: OptDexProcess */
 public class OptDexProcess {
-    private static OptDexProcess optDexProcess;
-    private Application mApplication;
-    private boolean isInited;
-    private boolean isExecuted;
+	private static OptDexProcess mOptDexProcess;
+	private Application mApplication;
+	private boolean isInitialized;
+	private boolean isExecuted;
 
-    OptDexProcess() {
-    }
+	private OptDexProcess() {
+	}
 
-    public static synchronized OptDexProcess getInstance() {
-  
-        synchronized (OptDexProcess.class) {
-            if (optDexProcess == null) {
-                optDexProcess = new OptDexProcess();
-            }
-           
-        }
-        return optDexProcess;
-    }
+	public static synchronized OptDexProcess getInstance() {
+		if (mOptDexProcess!=null) {
 
-    void init(Application application) {
-        this.mApplication = application;
-        this.isInited = true;
-    }
+			return mOptDexProcess;
+		}
+		synchronized (OptDexProcess.class) {
+			if (mOptDexProcess == null) {
+				mOptDexProcess = new OptDexProcess();
+			}
 
-    public synchronized void processPackages() {
-        if (!this.isInited) {
-            Log.e("OptDexProcess",
-                    "Bundle Installer not initialized yet, process abort!");
-        } else if (this.isExecuted) {
-            Log.i("OptDexProcess",
-                    "Bundle install already executed, just return");
-        } else {
-            @SuppressWarnings("unused")
-			long currentTimeMillis = System.currentTimeMillis();
-            install();
-            // .. "Install bundles not delayed cost time = " +
-            // (System.currentTimeMillis() - currentTimeMillis) + " ms";
-            Utils.saveAtlasInfoBySharedPreferences(this.mApplication);
-            System.setProperty("BUNDLES_INSTALLED", "true");
-            notifyInstalled();
-            currentTimeMillis = System.currentTimeMillis();
-            getInstance().installDely();
-            // "Install delayed bundles cost time = " +
-            // (System.currentTimeMillis() - currentTimeMillis) + " ms";
-            this.isExecuted = true;
-        }
-    }
+		}
+		return mOptDexProcess;
+	}
 
-    private void install() {
-        for (Bundle bundle : Atlas.getInstance().getBundles()) {
-            if (!(bundle == null || isContanins(Utils.STORE, bundle.getLocation()))) {
-                try {
-                    ((BundleImpl) bundle).optDexFile();
-                    Atlas.getInstance().enableComponent(bundle.getLocation());
-                } catch (Throwable e) {
-                    if (e instanceof DexLoadException) {
-                        throw ((RuntimeException) e);
-                    }
-                    Log.e("OptDexProcess", "Error while dexopt >>>", e);
-                }
-            }
-        }
-    }
+	void init(Application application) {
+		this.mApplication = application;
+		this.isInitialized = true;
+	}
 
-    private void notifyInstalled() {
-        this.mApplication.sendBroadcast(new Intent(
-                PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
-    }
+	public synchronized void processPackages(boolean optAuto, boolean notifyResult) {
+		if (!this.isInitialized) {
+			Log.e("OptDexProcess", "Bundle Installer not initialized yet, process abort!");
+		} else if (!this.isExecuted || notifyResult) {
+			long currentTimeMillis;
+			if (optAuto) {
+				currentTimeMillis = System.currentTimeMillis();
+				optAUTODex();
+				if (!notifyResult) {
+					finishInstalled();
+				}
+				Log.e("debug",  "dexopt auto start bundles cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
+			} else {
+				currentTimeMillis = System.currentTimeMillis();
+				optStoreDex();
+				Log.e("debug", "dexopt bundles not delayed cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
 
-    private void installDely() {
-        for (String bundle : Utils.STORE) {
-            Bundle bundle2 = Atlas.getInstance().getBundle(bundle);
-            if (bundle2 != null) {
-                try {
-                    ((BundleImpl) bundle2).optDexFile();
-                    Atlas.getInstance().enableComponent(bundle2.getLocation());
-                } catch (Throwable e) {
-                    if (e instanceof DexLoadException) {
-                        throw ((RuntimeException) e);
-                    }
-                    Log.e("OptDexProcess", "Error while dexopt >>>", e);
-                }
-            }
-        }
-    }
+				if (!notifyResult) {
+					finishInstalled();
+				}
+				currentTimeMillis = System.currentTimeMillis();
+				getInstance().optStoreDex2();
+				Log.e("debug",  "dexopt delayed bundles cost time = " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
+			}
+			if (!notifyResult) {
+				this.isExecuted = true;
+			}
+		}
+	}
 
-    private boolean isContanins(String[] strArr, String str) {
-        if (strArr == null || str == null) {
-            return false;
-        }
-        for (String str2 : strArr) {
-            if (str2 != null && str2.equals(str)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private void finishInstalled() {
+		Utils.saveAtlasInfoBySharedPreferences(this.mApplication);
+		System.setProperty("BUNDLES_INSTALLED", "true");
+		this.mApplication.sendBroadcast(new Intent(PlatformConfigure.ACTION_BROADCAST_BUNDLES_INSTALLED));
+	}
+
+	private void optStoreDex() {
+		for (Bundle bundle : Atlas.getInstance().getBundles()) {
+			if (!(bundle == null || contains(Utils.STORE, bundle.getLocation()))) {
+				try {
+					((BundleImpl) bundle).optDexFile();
+				} catch (Throwable e) {
+					if (e instanceof DexLoadException) {
+						throw ((RuntimeException) e);
+					}
+					Log.e("OptDexProcess", "Error while dexopt >>>", e);
+				}
+			}
+		}
+	}
+
+	private void optStoreDex2() {
+		for (String bundle : Utils.STORE) {
+			Bundle bundle2 = Atlas.getInstance().getBundle(bundle);
+			if (bundle2 != null) {
+				try {
+					((BundleImpl) bundle2).optDexFile();
+				} catch (Throwable e) {
+					if (e instanceof DexLoadException) {
+						throw ((RuntimeException) e);
+					}
+					Log.e("OptDexProcess", "Error while dexopt >>>", e);
+				}
+			}
+		}
+	}
+
+	private void optAUTODex() {
+		for (String bundle : Utils.AUTO) {
+			Bundle bundle2 = Atlas.getInstance().getBundle(bundle);
+			if (bundle2 != null) {
+				try {
+					((BundleImpl) bundle2).optDexFile();
+				} catch (Throwable e) {
+					if (e instanceof DexLoadException) {
+						throw ((RuntimeException) e);
+					}
+					Log.e("OptDexProcess", "Error while dexopt >>>", e);
+				}
+			}
+		}
+	}
+
+	private boolean contains(String[] strArr, String str) {
+		if (strArr == null || str == null) {
+			return false;
+		}
+		for (String str2 : strArr) {
+			if (str2 != null && str2.equals(str)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
