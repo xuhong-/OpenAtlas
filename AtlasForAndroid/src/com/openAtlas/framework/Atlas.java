@@ -64,15 +64,19 @@ public class Atlas {
     private Atlas() {
     }
 
-    public static synchronized Atlas getInstance() {
-        Atlas atlas;
+    public static  Atlas getInstance() {
+      
+    	
+    	if (instance!=null) {
+			return instance;
+		}
         synchronized (Atlas.class) {
             if (instance == null) {
                 instance = new Atlas();
             }
-            atlas = instance;
+            
         }
-        return atlas;
+        return instance;
     }
 
     public void init(Application application, Properties properties)
@@ -113,8 +117,8 @@ public class Atlas {
         Framework.shutdown(false);
     }
 
-    public Bundle getBundle(String str) {
-        return Framework.getBundle(str);
+    public Bundle getBundle(String pkgName) {
+        return Framework.getBundle(pkgName);
     }
     public Bundle getBundleOnDemand(String str) {
         if (str == null || str.length() == 0) {
@@ -135,24 +139,24 @@ public class Atlas {
         return Framework.installNewBundle(str, file);
     }
 
-    public void updateBundle(String str, InputStream inputStream)
+    public void updateBundle(String pkgName, InputStream inputStream)
             throws BundleException {
-        Bundle bundle = Framework.getBundle(str);
+        Bundle bundle = Framework.getBundle(pkgName);
         if (bundle != null) {
             bundle.update(inputStream);
             return;
         }
-        throw new BundleException("Could not update bundle " + str
+        throw new BundleException("Could not update bundle " + pkgName
                 + ", because could not find it");
     }
 
-    public void updateBundle(String str, File file) throws BundleException {
-        Bundle bundle = Framework.getBundle(str);
+    public void updateBundle(String pkgName, File file) throws BundleException {
+        Bundle bundle = Framework.getBundle(pkgName);
         if (bundle != null) {
             bundle.update(file);
             return;
         }
-        throw new BundleException("Could not update bundle " + str
+        throw new BundleException("Could not update bundle " + pkgName
                 + ", because could not find it");
     }
 
@@ -161,8 +165,8 @@ public class Atlas {
         Framework.installOrUpdate(strArr, fileArr);
     }
 
-    public void uninstallBundle(String str) throws BundleException {
-        Bundle bundle = Framework.getBundle(str);
+    public void uninstallBundle(String pkgName) throws BundleException {
+        Bundle bundle = Framework.getBundle(pkgName);
         if (bundle != null) {
             BundleImpl bundleImpl = (BundleImpl) bundle;
             try {
@@ -180,11 +184,11 @@ public class Atlas {
                 }
                 return;
             } catch (Exception e) {
-                log.error("uninstall bundle error: " + str + e.getMessage());
+                log.error("uninstall bundle error: " + pkgName + e.getMessage());
                 return;
             }
         }
-        throw new BundleException("Could not uninstall bundle " + str
+        throw new BundleException("Could not uninstall bundle " + pkgName
                 + ", because could not find it");
     }
 
@@ -200,24 +204,24 @@ public class Atlas {
         return RuntimeVariables.delegateClassLoader;
     }
 
-    public Class<?> getComponentClass(String str) throws ClassNotFoundException {
-        return RuntimeVariables.delegateClassLoader.loadClass(str);
+    public Class<?> getComponentClass(String pkgName) throws ClassNotFoundException {
+        return RuntimeVariables.delegateClassLoader.loadClass(pkgName);
     }
 
-    public ClassLoader getBundleClassLoader(String str) {
-        Bundle bundle = Framework.getBundle(str);
+    public ClassLoader getBundleClassLoader(String pkgName) {
+        Bundle bundle = Framework.getBundle(pkgName);
         if (bundle != null) {
             return ((BundleImpl) bundle).getClassLoader();
         }
         return null;
     }
 
-    public PackageLite getBundlePackageLite(String str) {
-        return DelegateComponent.getPackage(str);
+    public PackageLite getBundlePackageLite(String pkgName) {
+        return DelegateComponent.getPackage(pkgName);
     }
 
-    public File getBundleFile(String str) {
-        Bundle bundle = Framework.getBundle(str);
+    public File getBundleFile(String pkgName) {
+        Bundle bundle = Framework.getBundle(pkgName);
         if (bundle != null) {
             return ((BundleImpl) bundle).archive.getArchiveFile();
         }
