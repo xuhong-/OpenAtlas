@@ -27,7 +27,6 @@ package com.openAtlas.launcher.Atlaswrapper;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -225,7 +224,7 @@ public class AtlasInitializer {
 
 
 	private boolean initBundle() {
-		LinkedList<BundleInfo> e = genBundleListInfo();
+		ArrayList<BundleInfo> e = genBundleListInfo();
 		if (e == null) {
 			return false;
 		}
@@ -233,12 +232,12 @@ public class AtlasInitializer {
 		return true;
 	}
 
-	private LinkedList<BundleInfo> genBundleListInfo() {
+	private ArrayList<BundleInfo> genBundleListInfo() {
 		BundleListing bundleListing=BundleListing.getInstance() ;//=BundleListing.instance().getBundleListing();
 		if (bundleListing == null || bundleListing.getBundles() == null) {
 			return null;
 		}
-		LinkedList<BundleInfo> arrayList = new LinkedList<BundleInfo>();
+		ArrayList<BundleInfo> arrayList = new ArrayList<BundleInfo>();
 		for (BundleListing.Component aVar : bundleListing.getBundles()) {
 			if (aVar != null) {
 				BundleInfo bundleInfo = new BundleInfo();

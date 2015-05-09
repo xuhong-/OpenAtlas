@@ -24,7 +24,6 @@ package com.openAtlas.launcher.Atlaswrapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +42,7 @@ import com.openAtlas.launcher.lightapk.BundleListing;
 public class BundleParser {
 	public static void parser(Context mContext) {
 		InputStream is;
-		LinkedList<BundleInfoList.BundleInfo> bundleInfos=new LinkedList<BundleInfoList.BundleInfo>();
+		ArrayList<BundleInfoList.BundleInfo> bundleInfos=new ArrayList<BundleInfoList.BundleInfo>();
 	ArrayList<BundleListing.Component> mComponents=new ArrayList<BundleListing.Component>();
 	
 		try {
@@ -55,42 +54,44 @@ public class BundleParser {
 			is.read(buffer);  
 			is.close();  
 			JSONArray jsonArray=new JSONArray(new String(buffer));
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject tmp=	jsonArray.optJSONObject(i);
+			for (int index = 0; index < jsonArray.length(); index++) {
+				JSONObject tmp=	jsonArray.optJSONObject(index);
 				BundleInfo mBundleInfo=new BundleInfo();
 				BundleListing.Component mComponent=new BundleListing.Component();
 				mBundleInfo.bundleName=tmp.optString("pkgName");
 				mBundleInfo.hasSO=tmp.optBoolean("hasSO");
 				mComponent.setPkgName(mBundleInfo.bundleName);
 				mComponent.setHasSO(mBundleInfo.hasSO);
-				mBundleInfo.Components=new ArrayList<String>();
-				JSONArray mJsonArray=tmp.optJSONArray("activities");
-				for (int j = 0; j < mJsonArray.length(); j++) {
-					mBundleInfo.Components.add(mJsonArray.optString(i));
-					mComponent.getActivities().add(mJsonArray.optString(i));
+				ArrayList<String> components=new ArrayList<String>();
+				
+				JSONArray activities=tmp.optJSONArray("activities");
+				for (int j = 0; j < activities.length(); j++) {
+					components.add(activities.getString(j));
+					mComponent.getActivities().add(activities.getString(j));
 				}
 				
 				JSONArray receivers=tmp.optJSONArray("receivers");
-				for (int j = 0; j < mJsonArray.length(); j++) {
-					mBundleInfo.Components.add(receivers.optString(i));
-					mComponent.getReceivers().add(mJsonArray.optString(i));
+				for (int j = 0; j < receivers.length(); j++) {
+					components.add(receivers.getString(j));
+					mComponent.getReceivers().add(receivers.getString(j));
 				}
 
 				JSONArray services=tmp.optJSONArray("services");
-				for (int j = 0; j < mJsonArray.length(); j++) {
-					mBundleInfo.Components.add(services.optString(i));
-					mComponent.getServices().add(mJsonArray.optString(i));
+				for (int j = 0; j < services.length(); j++) {
+					components.add(services.getString(j));
+					mComponent.getServices().add(services.getString(j));
 				}
 
 				JSONArray contentProviders=tmp.optJSONArray("contentProviders");
-				for (int j = 0; j < mJsonArray.length(); j++) {
-					mBundleInfo.Components.add(contentProviders.optString(i));
-					mComponent.getContentProviders().add(mJsonArray.optString(i));
+				for (int j = 0; j < contentProviders.length(); j++) {
+					components.add(contentProviders.getString(j));
+					mComponent.getContentProviders().add(contentProviders.getString(j));
 				
 				}
+				mBundleInfo.Components=components;
 				bundleInfos.add(mBundleInfo);
 				mComponents.add(mComponent);
-				//  BundleInfoList.getInstance().init(;)
+				 BundleInfoList.getInstance().init(bundleInfos);
 			}
 			BundleListing.getInstance().setBundles(mComponents);
 			//BundleInfoList.getInstance().init(bundleInfos);
