@@ -1,6 +1,7 @@
 package com.openatlas.homelauncher;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
@@ -52,6 +53,9 @@ public class MainActivity extends FragmentActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent mDelye = new Intent();
+            mDelye.setClassName(this, "com.taobao.android.gamecenter.main.GcContainerActivity");
+            startActivity(mDelye);
             return true;
         }
 
