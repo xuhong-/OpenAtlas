@@ -54,7 +54,7 @@ public class BundleInfoList {
         return bundleInfoList;
     }
 
-    public synchronized boolean init(LinkedList<BundleInfo> linkedList) {
+    public synchronized boolean init(ArrayList<BundleInfo> linkedList) {
         boolean initilized;
       
         if (this.mBundleInfoList != null || linkedList == null) {
